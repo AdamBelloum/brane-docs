@@ -1,0 +1,12 @@
+site_name: Brane Documentation
+theme:
+  name: material
+nav:
+  - Home: brane-docs-index.md
+  - Getting Started: getting-started.md
+  - Installation: installation.md
+  - Tutorials: tutorials.md
+  - Developer Guide: developer-guide.md
+  - Admin Guide: admin-guide.md
+  - BraneScript Guide: branescript-guide.md
+  - README: README.md
