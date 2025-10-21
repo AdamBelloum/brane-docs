@@ -9,8 +9,6 @@
       
       
       
-        <link rel="prev" href="branescript-guide/">
-      
       
       
       <link rel="icon" href="assets/images/favicon.png">
@@ -60,7 +58,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#brane-docs" class="md-skip">
+        <a href="#welcome-to-brane-documentation" class="md-skip">
           Skip to content
         </a>
       
@@ -96,7 +94,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              README
+              Welcome to Brane Documentation
             
           </span>
         </div>
@@ -343,19 +341,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="." class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="README.md" class="md-nav__link">
         
   
   
@@ -366,7 +355,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -391,6 +379,74 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#get-started" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get Started
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-documentation-areas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Documentation Areas
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Documentation Areas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-user-guides" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. User Guides
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Reference
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-advanced-topics" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Advanced Topics
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#need-help" class="md-nav__link">
+    <span class="md-ellipsis">
+      Need Help?
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -405,8 +461,60 @@
 
 
 
-<h1 id="brane-docs">brane-docs</h1>
-<p>this repo is mean to create a documentation for brane</p>
+<h1 id="welcome-to-brane-documentation">Welcome to Brane Documentation</h1>
+<p><strong>Brane</strong> is an innovative and powerful platform designed for <strong>secure, reproducible, and portable data science workflow orchestration</strong>. Whether you are a researcher, data scientist, or platform engineer, Brane offers the tools to manage your complex analytical pipelines with confidence and compliance.</p>
+<hr />
+<h2 id="get-started">Get Started</h2>
+<p>If you're new to Brane, these guides will help you hit the ground running.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Guide</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong><a href="installation/">Installation Guide</a></strong></td>
+<td style="text-align: left;">Detailed instructions on how to set up the Brane client and server on your system.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><a href="tutorial.md">First Tutorial</a></strong></td>
+<td style="text-align: left;">A quick, hands-on walkthrough to create and execute your first basic workflow.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><a href="concepts.md">Core Concepts</a></strong></td>
+<td style="text-align: left;">An essential overview of Brane's key components: Workflows, Packages, and the Data Model.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="key-documentation-areas">Key Documentation Areas</h2>
+<p>Explore the documentation by area of interest:</p>
+<h3 id="1-user-guides">1. User Guides</h3>
+<ul>
+<li><strong><a href="guides/workflows.md">Creating Workflows</a></strong>: Learn the Brane workflow language and best practices for writing portable scripts.</li>
+<li><strong><a href="guides/packages.md">Package Management</a></strong>: How to define, build, and integrate custom data science packages (Docker containers) into your environment.</li>
+<li><strong><a href="guides/data.md">Data Handling</a></strong>: Uploading, accessing, and securing your datasets within the Brane platform.</li>
+</ul>
+<h3 id="2-reference">2. Reference</h3>
+<ul>
+<li><strong><a href="reference/cli.md">CLI Commands</a></strong>: A complete list and description of all Brane command-line interface commands.</li>
+<li><strong><a href="reference/config.md">Configuration</a></strong>: Detailed breakdown of the <code>brane.yml</code> configuration file and its options.</li>
+<li><strong><a href="reference/api.md">API Specification</a></strong>: (If applicable) Documentation for the REST or programmatic API.</li>
+</ul>
+<h3 id="3-advanced-topics">3. Advanced Topics</h3>
+<ul>
+<li><strong><a href="advanced/security.md">Security &amp; Provenance</a></strong>: Understand how Brane ensures execution provenance and data security.</li>
+<li><strong><a href="advanced/federation.md">Federated Execution</a></strong>: Deploying and orchestrating workflows across multiple decentralized Brane instances.</li>
+</ul>
+<hr />
+<h2 id="need-help">Need Help?</h2>
+<ul>
+<li><strong><a href="faq.md">FAQ</a></strong>: Find answers to commonly asked questions.</li>
+<li><strong><a href="troubleshooting.md">Troubleshooting</a></strong>: Solutions for common errors and deployment issues.</li>
+<li><strong><a href="contributing.md">Contributing</a></strong>: Interested in improving Brane? Find out how to contribute to the project.</li>
+</ul>
 
 
 
