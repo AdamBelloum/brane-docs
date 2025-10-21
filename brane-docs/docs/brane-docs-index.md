@@ -23,13 +23,6 @@ Select a guide below to get started.
 
 3. Brane intro
 
-<iframe 
-  width="640" 
-  height="360" 
-  src="https://www.youtube.com/v=rfSZAmLppRg"
-  frameborder="0" 
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-  allowfullscreen>
-</iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/rfSZAmLppRg?si=t3mp-hnYWJNnc3J5" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 > Use the **Back to Contents** link at the top of each page to return here.
