@@ -1,0 +1,1011 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../brane-docs-index/">
+      
+      
+        <link rel="next" href="../installation/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.22">
+    
+    
+      
+        <title>Getting Started - Brane Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.84d31ad4.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#brane-overview-getting-started" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Brane Documentation" class="md-header__button md-logo" aria-label="Brane Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Brane Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Getting Started
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Brane Documentation" class="md-nav__button md-logo" aria-label="Brane Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Brane Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../brane-docs-index/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Getting Started
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Getting Started
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-what-is-brane" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. What Is Brane?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. What Is Brane?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-idea" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Idea
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#core-architecture-simplified" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Architecture (Simplified)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-roles-in-brane" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Roles in Brane
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-key-components-and-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Key Components and Tools
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Key Components and Tools">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#brane" class="md-nav__link">
+    <span class="md-ellipsis">
+      brane
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#branectl" class="md-nav__link">
+    <span class="md-ellipsis">
+      branectl
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-your-first-workflow-helloworld" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Your First Workflow HelloWorld
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Your First Workflow HelloWorld">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-verify-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1. Verify Installation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-create-a-simple-package" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2. Create a Simple Package
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-build-and-register-the-package" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3. Build and Register the Package
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-create-a-workflow-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 4. Create a Workflow Script
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-run-the-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 5. Run the Workflow
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-6-try-the-interactive-repl-optional" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 6. Try the Interactive REPL (Optional)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-whats-next" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. What's Next?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Installation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Tutorials
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Developer Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../admin-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Admin Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../branescript-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    BraneScript Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    README
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-what-is-brane" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. What Is Brane?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. What Is Brane?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-idea" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Idea
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#core-architecture-simplified" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Architecture (Simplified)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-roles-in-brane" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Roles in Brane
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-key-components-and-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Key Components and Tools
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Key Components and Tools">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#brane" class="md-nav__link">
+    <span class="md-ellipsis">
+      brane
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#branectl" class="md-nav__link">
+    <span class="md-ellipsis">
+      branectl
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-your-first-workflow-helloworld" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Your First Workflow HelloWorld
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Your First Workflow HelloWorld">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-verify-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1. Verify Installation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-create-a-simple-package" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2. Create a Simple Package
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-build-and-register-the-package" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3. Build and Register the Package
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-create-a-workflow-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 4. Create a Workflow Script
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-run-the-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 5. Run the Workflow
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-6-try-the-interactive-repl-optional" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 6. Try the Interactive REPL (Optional)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-whats-next" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. What's Next?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="brane-overview-getting-started">Brane Overview &amp; Getting Started</h1>
+<p><em>Last updated: October 2025</em><br />
+<strong>Audience:</strong> New users, educators, and evaluators<br />
+<strong>Prerequisites:</strong> Basic familiarity with command-line tools and Docker  </p>
+<hr />
+<h2 id="1-what-is-brane">1. What Is Brane?</h2>
+<p><strong>Brane</strong> is a <strong>programmable orchestration framework</strong> that simplifies how data-intensive applications are executed across different computing environments â   from a single laptop to distributed infrastructures.</p>
+<p>It helps <strong>scientists, engineers, and system administrators</strong> build, deploy, and execute workflows using lightweight, reusable building blocks called <strong>Brane packages</strong>.<br />
+These packages wrap any code (Python, R, shell scripts, etc.) into portable, executable units.</p>
+<h3 id="key-idea">Key Idea</h3>
+<p>Brane abstracts away technical complexity (containers, data transfers, security policies) so that users can:</p>
+<ul>
+<li><strong>Compose workflows</strong> in an intuitive scripting language called <strong>BraneScript</strong>  </li>
+<li><strong>Package their code</strong> once and run it anywhere  </li>
+<li><strong>Execute across multiple sites</strong> securely and transparently  </li>
+</ul>
+<h3 id="core-architecture-simplified">Core Architecture (Simplified)</h3>
+<p>At its core, Brane consists of:</p>
+<ul>
+<li><strong>Control Node</strong> â  central coordinator  </li>
+<li><strong>Worker Nodes</strong> â   execute computations  </li>
+<li><strong>Proxy Nodes</strong> <em>(optional)</em> â  bridge networks between sites  </li>
+</ul>
+<p>All nodes communicate through secure channels and coordinate tasks via the Brane runtime.</p>
+<hr />
+<h2 id="2-roles-in-brane">2. Roles in Brane</h2>
+<p>Brane supports several types of users, each with distinct goals and tools.</p>
+<table>
+<thead>
+<tr>
+<th><strong>Role</strong></th>
+<th><strong>Description</strong></th>
+<th><strong>Main Tool(s)</strong></th>
+<th><strong>Typical Tasks</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Scientist / End User</strong></td>
+<td>Composes and runs workflows using existing functions</td>
+<td><code>brane</code> CLI</td>
+<td>Write BraneScripts, run experiments</td>
+</tr>
+<tr>
+<td><strong>Software Engineer / Developer</strong></td>
+<td>Wraps existing code as reusable Brane packages</td>
+<td><code>brane</code> CLI</td>
+<td>Create, build, and publish packages</td>
+</tr>
+<tr>
+<td><strong>System Administrator</strong></td>
+<td>Installs and manages Brane infrastructure</td>
+<td><code>branectl</code> CLI</td>
+<td>Deploy and monitor nodes (control, worker, proxy)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="3-key-components-and-tools">3. Key Components and Tools</h2>
+<h3 id="brane"><code>brane</code></h3>
+<p>The <strong>user-facing command-line tool</strong> for:</p>
+<ul>
+<li>Creating and building Brane packages  </li>
+<li>Running and testing workflows  </li>
+<li>Managing datasets and registries  </li>
+</ul>
+<p>Example:</p>
+<pre><code class="language-bash">brane build
+brane run helloworld
+</code></pre>
+<h3 id="branectl"><code>branectl</code></h3>
+<p>The <strong>administrative command-line tool</strong> for:</p>
+<ul>
+<li>Installing and configuring nodes</li>
+<li>Generating configuration and certificate files</li>
+<li>Starting Brane services (control, worker, proxy)</li>
+</ul>
+<p>Example:</p>
+<pre><code class="language-bash">branectl download services central -f
+branectl start central
+</code></pre>
+<p>Together, these two tools allow users and administrators to operate the full Brane ecosystem.</p>
+<hr />
+<h2 id="4-your-first-workflow-helloworld">4. Your First Workflow HelloWorld</h2>
+<p>This short tutorial guides you through running your <strong>first Brane workflow locally</strong>.
+It demonstrates the end-to-end flow: package creation workflow execution.</p>
+<hr />
+<h3 id="step-1-verify-installation">Step 1. Verify Installation</h3>
+<p>Ensure Brane CLI is installed:</p>
+<pre><code class="language-bash">brane --version
+</code></pre>
+<p>If not installed, follow the instructions in the <strong><a href="../installation/">Installation &amp; Setup Guide</a></strong>.</p>
+<hr />
+<h3 id="step-2-create-a-simple-package">Step 2. Create a Simple Package</h3>
+<p>Initialize a new Brane package:</p>
+<pre><code class="language-bash">brane new helloworld
+cd helloworld
+</code></pre>
+<p>Create a simple Python script:</p>
+<pre><code class="language-python"># helloworld.py
+def hello_world():
+    return &quot;Hello, world!&quot;
+</code></pre>
+<p>Edit the <code>container.yml</code> file to describe your package:</p>
+<pre><code class="language-yaml">name: hello_world
+version: 1.0.0
+functions:
+  hello_world:
+    command: python3 helloworld.py
+</code></pre>
+<hr />
+<h3 id="step-3-build-and-register-the-package">Step 3. Build and Register the Package</h3>
+<pre><code class="language-bash">brane build
+brane push
+</code></pre>
+<p>This compiles your code into a containerized Brane package and makes it available for use.</p>
+<hr />
+<h3 id="step-4-create-a-workflow-script">Step 4. Create a Workflow Script</h3>
+<p>Create a new file called <code>HelloWorld.bs</code>:</p>
+<pre><code class="language-branescript">// HelloWorld.bs
+// A simple workflow that prints &quot;Hello, world!&quot;
+
+import hello_world;
+
+println(hello_world());
+</code></pre>
+<hr />
+<h3 id="step-5-run-the-workflow">Step 5. Run the Workflow</h3>
+<p>Execute the workflow locally:</p>
+<pre><code class="language-bash">brane workflow run HelloWorld.bs
+</code></pre>
+<p>Expected output:</p>
+<pre><code>Hello, world!
+</code></pre>
+<p>You have successfully run your first Brane workflow!</p>
+<hr />
+<h3 id="step-6-try-the-interactive-repl-optional">Step 6. Try the Interactive REPL (Optional)</h3>
+<p>Instead of writing a file, you can experiment interactively:</p>
+<pre><code class="language-bash">brane workflow repl
+</code></pre>
+<p>Then type:</p>
+<pre><code class="language-branescript">import hello_world;
+println(hello_world());
+</code></pre>
+<hr />
+<h2 id="5-whats-next">5. What's Next?</h2>
+<p>Now that you have completed your first workflow, you can:</p>
+<ul>
+<li><strong>Create more complex packages</strong> see <a href="../developer-guide/">Developer Guide</a></li>
+<li><strong>Compose multi-step workflows</strong> see <a href="../branescript-guide/">BraneScript User Guide</a></li>
+<li><strong>Deploy Brane on multiple nodes</strong> see <a href="../installation/">Installation &amp; Setup Guide</a></li>
+<li><strong>Explore Brane's architecture</strong> see <a href="architecture.md">Conceptual &amp; Architecture Guide</a></li>
+</ul>
+<hr />
+<h2 id="summary">Summary</h2>
+<table>
+<thead>
+<tr>
+<th>You Learned</th>
+<th>You Can Now</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>What Brane is and how its structured</td>
+<td>Understand roles and components</td>
+</tr>
+<tr>
+<td>How to use the Brane CLI tools</td>
+<td>Install, build, and run packages</td>
+</tr>
+<tr>
+<td>How to run your first workflow</td>
+<td>Execute a HelloWorld in BraneScript</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p><strong>Brane empowers you to focus on science and data logic â  not on infrastructure details.</strong></p>
+<p>Continue with the <a href="../developer-guide/">Developer Guide</a>
+or <a href="../brane-docs-index/">? Back to Table of Contents</a></p>
+<hr />
+<p>TODO: generate a <strong>front-matter block</strong> (YAML metadata for docs frameworks like MkDocs or Docusaurus) so it can be integrated into documentation site navigation automatically?</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+    
+  </body>
+</html>

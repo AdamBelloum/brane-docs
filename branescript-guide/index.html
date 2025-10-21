@@ -1,0 +1,1086 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../admin-guide/">
+      
+      
+        <link rel="next" href="..">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.22">
+    
+    
+      
+        <title>BraneScript Guide - Brane Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.84d31ad4.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#branescript-user-guide" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Brane Documentation" class="md-header__button md-logo" aria-label="Brane Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Brane Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              BraneScript Guide
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Brane Documentation" class="md-nav__button md-logo" aria-label="Brane Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Brane Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../brane-docs-index/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Getting Started
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Installation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Tutorials
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Developer Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../admin-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Admin Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    BraneScript Guide
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    BraneScript Guide
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-introduction-to-branescript" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Introduction to BraneScript
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Introduction to BraneScript">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Features
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-branescript-basics" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. BraneScript Basics
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. BraneScript Basics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#syntax-essentials" class="md-nav__link">
+    <span class="md-ellipsis">
+      Syntax Essentials
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-with-data-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example with Data Flow
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-importing-packages-and-calling-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Importing Packages and Calling Functions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Importing Packages and Calling Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-running-scripts-locally-or-remotely" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Running Scripts Locally or Remotely
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Running Scripts Locally or Remotely">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#run-locally" class="md-nav__link">
+    <span class="md-ellipsis">
+      Run Locally
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#run-on-a-distributed-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Run on a Distributed Setup
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-using-the-interactive-repl" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Using the Interactive REPL
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Using the Interactive REPL">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-session" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example Session
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-example-ohelloworldo-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Example: ÒHelloWorldÓ Workflow
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Example: ÒHelloWorldÓ Workflow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-with-variables-and-composition" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example with Variables and Composition
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-understanding-execution-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Understanding Execution Flow
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    README
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-introduction-to-branescript" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Introduction to BraneScript
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Introduction to BraneScript">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Features
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-branescript-basics" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. BraneScript Basics
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. BraneScript Basics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#syntax-essentials" class="md-nav__link">
+    <span class="md-ellipsis">
+      Syntax Essentials
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-with-data-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example with Data Flow
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-importing-packages-and-calling-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Importing Packages and Calling Functions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Importing Packages and Calling Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-running-scripts-locally-or-remotely" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Running Scripts Locally or Remotely
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Running Scripts Locally or Remotely">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#run-locally" class="md-nav__link">
+    <span class="md-ellipsis">
+      Run Locally
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#run-on-a-distributed-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Run on a Distributed Setup
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-using-the-interactive-repl" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Using the Interactive REPL
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Using the Interactive REPL">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-session" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example Session
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-example-ohelloworldo-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Example: ÒHelloWorldÓ Workflow
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Example: ÒHelloWorldÓ Workflow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-with-variables-and-composition" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example with Variables and Composition
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-understanding-execution-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Understanding Execution Flow
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="branescript-user-guide">BraneScript User Guide</h1>
+<p><em>Last updated: October 2025</em><br />
+<strong>Audience:</strong> Scientists, data analysts, or anyone composing workflows<br />
+<strong>Purpose:</strong> Learn how to use BraneScript to define, run, and explore workflows in Brane.  </p>
+<hr />
+<h2 id="1-introduction-to-branescript">1. Introduction to BraneScript</h2>
+<p><strong>BraneScript</strong> is a simple, domain-specific language (DSL) for defining workflows in Brane.<br />
+It allows you to <strong>compose, connect, and orchestrate</strong> functions from different Brane packages into complete data processing pipelines.</p>
+<h3 id="key-features">Key Features</h3>
+<ul>
+<li>Intuitive syntax similar to modern scripting languages  </li>
+<li>Portable across Brane deployments (local or distributed)  </li>
+<li>Supports <strong>variables</strong>, <strong>function calls</strong>, <strong>control flow</strong>, and <strong>data passing</strong>  </li>
+<li>Integrates directly with Brane packages and datasets  </li>
+</ul>
+<p>BraneScript files use the <code>.bs</code> extension and are executed with the <code>brane</code> CLI.</p>
+<hr />
+<h2 id="2-branescript-basics">2. BraneScript Basics</h2>
+<p>A minimal BraneScript program looks like this:</p>
+<pre><code class="language-branescript">// hello.bs
+import hello_world;
+
+println(hello_world::say_hello());
+</code></pre>
+<h3 id="syntax-essentials">Syntax Essentials</h3>
+<table>
+<thead>
+<tr>
+<th>Element</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Import</strong></td>
+<td>Load a package or module</td>
+<td><code>import hello_world;</code></td>
+</tr>
+<tr>
+<td><strong>Function call</strong></td>
+<td>Execute a package function</td>
+<td><code>hello_world::say_hello();</code></td>
+</tr>
+<tr>
+<td><strong>Assignment</strong></td>
+<td>Store output of a function</td>
+<td><code>msg = hello_world::greet("Ada");</code></td>
+</tr>
+<tr>
+<td><strong>Print</strong></td>
+<td>Display values</td>
+<td><code>println(msg);</code></td>
+</tr>
+<tr>
+<td><strong>Comments</strong></td>
+<td>Start with <code>//</code></td>
+<td><code>// This is a comment</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="example-with-data-flow">Example with Data Flow</h3>
+<pre><code class="language-branescript">import math_ops;
+import text_utils;
+
+a = 5;
+b = 3;
+sum = math_ops::add(a, b);
+msg = text_utils::to_string(sum);
+
+println(&quot;The result is: &quot; + msg);
+</code></pre>
+<hr />
+<h2 id="3-importing-packages-and-calling-functions">3. Importing Packages and Calling Functions</h2>
+<p>Each package defines a set of <strong>functions</strong> (or operations).
+You import the package and call its functions using the <code>package::function()</code> syntax.</p>
+<h3 id="example">Example</h3>
+<pre><code class="language-branescript">import hello_world;
+
+println(hello_world::say_hello());
+</code></pre>
+<p>If a function takes parameters:</p>
+<pre><code class="language-branescript">import hello_world;
+
+message = hello_world::greet(&quot;Ada&quot;);
+println(message);
+</code></pre>
+<p>If it produces structured outputs:</p>
+<pre><code class="language-branescript">result = data_analysis::compute_average(dataset);
+println(result.mean);
+</code></pre>
+<blockquote>
+<p>Tip: Use <code>brane packages list</code> to view all available packages.</p>
+</blockquote>
+<hr />
+<h2 id="4-running-scripts-locally-or-remotely">4. Running Scripts Locally or Remotely</h2>
+<p>You can execute BraneScript workflows using the <code>brane</code> CLI.</p>
+<h3 id="run-locally">Run Locally</h3>
+<pre><code class="language-bash">brane workflow run hello.bs
+</code></pre>
+<p>Brane compiles your script, resolves the required packages, and executes all steps on your local instance.</p>
+<h3 id="run-on-a-distributed-setup">Run on a Distributed Setup</h3>
+<p>If your Brane installation includes remote worker nodes, simply run the same command Ñ
+Brane automatically orchestrates execution across the available infrastructure.</p>
+<pre><code class="language-bash">brane workflow run hello.bs
+</code></pre>
+<p>To view available instances:</p>
+<pre><code class="language-bash">brane instance list
+</code></pre>
+<p>To select a specific environment:</p>
+<pre><code class="language-bash">brane workflow run hello.bs --instance &lt;instance_name&gt;
+</code></pre>
+<hr />
+<h2 id="5-using-the-interactive-repl">5. Using the Interactive REPL</h2>
+<p>Brane provides a <strong>REPL (ReadÐEvalÐPrint Loop)</strong> to experiment with BraneScript interactively.</p>
+<p>Start the REPL:</p>
+<pre><code class="language-bash">brane workflow repl
+</code></pre>
+<p>You will see:</p>
+<pre><code>Welcome to the BraneScript REPL!
+Type :help for assistance.
+</code></pre>
+<h3 id="example-session">Example Session</h3>
+<pre><code>&gt;&gt;&gt; import hello_world;
+&gt;&gt;&gt; println(hello_world::say_hello());
+Hello, world!
+</code></pre>
+<p>Exit with:</p>
+<pre><code>:quit
+</code></pre>
+<blockquote>
+<p>The REPL is great for quick exploration Ñ testing functions, learning syntax, or debugging.</p>
+</blockquote>
+<hr />
+<h2 id="6-example-ohelloworldo-workflow">6. Example: ÒHelloWorldÓ Workflow</h2>
+<p>HereÕs a complete BraneScript example you can try right away.</p>
+<p>Create a file <code>HelloWorld.bs</code>:</p>
+<pre><code class="language-branescript">// HelloWorld.bs
+// Demonstrates calling a package function and printing output
+
+import hello_world;
+
+println(hello_world::say_hello());
+</code></pre>
+<p>Run it:</p>
+<pre><code class="language-bash">brane workflow run HelloWorld.bs
+</code></pre>
+<p>Expected output:</p>
+<pre><code>Hello, world!
+</code></pre>
+<hr />
+<h3 id="example-with-variables-and-composition">Example with Variables and Composition</h3>
+<pre><code class="language-branescript">import hello_world;
+import text_utils;
+
+// Call a package function
+msg = hello_world::greet(&quot;Ada&quot;);
+
+// Manipulate the string
+upper_msg = text_utils::to_upper(msg);
+
+// Display the result
+println(upper_msg);
+</code></pre>
+<hr />
+<h2 id="7-understanding-execution-flow">7. Understanding Execution Flow</h2>
+<p>When you run a BraneScript:</p>
+<ol>
+<li>The script is parsed and validated.</li>
+<li>Brane identifies the required packages and their locations.</li>
+<li>Tasks are distributed to nodes (local or remote).</li>
+<li>Each function runs inside a secure container.</li>
+<li>Outputs are collected and made available for subsequent steps.</li>
+</ol>
+<p>You can inspect logs or workflow results using:</p>
+<pre><code class="language-bash">brane workflow list
+brane workflow logs &lt;workflow_id&gt;
+</code></pre>
+<hr />
+<h2 id="summary">Summary</h2>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Command</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Run a script</td>
+<td><code>brane workflow run &lt;file&gt;.bs</code></td>
+<td>Execute workflow locally or remotely</td>
+</tr>
+<tr>
+<td>Use REPL</td>
+<td><code>brane workflow repl</code></td>
+<td>Try commands interactively</td>
+</tr>
+<tr>
+<td>Import package</td>
+<td><code>import &lt;package&gt;;</code></td>
+<td>Access package functions</td>
+</tr>
+<tr>
+<td>Call function</td>
+<td><code>&lt;package&gt;::&lt;function&gt;(args)</code></td>
+<td>Execute package code</td>
+</tr>
+<tr>
+<td>Print output</td>
+<td><code>println()</code></td>
+<td>Display workflow results</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p><strong>BraneScript lets you automate complex data workflows in a simple, reproducible way.</strong>
+Next, learn how to <a href="../admin-guide/">Administer and Manage Brane Nodes ?</a></p>
+<p><a href="../brane-docs-index/">? Back to Table of Contents</a></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+    
+  </body>
+</html>
