@@ -213,5 +213,3 @@ Now that you have completed your first workflow, you can:
 Continue with the [Developer Guide](developer-guide.md)
 or [? Back to Table of Contents](brane-docs-index.md)
 ---
-
-TODO: generate a **front-matter block** (YAML metadata for docs frameworks like MkDocs or Docusaurus) so it can be integrated into documentation site navigation automatically?
