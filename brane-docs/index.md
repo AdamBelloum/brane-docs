@@ -11,8 +11,10 @@ If you're new to Brane, these guides will help you hit the ground running.
 | Guide | Description |
 | :--- | :--- |
 | **[Installation Guide](installation.md)** | Detailed instructions on how to set up the Brane client and server on your system. |
-| **[First Tutorial](tutorial.md)** | A quick, hands-on walkthrough to create and execute your first basic workflow. |
+| **[Tutorials](tutorials.md)** | A quick, hands-on walkthrough to create and execute your first basic workflow. |
 | **[Core Concepts](concepts.md)** | An essential overview of Brane's key components: Workflows, Packages, and the Data Model. |
+| **[Website](https://braneframework.github.io)** | TODO. |
+| **[Brane Manual](https://braneframework.github.io/manual/)** | TODO. |
 
 ---
 
@@ -20,24 +22,43 @@ If you're new to Brane, these guides will help you hit the ground running.
 
 Explore the documentation by area of interest:
 
-### 1. User Guides
-* **[Creating Workflows](guides/workflows.md)**: Learn the Brane workflow language and best practices for writing portable scripts.
-* **[Package Management](guides/packages.md)**: How to define, build, and integrate custom data science packages (Docker containers) into your environment.
-* **[Data Handling](guides/data.md)**: Uploading, accessing, and securing your datasets within the Brane platform.
+### For Users
 
-### 2. Reference
-* **[CLI Commands](reference/cli.md)**: A complete list and description of all Brane command-line interface commands.
-* **[Configuration](reference/config.md)**: Detailed breakdown of the `brane.yml` configuration file and its options.
-* **[API Specification](reference/api.md)**: (If applicable) Documentation for the REST or programmatic API.
+**[End-User Domain Scientists](https://braneframework.github.io/manual/scientists/introduction.html)**
+Learn about the role of scientists within the Brane framework. This section introduces **BraneScript** and **Bakery**, two domain-specific languages (DSLs) used to write workflows. It focuses on creating high-level workflows that implement specific scientific use cases.
 
-### 3. Advanced Topics
-* **[Security & Provenance](advanced/security.md)**: Understand how Brane ensures execution provenance and data security.
-* **[Federated Execution](advanced/federation.md)**: Deploying and orchestrating workflows across multiple decentralized Brane instances.
+**[Software Developers](https://braneframework.github.io/manual/software-engineers/introduction.html)**
+Discover how to develop, package, and upload custom Brane packages for use by scientists and other developers.
+
+**[System Administrators](https://braneframework.github.io/manual/system-admins/introduction.html)**
+Understand how to prepare and configure systems for Brane. This section covers system requirements, the information administrators must share with the Brane instance, and how to define datasets.
+
+**[Data Policy Experts](https://braneframework.github.io/manual/policy-experts/introduction.html)**
+Find everything needed to effectively define and manage data policies within Brane, including technical setup, configuration, and policy-writing guidelines.
+
+**[Package Management](https://braneframework.github.io/manual/packages/introduction.html)**
+Get an overview of the different types of packages supported by Brane and how they can be integrated into workflows.
+
+**[Configuration](https://braneframework.github.io/manual/config/introduction.html)**
+Access reference materials for various Brane configuration files. While primarily relevant to system administrators, this section also covers user-facing configurations such as container and data files.
+
+---
+### For Contributors
+
+**[CLI Commands](reference/cli.md)**- Complete list and description of all Brane command-line interface commands.  
+**[Configuration](reference/config.md)** - Detailed overview of the `brane.yml` configuration file and its options.  
+**[API Specification](reference/api.md)** -(If applicable) Documentation for the REST or programmatic API.
 
 ---
 
+**[Specification](https://braneframework.github.io/specification/)** - A comprehensive guide for developers who want to understand or extend the framework. It documents the internal architecture and communication protocols, enabling integration with custom software across domains.
+**[Policy Reasoner](https://braneframework.github.io/policy-reasoner)** - Reference documentation for the Policy Reasoner component. It is intended as a technical reference for ongoing development rather than a tutorial-style guide.
+
+**[Code Documentation](https://braneframework.github.io/policy-reasoner)** - Reference documentation for the Brane source code. Like the Policy Reasoner docs, it serves as a reference during development rather than a sequential read.
+
+---
 ## Need Help?
 
 * **[FAQ](faq.md)**: Find answers to commonly asked questions.
 * **[Troubleshooting](troubleshooting.md)**: Solutions for common errors and deployment issues.
-* **[Contributing](contributing.md)**: Interested in improving Brane? Find out how to contribute to the project.
+* **[Contributing](https://github.com/BraneFramework)**: Interested in improving Brane? Find out how to contribute to the project.
