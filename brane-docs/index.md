@@ -10,11 +10,10 @@ If you're new to Brane, these guides will help you hit the ground running.
 
 | Guide | Description |
 | :--- | :--- |
+| **[Core Concepts - Manual chapter: Overview](https://braneframework.github.io/manual/overview.html)** | An e    ssential overview of Brane's key components: Workflows, Packages, and the Data Mode    l. |
 | **[Installation Guide](installation.md)** | Detailed instructions on how to set up the Brane client and server on your system. |
 | **[Tutorials](tutorials.md)** | A quick, hands-on walkthrough to create and execute your first basic workflow. |
-| **[Core Concepts](concepts.md)** | An essential overview of Brane's key components: Workflows, Packages, and the Data Model. |
-| **[Website](https://braneframework.github.io)** | TODO. |
-| **[Brane Manual](https://braneframework.github.io/manual/)** | TODO. |
+| **[Cheatsheet](cheatsheets.md)** | The Brane Cheat Sheets provide concise, step-by-step guidance for installing, configuring, and using the Brane framework — from setting up local or multi-node environments to creating packages, writing BraneScripts, and running workflows. They serve as a quick reference for scientists, developers, and administrators working with Brane.  |
 
 ---
 
@@ -22,10 +21,15 @@ If you're new to Brane, these guides will help you hit the ground running.
 
 Explore the documentation by area of interest:
 
+### The Official Software Documentation Portal
+
+**[Brane Manual](https://braneframework.github.io/manual/)**
+This is the complete reference and guide for all aspects of the software. It is organized as a living, comprehensive resource, not a sequential book. Content is divided into targeted sections—covering topics for users, developers, administrators, and contributors—allowing you to quickly navigate to the specific information you need to operate, maintain, or extend the software.
+
 ### For Users
 
 **[End-User Domain Scientists](https://braneframework.github.io/manual/scientists/introduction.html)**
-Learn about the role of scientists within the Brane framework. This section introduces **BraneScript** and **Bakery**, two domain-specific languages (DSLs) used to write workflows. It focuses on creating high-level workflows that implement specific scientific use cases.
+Learn about the role of scientists within the Brane framework. This section introduces **BraneScript**, two domain-specific languages (DSLs) used to write workflows. It focuses on creating high-level workflows that implement specific scientific use cases.
 
 **[Software Developers](https://braneframework.github.io/manual/software-engineers/introduction.html)**
 Discover how to develop, package, and upload custom Brane packages for use by scientists and other developers.
@@ -45,13 +49,8 @@ Access reference materials for various Brane configuration files. While primaril
 ---
 ### For Contributors
 
-**[CLI Commands](reference/cli.md)**- Complete list and description of all Brane command-line interface commands.  
-**[Configuration](reference/config.md)** - Detailed overview of the `brane.yml` configuration file and its options.  
-**[API Specification](reference/api.md)** -(If applicable) Documentation for the REST or programmatic API.
-
----
-
 **[Specification](https://braneframework.github.io/specification/)** - A comprehensive guide for developers who want to understand or extend the framework. It documents the internal architecture and communication protocols, enabling integration with custom software across domains.
+
 **[Policy Reasoner](https://braneframework.github.io/policy-reasoner)** - Reference documentation for the Policy Reasoner component. It is intended as a technical reference for ongoing development rather than a tutorial-style guide.
 
 **[Code Documentation](https://braneframework.github.io/policy-reasoner)** - Reference documentation for the Brane source code. Like the Policy Reasoner docs, it serves as a reference during development rather than a sequential read.
