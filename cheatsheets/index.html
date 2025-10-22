@@ -1,0 +1,1337 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.22">
+    
+    
+      
+        <title>Cheatsheets - Brane Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.84d31ad4.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#brane-tools-brane-branectl" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Brane Documentation" class="md-header__button md-logo" aria-label="Brane Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Brane Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Cheatsheets
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Brane Documentation" class="md-nav__button md-logo" aria-label="Brane Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Brane Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../brane-docs-index/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Getting Started
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Installation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Tutorials
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Developer Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../admin-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Admin Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../branescript-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    BraneScript Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../README.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    README
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#brane-tools-brane-branectl" class="md-nav__link">
+    <span class="md-ellipsis">
+      Brane --- tools: brane, branectl
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Brane --- tools: brane, branectl">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#brane-branectl" class="md-nav__link">
+    <span class="md-ellipsis">
+      Brane --- branectl
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Brane --- branectl">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#commands-and-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      Commands and Options
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#brane-brane" class="md-nav__link">
+    <span class="md-ellipsis">
+      Brane --- brane
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Brane --- brane">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#commands-and-options_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Commands and Options
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#install-brane-on-local-host" class="md-nav__link">
+    <span class="md-ellipsis">
+      Install --- Brane on local host
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Install --- Brane on local host">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-download-binary" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Download binary:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-make-it-executable" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Make it executable:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-verify-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Verify installation:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation-multi-nodes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installation --- multi-nodes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Installation --- multi-nodes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-prepare-machines-install-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Prepare machines &amp; install dependencies
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-install-branectl" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Install branectl
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-create-certificates" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Create certificates
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-obtain-brane-services-images" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Obtain Brane services images
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-generate-central-infra-file-run" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Generate central [infra file] --- run
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-generate-central-proxy-config-run" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Generate central [proxy config] --- run
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-generate-central-node-file-run" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Generate central [node file] --- run
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-generate-worker-backend-config-run-on-each-worker-node" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Generate [worker backend config] ---run (on each worker node)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#9-generate-worker-proxy-run-on-each-worker" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. Generate [worker proxy]--- run on each worker.
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#10-generate-worker-node-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. Generate [worker node file]}
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#11-generate-certificates-server-client" class="md-nav__link">
+    <span class="md-ellipsis">
+      11. Generate certificates (server &amp; client)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-add-worker-certs-to-the-central-node-create" class="md-nav__link">
+    <span class="md-ellipsis">
+      12. Add [worker certs] to the [central node]--- create
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-generate-policy-tokens-policy-secrets-optional-run" class="md-nav__link">
+    <span class="md-ellipsis">
+      13. Generate policy tokens &amp; [policy secrets (optional) --- run
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-start-services-on-central" class="md-nav__link">
+    <span class="md-ellipsis">
+      14. Start services --- on central:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15-wait-for-db-readiness-verify" class="md-nav__link">
+    <span class="md-ellipsis">
+      15. Wait for DB readiness &amp; verify
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create-brane-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      Create Brane Function
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Create Brane Function">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-initialize-a-new-package" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Initialize a new package:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-add-your-python-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Add your Python script:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-define-the-function-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Define the function interface:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-build-the-package" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Build the package:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-push-the-package-to-a-registry" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Push the package to a registry:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-run-or-test-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Run or test it:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#run-workflow-branescript" class="md-nav__link">
+    <span class="md-ellipsis">
+      Run Workflow - BraneScript
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Run Workflow - BraneScript">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-write-a-branescript-file-manually-" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Write a BraneScript file manually --
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-run-the-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Run the workflow
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#run-workflow-read-eval-print-loop-repl" class="md-nav__link">
+    <span class="md-ellipsis">
+      Run Workflow - Read-Eval-Print Loop (REPL)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Run Workflow - Read-Eval-Print Loop (REPL)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create-data-policy-in-eflint" class="md-nav__link">
+    <span class="md-ellipsis">
+      Create Data Policy in eFLINT
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Create Data Policy in eFLINT">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#todo" class="md-nav__link">
+    <span class="md-ellipsis">
+      TODO
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-policy-graphical-user-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data Policy Graphical user Interface
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Data Policy Graphical user Interface">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#todo-more-details-can-be-found-in-brane-manual-policy-reasoner-gui" class="md-nav__link">
+    <span class="md-ellipsis">
+      TODO More details can be found in Brane manual [ Policy Reasoner GUI]
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jupyterlab-graphical-user-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      JupyterLab Graphical user Interface
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="JupyterLab Graphical user Interface">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#todo_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      TODO
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+  <h1>Cheatsheets</h1>
+
+<p><strong>Brane -- Cheat sheet</strong></p>
+<p><strong>(Last update -- 14-10-2025)</strong></p>
+<p><strong>Links BRANE</strong></p>
+<ul>
+<li>
+<p><a href="https://github.com/BraneFramework/brane/issues">Brane GitHub Issues</a></p>
+</li>
+<li>
+<p><a href="https://braneframework.github.io/">Brane Documentation</a> </p>
+</li>
+<li><a href="https://braneframework.github.io">https://braneframework.github.io</a></li>
+</ul>
+<p><strong>Release and Maintenance</strong></p>
+<ul>
+<li>
+<p><strong>Last stable release (v3.0.0)</strong> -- <em>no longer maintained.</em></p>
+</li>
+<li>
+<p>Development is active only through <strong>nightly builds</strong>, which produce
+  a <strong>Brane distribution</strong> containing the latest experimental
+  features.</p>
+</li>
+</ul>
+<p><strong>Note:</strong></p>
+<p>This cheat-sheet document summarizes the important steps to perform as
+end-user, software engineer, or system admin to <em>install Brane</em> and to
+<em>deploy</em> Brane on <em>one node</em> (local tests) and on <em>multiple nodes</em>. The
+cheat sheets also cover the process of creating <em>Brane functions</em>, and
+<em>BraneScript</em> to compose data prepressing pipeline (workflow). The cheat
+sheets to do no give a detailed explanation of the Brane concepts for a
+deep understanding it is recommended to read the full manual</p>
+<h2 id="brane-tools-brane-branectl"><strong>Brane --- tools: brane, branectl</strong></h2>
+<ul>
+<li><strong>brane</strong> -- User CLI used by scientists/software engineers
+  to <strong>submit and run workflows</strong> to Brane</li>
+<li>branectl --CLI used to <strong>install, configure, and manage
+  nodes</strong> (control, worker, proxy) in a Brane.</li>
+</ul>
+<h4 id="brane-branectl">Brane --- branectl</h4>
+<pre><code class="language-bash">Usage: branectl [OPTIONS] &lt;COMMAND&gt;
+</code></pre>
+<h6 id="commands-and-options">Commands and Options</h6>
+<table>
+<thead>
+<tr>
+<th><strong>Command / Option</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>services &lt;type&gt;</code></td>
+<td>Downloads prebuilt Docker images for Brane services (<code>central</code>, <code>worker</code>, or <code>proxy</code>).</td>
+</tr>
+<tr>
+<td><code>generate infra</code></td>
+<td>Creates the <code>infra.yml</code> configuration listing worker nodes.</td>
+</tr>
+<tr>
+<td><code>generate proxy</code></td>
+<td>Generates the <code>proxy.yml</code> configuration for proxy setup.</td>
+</tr>
+<tr>
+<td><code>generate backend</code></td>
+<td>Creates the <code>backend.yml</code> file defining the compute backend.</td>
+</tr>
+<tr>
+<td><code>generate node</code></td>
+<td>Generates the main <code>node.yml</code> configuration for any node.</td>
+</tr>
+<tr>
+<td><code>generate certs</code></td>
+<td>Creates certificates (<code>ca.pem</code>, <code>server.pem</code>, <code>client-id.pem</code>) for authentication.</td>
+</tr>
+<tr>
+<td><code>generate policy_secret</code></td>
+<td>Generates private key files for the Brane policy service.</td>
+</tr>
+<tr>
+<td><code>generate policy_db</code></td>
+<td>Initializes the local policy database (<code>policies.db</code>).</td>
+</tr>
+<tr>
+<td><code>generate policy_token</code></td>
+<td>Creates access tokens for policy experts to manage policies.</td>
+</tr>
+<tr>
+<td><code>start</code></td>
+<td>Starts a Brane node (<code>central</code>, <code>worker</code>, or <code>proxy</code>) using Docker.</td>
+</tr>
+<tr>
+<td><code>--debug</code></td>
+<td>Enable debug mode.</td>
+</tr>
+<tr>
+<td><code>--skip-check</code></td>
+<td>Skip dependency checks.</td>
+</tr>
+<tr>
+<td><code>-h, --help</code></td>
+<td>Print help information.</td>
+</tr>
+<tr>
+<td><code>-v, --version</code></td>
+<td>Print version information.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="brane-brane">Brane --- brane</h4>
+<p>The Brane command-line interface</p>
+<pre><code class="language-bash">[Usage:] brane [OPTIONS] &lt;COMMAND&gt;
+</code></pre>
+<h6 id="commands-and-options_1">Commands and Options</h6>
+<table>
+<thead>
+<tr>
+<th><strong>Command / Option</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>certs</code></td>
+<td>Manage certificates for connecting to remote instances.</td>
+</tr>
+<tr>
+<td><code>data</code></td>
+<td>Data-related commands.</td>
+</tr>
+<tr>
+<td><code>instance</code></td>
+<td>Commands related to connecting to remote instances.</td>
+</tr>
+<tr>
+<td><code>package</code></td>
+<td>Commands related to packages.</td>
+</tr>
+<tr>
+<td><code>upgrade</code></td>
+<td>Upgrades outdated configuration files in the current Brane version.</td>
+</tr>
+<tr>
+<td><code>verify</code></td>
+<td>Verifies parts of Brane's configuration.</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td>Shows the version number for this Brane CLI tool and (if logged in) the remote Driver.</td>
+</tr>
+<tr>
+<td><code>workflow</code></td>
+<td>Commands related to workflows.</td>
+</tr>
+<tr>
+<td><code>help</code></td>
+<td>Prints this message or the help of a specific subcommand.</td>
+</tr>
+<tr>
+<td><code>--debug</code></td>
+<td>Enable debug mode.</td>
+</tr>
+<tr>
+<td><code>--skip-check</code></td>
+<td>Skip dependency checks.</td>
+</tr>
+<tr>
+<td><code>-h, --help</code></td>
+<td>Print help information.</td>
+</tr>
+<tr>
+<td><code>-V, --version</code></td>
+<td>Print version information.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="install-brane-on-local-host"><strong>Install --- Brane on local host</strong></h2>
+<p>Commands for a--- to download branectl locally:</p>
+<h4 id="1-download-binary">1. <strong>Download binary:</strong></h4>
+<p>Downloads the precompiled branectl binary for</p>
+<p>Intel Macs</p>
+<pre><code class="language-bash">sudo wget -O /usr/local/bin/branectl 
+  https://github.com/braneframework/brane/releases/latest/download/branectl-darwin-x86_64
+</code></pre>
+<h4 id="2-make-it-executable">2. <strong>Make it executable:</strong></h4>
+<p>Grants permission to run the binary</p>
+<pre><code class="language-bash">sudo chmod +x /usr/local/bin/branectl
+</code></pre>
+<h4 id="3-verify-installation">3. <strong>Verify installation:</strong></h4>
+<p>Confirms that branectl is installed and working</p>
+<pre><code class="language-bash">branectl --help
+</code></pre>
+<h2 id="installation-multi-nodes"><strong>Installation --- multi-nodes</strong></h2>
+<p>the <strong>manual describes how to set up multi-node Brane</strong>:</p>
+<ul>
+<li>
+<p>A <strong>control node</strong> (central orchestrator).</p>
+</li>
+<li>
+<p>Multiple <strong>worker nodes</strong> (compute sites).</p>
+</li>
+<li>
+<p>Optional <strong>proxy nodes</strong> (network intermediaries).</p>
+</li>
+</ul>
+<p>The manual gives detailed steps using branectl to generate configs
+(<strong>infra.yml</strong>, <strong>node.yml</strong>), add certificates, and start each node so
+they work together in one Brane instance.</p>
+<h4 id="1-prepare-machines-install-dependencies">1. <strong>Prepare machines &amp; install dependencies</strong></h4>
+<p>on each host composing the cluster:</p>
+<ul>
+<li>
+<p>install Docker, Docker BuildKit,</p>
+</li>
+<li>
+<p>OpenSSL</p>
+</li>
+<li>
+<p>ensure GLIBC ≥ 2.27.</p>
+</li>
+</ul>
+<h4 id="2-install-branectl">2. <strong>Install branectl</strong></h4>
+<ul>
+<li>
+<p>download the precompiled branectl binary for each node
+    (<strong>control, worker, proxy)</strong></p>
+</li>
+<li>
+<p>make it executable: chmod +x branectl.</p>
+</li>
+</ul>
+<h4 id="3-create-certificates">3. <strong>Create certificates</strong></h4>
+<p>on the machine that will start nodes, run </p>
+<pre><code class="language-bash">branectl generate certs 
+</code></pre>
+<blockquote>
+<p>to create certificates (<strong>ca.pem</strong>, <strong>server.pem</strong>, <strong>client-id.pem</strong>)
+for node authentication.</p>
+</blockquote>
+<h4 id="4-obtain-brane-services-images">4. <strong>Obtain Brane services images</strong></h4>
+<p>On each node (<strong>control, worker, proxy)</strong></p>
+<pre><code class="language-bash">branectl download services central| worker|proxy 
+</code></pre>
+<blockquote>
+<p>to download prebuilt Docker images for Brane services (central, worker, or proxy).</p>
+</blockquote>
+<h4 id="5-generate-central-infra-file-run">5. <strong>Generate central [infra file]</strong> --- run</h4>
+<pre><code class="language-bash">branectl generate infra &lt;ID&gt;:&lt;ADDR&gt; ... 
+</code></pre>
+<p>To create <strong>config/infra.yml</strong> listing worker IDs and addresses.</p>
+<ul>
+<li><strong>ID</strong> → unique name of each worker (e.g., amy, bob)</li>
+<li><strong>ADDR</strong> → IP address or hostname (e.g., 192.0.2.2)</li>
+</ul>
+<blockquote>
+<p>More details about how to write configuration files see [<a href="https://braneframework.github.io/manual/config/admins/infra.html">Configuration
+files manual</a>]</p>
+</blockquote>
+<h4 id="6-generate-central-proxy-config-run">6. <strong>Generate central [proxy config]</strong> --- run</h4>
+<pre><code class="language-bash">branectl generate proxy -f -p ./config/proxy.yml 
+</code></pre>
+<blockquote>
+<p>to create <strong>proxy.yml</strong> (use defaults unless advanced networking).</p>
+<p>More details about how to write configuration files see [<a href="https://braneframework.github.io/manual/config/admins/proxy.html">Configuration files
+manual</a>]</p>
+</blockquote>
+<h4 id="7-generate-central-node-file-run">7. <strong>Generate central [node file]</strong> --- run</h4>
+<pre><code class="language-bash">branectl generate node -f central &lt;HOSTNAME&gt; 
+</code></pre>
+<blockquote>
+<p>to produce <strong>node.yml</strong> pointing to infra and proxy files.</p>
+<p>More details about how to write configuration files see
+[<a href="https://braneframework.github.io/manual/config/users/data.html">Configuration files manual</a>]</p>
+</blockquote>
+<h4 id="8-generate-worker-backend-config-run-on-each-worker-node">8. <strong>Generate [worker backend config]</strong> ---run (on each worker node)</h4>
+<pre><code class="language-bash">branectl generate backend -f -p ./config/backend.yml local 
+</code></pre>
+<p>(or appropriate backend).</p>
+<blockquote>
+<p>More details about how to write configuration files see [<a href="https://braneframework.github.io/manual/config/admins/backend.html">Configuration files manual</a>]</p>
+</blockquote>
+<h4 id="9-generate-worker-proxy-run-on-each-worker">9. <strong>Generate [worker proxy]</strong>--- run on each worker.</h4>
+<pre><code class="language-bash">branectl generate proxy -f -p ./config/proxy.yml 
+</code></pre>
+<h4 id="10-generate-worker-node-file">10. <strong>Generate [worker node file]}</strong></h4>
+<p>to create the worker's <strong>node.yml</strong></p>
+<pre><code class="language-bash">branectl generate node -f worker &lt;CENTRAL_HOSTNAME&gt; &lt;LOCATION_ID&gt; .
+</code></pre>
+<blockquote>
+<p><CENTRAL_HOSTNAME>
+<LOCATION_ID> </p>
+</blockquote>
+<h4 id="11-generate-certificates-server-client">11. <strong>Generate certificates (server &amp; client)</strong></h4>
+<p>On each worker/proxy run </p>
+<pre><code class="language-bash">branectl generate certs -f -p ./config/certs server &lt;LOCATION_ID&gt; -H &lt;HOSTNAME&gt; 
+</code></pre>
+<p>and create client certs as needed with </p>
+<pre><code class="language-bash">branectl generate certs client ....
+</code></pre>
+<h4 id="12-add-worker-certs-to-the-central-node-create">12. <strong>Add [worker certs] to the [central node</strong>]--- create</h4>
+<blockquote>
+<p><strong>Share certificates</strong> --- copy each worker's <strong>ca.pem</strong> (and client
+certs if required) to peers under <strong>config/certs/peer/</strong> so mutual
+auth works.</p>
+</blockquote>
+<h4 id="13-generate-policy-tokens-policy-secrets-optional-run">13. <strong>Generate policy tokens &amp; [policy secrets (optional)</strong>  --- run</h4>
+<p><strong>[policy token]</strong></p>
+<pre><code class="language-bash">branectl generate policy_token &lt;INITIATOR&gt; &lt;SYSTEM&gt; &lt;DURATION&gt; -s &lt;PATH_TO_SECRE&gt;
+</code></pre>
+<p>and give <strong>policy_token.json</strong> to the policy expert.</p>
+<p><strong>[policy secrets]</strong> </p>
+<pre><code class="language-bash">branectl generate policy_secret -f -p ./config/policy_*.json 
+</code></pre>
+<blockquote>
+<p>More details about how to write data policy see [<a href="https://braneframework.github.io/manual/policy-experts/introduction.html">Configuration files manual</a>]</p>
+</blockquote>
+<h4 id="14-start-services-on-central">14. <strong>Start services</strong> --- on central:</h4>
+<pre><code class="language-bash">branectl start central
+</code></pre>
+<p>on each worker: </p>
+<pre><code class="language-bash">branectl start worker
+</code></pre>
+<p>on proxies: </p>
+<pre><code class="language-bash">branectl start proxy.
+</code></pre>
+<h4 id="15-wait-for-db-readiness-verify">15. <strong>Wait for DB readiness &amp; verify</strong></h4>
+<p>--- wait until Scylla is fully up</p>
+<p>verify with docker ps that all Brane containers (including brane-api) are running.</p>
+<h2 id="create-brane-function"><strong>Create Brane Function</strong></h2>
+<p>The end user must use <strong>brane</strong> (the user CLI) to package and publish
+code as a Brane function. The general sequence of steps to create a
+brane function is:</p>
+<h4 id="1-initialize-a-new-package">1. <strong>Initialize a new package:</strong></h4>
+<p>Creates a new Brane package directory</p>
+<pre><code class="language-bash">brane new
+</code></pre>
+<h4 id="2-add-your-python-script">2. <strong>Add your Python script:</strong></h4>
+<blockquote>
+<p>Place helloworld.py inside the package folder</p>
+</blockquote>
+<h4 id="3-define-the-function-interface">3. <strong>Define the function interface:</strong></h4>
+<blockquote>
+<p>Edit the package definition file
+(e.g., <strong>container.yml</strong> or <strong>data.yml</strong>) to describe the function
+(inputs, outputs, command).</p>
+</blockquote>
+<p>The following configuration files are relevant for users of the
+framework:</p>
+<ul>
+<li>
+<p><a href="https://braneframework.github.io/manual/config/users/container.html">container.yml</a>:
+  A <strong>YAML</strong> file that defines the metadata of a BRANE package.</p>
+</li>
+<li>
+<p><a href="https://braneframework.github.io/manual/config/users/data.html">data.yml</a>:
+  A <strong>YAML</strong> file that defines the metadata of a BRANE dataset.</p>
+</li>
+</ul>
+<blockquote>
+<p>More details can be found in Brane manual [<a href="https://braneframework.github.io/manual/software-engineers/hello-world.html">your first package</a>,
+package input-multiple functions, datasets, ]</p>
+</blockquote>
+<h4 id="4-build-the-package">4. <strong>Build the package:</strong></h4>
+<p>Builds the package into a Brane container image</p>
+<pre><code class="language-bash">brane build
+</code></pre>
+<h4 id="5-push-the-package-to-a-registry">5. <strong>Push the package to a registry:</strong></h4>
+<p>Publishes the package so it can be used in workflows</p>
+<pre><code class="language-bash">brane push
+</code></pre>
+<h4 id="6-run-or-test-it">6. <strong>Run or test it:</strong></h4>
+<p>Executes the function in the Brane environment</p>
+<pre><code class="language-bash">brane run helloworld
+</code></pre>
+<p><em><strong>Note</strong>:</em> </p>
+<h2 id="run-workflow-branescript"><strong>Run Workflow - BraneScript</strong></h2>
+<p>BraneScript (the scripting language for composing workflows), DSL for
+<strong>scientists</strong> to orchestrate workflows.</p>
+<h4 id="1-write-a-branescript-file-manually-">1. <strong>Write a BraneScript file manually</strong> --</h4>
+<p>Create a text file, e.g. <strong>workflow.bs</strong>, that defines the workflow
+ using BraneScript syntax (calls to packages/functions)<em>.</em></p>
+<p>example HelloWorld.bs</p>
+<pre><code>// HELLO WORLD.bs
+// by Rick Sanchez
+//
+// A BraneScript workflow for printing &quot;Hello, world!&quot; to the screen.
+// Define which packages we use, which makes its functions available
+// ('hello_world()', in this case)
+
+import hello_world;
+
+// Prints the result of the 'hello_world()' call by using the 'println()' builtin
+println(hello_world());
+</code></pre>
+<h4 id="2-run-the-workflow">2. <strong>Run the workflow</strong></h4>
+<p>Execute the BraneScript workflow through the Brane CLI</p>
+<p><strong>Local execution</strong>: test your workflow locally first to make sure
+ that it works and compiles fine without consuming instance resources</p>
+<p>Test the function packages available</p>
+<pre><code class="language-bash"> brane package list
+</code></pre>
+<p>if the package you want to use is not listed, download it form Brane
+GitHub1</p>
+<p>brane package import braneframework/brane-std
+ hello_world/container.yml</p>
+<p>We assume you're already executed 'brane instance add' ????</p>
+<pre><code class="language-bash"> brane workflow run HelloWorld.bs
+</code></pre>
+<p><strong>Remote execution:</strong></p>
+<pre><code class="language-bash">brane workflow run --remote HelloWorld.bs
+</code></pre>
+<blockquote>
+<p>More details about how to write BraneScript see [<a href="https://braneframework.github.io/manual/branescript/introduction.html">BraneScript manual</a>]</p>
+</blockquote>
+<h2 id="run-workflow-read-eval-print-loop-repl"><strong>Run Workflow - Read-Eval-Print Loop (REPL)</strong></h2>
+<p>An alternative to writing BranScripts in files is the Brane
+Read-Eval-Print Loop (REPL).</p>
+<p>Start the REPL</p>
+<pre><code class="language-bash"> brane workflow repl
+</code></pre>
+<p>reproduce our Hello Word workflow by writing its two statements
+separately:</p>
+<pre><code class="language-python">// In the Brane REPL
+import hello_world;
+println(hello_world());
+</code></pre>
+<p>use the REPL in a remote setting</p>
+<pre><code class="language-bash">brane workflow repl --remote
+</code></pre>
+<h3 id="create-data-policy-in-eflint"><strong>Create Data Policy in eFLINT</strong></h3>
+<h4 id="todo">TODO</h4>
+<h3 id="data-policy-graphical-user-interface"><strong>Data Policy Graphical user Interface</strong></h3>
+<h4 id="todo-more-details-can-be-found-in-brane-manual-policy-reasoner-gui">TODO   More details can be found in Brane manual [ <a href="https://github.com/braneframework/policy-reasoner-gui">Policy Reasoner GUI</a>]</h4>
+<h3 id="jupyterlab-graphical-user-interface"><strong>JupyterLab Graphical user Interface</strong></h3>
+<h4 id="todo_1">TODO</h4>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+    
+  </body>
+</html>
