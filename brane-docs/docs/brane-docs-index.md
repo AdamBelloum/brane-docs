@@ -16,7 +16,7 @@ Select a guide below to get started.
 
 ## Extras
 
-1. [Brane - core concepts - a not so short introduction to brane](Brane-101.doc) 
+1. [Brane - core concepts - a not so short introduction to brane](brane-introduction.pdf) 
 2. [Overiew Presentation](brane-overview.pdf)
 
 3. Brane intro
