@@ -33,7 +33,7 @@ Before installing Brane, ensure your system meets the following requirements.
 ### macOS (Intel)
 ```bash
 sudo wget -O /usr/local/bin/branectl \
-  https://github.com/BraneFramework/brane/releases/download/nightly/brane-macos-x86_64
+  https://github.com/BraneFramework/brane/releases/download/nightly/branectl-macos-x86_64
 ```
 
 
@@ -41,14 +41,14 @@ sudo wget -O /usr/local/bin/branectl \
 
 ```bash
 sudo wget -O /usr/local/bin/branectl \
-  https://github.com/BraneFramework/brane/releases/download/nightly/brane-macos-aarch64
+  https://github.com/BraneFramework/brane/releases/download/nightly/branectl-macos-aarch64
 ```
 
 ### Linux (x86-64)
 
 ```bash
 sudo wget -O /usr/local/bin/branectl \
-  https://github.com/BraneFramework/brane/releases/download/nightly/brane-linux-x86_64
+  https://github.com/BraneFramework/brane/releases/download/nightly/branectl-linux-x86_64
 ```
 
 Make it executable:
