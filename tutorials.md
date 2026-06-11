@@ -37,7 +37,7 @@ Run your first Brane workflow on a single machine.
 ### Step 1 - Verify Setup
 ```bash
 brane --version
-````
+```
 
 Check that the Brane API is active:
 
