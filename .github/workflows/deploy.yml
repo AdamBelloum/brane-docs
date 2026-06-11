@@ -39,12 +39,27 @@ jobs:
       #     npm run build
       # ----------------------------
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install MkDocs and dependencies
+        run: |
+          pip install mkdocs
+          # If you use the Material theme, uncomment the line below:
+          pip install mkdocs-material
+
+      - name: Build MkDocs Site
+        run: |
+          cd brane-docs
+          mkdocs build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           # Point this to your static files. 
           # Use "." if your index.html is in the root, or "dist"/"build" if you use a builder.
-          path: "." 
+          path: "brane-docs/site"
 
       - name: Deploy to GitHub Pages
         id: deployment
