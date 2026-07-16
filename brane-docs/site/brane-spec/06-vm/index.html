@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+        <title>6. Virtual Machine (VM) Design - Brane Docs</title>
+        <link href="../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../css/brands.min.css" rel="stylesheet">
+        <link href="../../css/solid.min.css" rel="stylesheet">
+        <link href="../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../..">Brane Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a href="../.." class="nav-link">Overview</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Brane Specification</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../" class="dropdown-item">Overview</a>
+</li>
+                                    
+<li>
+    <a href="../01-introduction/" class="dropdown-item">1. Introduction</a>
+</li>
+                                    
+<li>
+    <a href="../02-architecture/" class="dropdown-item">2. Architectural Overview</a>
+</li>
+                                    
+<li>
+    <a href="../03-components/" class="dropdown-item">3. Component Specifications</a>
+</li>
+                                    
+<li>
+    <a href="../04-data-config/" class="dropdown-item">4. Data and Configuration Model</a>
+</li>
+                                    
+<li>
+    <a href="../05-wir/" class="dropdown-item">5. Workflow Internal Representation (WIR)</a>
+</li>
+                                    
+<li>
+    <a href="./" class="dropdown-item active" aria-current="page">6. Virtual Machine (VM) Design</a>
+</li>
+                                    
+<li>
+    <a href="../07-branescript/" class="dropdown-item">7. BraneScript Frontend</a>
+</li>
+                                    
+<li>
+    <a href="../08-extensibility/" class="dropdown-item">8. Extensibility and Future Work</a>
+</li>
+                                    
+<li>
+    <a href="../09-references/" class="dropdown-item">9. References and Related Work</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Brane User Guide</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../brane-user-guide/index.md" class="dropdown-item">Overview</a>
+</li>
+                                    
+<li>
+    <a href="../../brane-user-guide/01-introduction.md" class="dropdown-item">1. Introduction</a>
+</li>
+                                    
+<li>
+    <a href="../../brane-user-guide/02-quick-start-scientists.md" class="dropdown-item">2. Quick Start for Scientists</a>
+</li>
+                                    
+<li>
+    <a href="../../brane-user-guide/03-system-engineers-deploying.md" class="dropdown-item">3. System Engineers: Deploying Brane</a>
+</li>
+                                    
+<li>
+    <a href="../../brane-user-guide/04-software-developers-packages.md" class="dropdown-item">4. Software Engineers: Developing Packages</a>
+</li>
+                                    
+<li>
+    <a href="../../brane-user-guide/05-policy-experts.md" class="dropdown-item">5. Data Policy Experts / Data Stewards</a>
+</li>
+                                    
+<li>
+    <a href="../../brane-user-guide/06-scientists-workflows.md" class="dropdown-item">6. Scientists: Workflows & Datasets</a>
+</li>
+                                    
+<li>
+    <a href="../../brane-user-guide/07-admins-instances.md" class="dropdown-item">7. Administrators: Instances & Credentials</a>
+</li>
+                                    
+<li>
+    <a href="../../brane-user-guide/08-reference.md" class="dropdown-item">8. Reference</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Brane Tutorials</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../brane-tutorials/" class="dropdown-item">Overview</a>
+</li>
+                                    
+<li>
+    <a href="../../brane-tutorials/01-overview/" class="dropdown-item">1. Tutorial Overview</a>
+</li>
+                                    
+<li>
+    <a href="../../brane-tutorials/02-hello-world-package.md" class="dropdown-item">2. Hello World Package Tutorial</a>
+</li>
+                                    
+<li>
+    <a href="../../brane-tutorials/03-disaster-tweets-workflow.md" class="dropdown-item">3. Disaster Tweets Workflow Tutorial</a>
+</li>
+                                    
+<li>
+    <a href="../../brane-tutorials/04-scenarios-ictopen.md" class="dropdown-item">4. Scenario: ICT.OPEN 2023</a>
+</li>
+                                    
+<li>
+    <a href="../../brane-tutorials/05-scenarios-umc-utrecht.md" class="dropdown-item">5. Scenario: UMC Utrecht Demo & Workshop</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Legacy (optional)</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../legacy/installation.md" class="dropdown-item">Installation (old)</a>
+</li>
+                                    
+<li>
+    <a href="../../legacy/getting-started.md" class="dropdown-item">Getting Started (old)</a>
+</li>
+                                    
+<li>
+    <a href="../../legacy/developer-guide.md" class="dropdown-item">Developer Guide (old)</a>
+</li>
+                                    
+<li>
+    <a href="../../legacy/admin-guide.md" class="dropdown-item">Admin Guide (old)</a>
+</li>
+                                    
+<li>
+    <a href="../../legacy/branescript-guide.md" class="dropdown-item">BraneScript Guide (old)</a>
+</li>
+                                    
+<li>
+    <a href="../../legacy/tutorials.md" class="dropdown-item">Tutorials (old)</a>
+</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../05-wir/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../07-branescript/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#6-virtual-machine-vm-design" class="nav-link">6. Virtual Machine (VM) Design</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#61-execution-model-and-invariants" class="nav-link">6.1. Execution model and invariants</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#62-core-runtime-structures" class="nav-link">6.2. Core runtime structures</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#63-edge-instructions" class="nav-link">6.3. Edge instructions</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#64-execution-example-high-level" class="nav-link">6.4. Execution example (high level)</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#65-summary" class="nav-link">6.5. Summary</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="6-virtual-machine-vm-design">6. Virtual Machine (VM) Design</h1>
+<p>The Brane Virtual Machine (VM) executes workflows by interpreting WIR graphs.</p>
+<p>The VM:</p>
+<ul>
+<li>Maintains runtime state (stacks, registers, frames),</li>
+<li>Follows edges in WIR graphs,</li>
+<li>Executes <strong>edge instructions</strong> that manipulate values and control flow.</li>
+</ul>
+<p>Frontend languages do not interact directly with the VM; they compile into WIR.</p>
+<h2 id="61-execution-model-and-invariants">6.1. Execution model and invariants</h2>
+<p>Execution steps:</p>
+<ol>
+<li>Load WIR program:</li>
+<li>Main graph,</li>
+<li>Function graphs,</li>
+<li>Symbol table,</li>
+<li>
+<p>Results map.</p>
+</li>
+<li>
+<p>Initialize state:</p>
+</li>
+<li>Clear expression stack,</li>
+<li>Initialize variable register,</li>
+<li>
+<p>Push initial frame for main graph.</p>
+</li>
+<li>
+<p>Execute edges:</p>
+</li>
+<li>Start at main entry edge,</li>
+<li>
+<p>For each edge:</p>
+<ul>
+<li>Run edge instructions,</li>
+<li>Move program counter according to edge kind.</li>
+</ul>
+</li>
+<li>
+<p>Terminate:</p>
+</li>
+<li>On a Stop edge or when frames and edges are exhausted.</li>
+</ol>
+<p>Core invariants:</p>
+<ul>
+<li><strong>Type safety</strong> – VM assumes WIR is type-checked.</li>
+<li><strong>Frame isolation</strong> – each function call has its own frame and variable scope.</li>
+<li><strong>Deterministic edge execution</strong> – given WIR and initial state, internal behaviour is deterministic (external calls may introduce non-determinism).</li>
+</ul>
+<h2 id="62-core-runtime-structures">6.2. Core runtime structures</h2>
+<p>The VM uses:</p>
+<ul>
+<li>Expression stack,</li>
+<li>Variable register,</li>
+<li>Frame stack.</li>
+</ul>
+<h3 id="621-expression-stack">6.2.1. Expression stack</h3>
+<p>The <strong>expression stack</strong> holds temporary values used in evaluation:</p>
+<ul>
+<li>Frontend expressions compile to:</li>
+<li>Push operands,</li>
+<li>Apply operations,</li>
+<li>Pop or leave results on the stack.</li>
+</ul>
+<p>Operations include:</p>
+<ul>
+<li>Arithmetic: <code>Add</code>, <code>Sub</code>, <code>Mul</code>, <code>Div</code>, <code>Mod</code>.</li>
+<li>Comparisons: <code>Eq</code>, <code>Ne</code>, <code>Lt</code>, <code>Le</code>, <code>Gt</code>, <code>Ge</code>.</li>
+<li>Boolean logic operations where defined.</li>
+</ul>
+<p>Arrays:</p>
+<ul>
+<li><code>Array</code> – build arrays from stack values.</li>
+<li><code>ArrayIndex</code> – retrieve elements by index.</li>
+</ul>
+<p>Values on the stack are typed; instructions operate on specific types.</p>
+<h3 id="622-variable-register">6.2.2. Variable register</h3>
+<p>The <strong>variable register</strong> stores named variables and their values:</p>
+<ul>
+<li>Variables are declared with types in WIR.</li>
+<li>Types do not change after declaration.</li>
+<li>VM uses variable IDs (from symbol table) to load/store values.</li>
+</ul>
+<p>Typical instructions:</p>
+<ul>
+<li><code>LoadVar</code> – push variable value onto stack.</li>
+<li><code>StoreVar</code> – pop stack value into variable.</li>
+</ul>
+<h3 id="623-frame-stack">6.2.3. Frame stack</h3>
+<p>The <strong>frame stack</strong> manages function calls and scopes. Each frame holds:</p>
+<ul>
+<li>The current graph (main or function),</li>
+<li>The current program counter,</li>
+<li>Variable bindings in that call.</li>
+</ul>
+<p>On <strong>Call edges</strong>:</p>
+<ul>
+<li>VM:</li>
+<li>Pushes a new frame,</li>
+<li>Sets graph to the callee’s function graph,</li>
+<li>Transfers arguments to parameter variables.</li>
+</ul>
+<p>On <strong>Return edges</strong>:</p>
+<ul>
+<li>VM:</li>
+<li>Places return values on stack or in variables,</li>
+<li>Pops the frame,</li>
+<li>Restores caller’s graph and program counter.</li>
+</ul>
+<p>This supports nested/recursive calls and proper scoping.</p>
+<h2 id="63-edge-instructions">6.3. Edge instructions</h2>
+<p>Each edge contains a sequence of <strong>edge instructions</strong>, which are atomic operations for the VM.</p>
+<p>Instruction categories:</p>
+<h3 id="631-arithmetic-and-logic">6.3.1. Arithmetic and logic</h3>
+<ul>
+<li><code>Add</code>, <code>Sub</code>, <code>Mul</code>, <code>Div</code>, <code>Mod</code>  </li>
+<li><code>Eq</code>, <code>Ne</code>, <code>Lt</code>, <code>Le</code>, <code>Gt</code>, <code>Ge</code>  </li>
+<li>Boolean operations (e.g., <code>And</code>, <code>Or</code>, <code>Not</code>) where defined.</li>
+</ul>
+<p>All operate on stack values and push results.</p>
+<h3 id="632-data-structure-operations">6.3.2. Data structure operations</h3>
+<ul>
+<li><code>Array</code> – construct arrays from stack values.</li>
+<li><code>ArrayIndex</code> – read array element at an index.</li>
+</ul>
+<h3 id="633-variable-operations">6.3.3. Variable operations</h3>
+<ul>
+<li><code>LoadVar</code> – read variable value, push onto stack.</li>
+<li><code>StoreVar</code> – pop stack value, store in variable.</li>
+</ul>
+<h3 id="634-control-and-call-support">6.3.4. Control and call support</h3>
+<p>Edge instructions may:</p>
+<ul>
+<li>Prepare values used by branches and loops (conditions, counters).</li>
+<li>Prepare arguments for <strong>Call edges</strong>.</li>
+<li>Place return values for <strong>Return edges</strong>.</li>
+</ul>
+<p>Core call/return semantics are encoded in edge kinds; instructions support data preparation.</p>
+<h3 id="635-external-calls-and-plugins">6.3.5. External calls and plugins</h3>
+<p>Some instructions trigger <strong>external behaviour</strong>:</p>
+<ul>
+<li>Plugin calls – for operations not purely internal.</li>
+<li>External ECU calls – delegating package execution to workers.</li>
+</ul>
+<p>These integrate with:</p>
+<ul>
+<li>Planner (placement),</li>
+<li>Workers (execution),</li>
+<li>Results map (recording outputs and locations).</li>
+</ul>
+<h2 id="64-execution-example-high-level">6.4. Execution example (high level)</h2>
+<p>Conceptual execution of a workflow:</p>
+<ol>
+<li>Initialize main frame and program counter.</li>
+<li>Execute edges in main:</li>
+<li>Update stack and variables.</li>
+<li>
+<p>Move to next edges based on edge kinds.</p>
+</li>
+<li>
+<p>On <strong>Call edge</strong>:</p>
+</li>
+<li>Evaluate arguments.</li>
+<li>Push callee frame.</li>
+<li>Transfer arguments to callee parameters.</li>
+<li>
+<p>Jump to callee entry edge.</p>
+</li>
+<li>
+<p>In callee:</p>
+</li>
+<li>Execute edges and possibly call other functions or packages.</li>
+<li>
+<p>Reach <strong>Return edge</strong>.</p>
+</li>
+<li>
+<p>On return:</p>
+</li>
+<li>Place return values for caller.</li>
+<li>Pop callee frame.</li>
+<li>
+<p>Resume caller’s control.</p>
+</li>
+<li>
+<p>Intermediate results:</p>
+</li>
+<li>Produced by tasks and external calls.</li>
+<li>Recorded in results map with locations and access info.</li>
+<li>
+<p>Consumed by later edges and tasks.</p>
+</li>
+<li>
+<p>Termination:</p>
+</li>
+<li>Main graph reaches Stop edge.</li>
+<li>Workflow completes; final results are available as datasets or values.</li>
+</ol>
+<h2 id="65-summary">6.5. Summary</h2>
+<p>The Brane VM is a stack-based interpreter for WIR graphs with:</p>
+<ul>
+<li>Expression stack for temporary values,</li>
+<li>Variable register for named, typed variables,</li>
+<li>Frame stack for function calls and scopes,</li>
+<li>Edge instructions implementing arithmetic, logic, data structures, variables, control support, and external calls.</li>
+</ul>
+<p>It enforces WIR semantics and integrates with domain infrastructure and workers to execute federated workflows predictably and safely.</p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../js/base.js"></script>
+        <script src="../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

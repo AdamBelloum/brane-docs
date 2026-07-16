@@ -1,0 +1,4 @@
+# ignore tmp directory
+/tmp
+# ignore Mac related file
+.DS_Store

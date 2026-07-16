@@ -1,63 +1,70 @@
-# Welcome to Brane Documentation
+# Brane Documentation
 
-**Brane** is an innovative and powerful platform designed for **secure, reproducible, and portable data science workflow orchestration**. Whether you are a researcher, data scientist, or platform engineer, Brane offers the tools to manage your complex analytical pipelines with confidence and compliance.
+Welcome to the Brane documentation. This repository contains three main document sets:
 
----
+- **Brane Specification** – internal architecture and design for core developers.  
+- **Brane User Guide** – practical usage guide organized by user role (system engineer, software developer, scientist, data policy expert, administrator).  
+- **Brane Tutorials** – hands‑on exercises and workshop material (Hello World, pipelines, event scenarios).
 
-## Get Started
-
-If you're new to Brane, these guides will help you hit the ground running.
-
-| Guide | Description |
-| :--- | :--- |
-| **[Core Concepts - Manual chapter: Overview](https://braneframework.github.io/manual/overview.html)** | An e    ssential overview of Brane's key components: Workflows, Packages, and the Data Mode    l. |
-| **[Installation Guide](installation.md)** | Detailed instructions on how to set up the Brane client and server on your system. |
-| **[Tutorials](tutorials.md)** | A quick, hands-on walkthrough to create and execute your first basic workflow. |
-| **[Cheatsheet](cheatsheets.md)** | The Brane Cheat Sheets provide concise, step-by-step guidance for installing, configuring, and using the Brane framework — from setting up local or multi-node environments to creating packages, writing BraneScripts, and running workflows. They serve as a quick reference for scientists, developers, and administrators working with Brane.  |
+> Note: CLI commands in these docs may still reflect older Brane versions; treat them as patterns and update them as needed for your deployment.
 
 ---
 
-## Key Documentation Areas
+## 1. Brane Specification
 
-Explore the documentation by area of interest:
+Detailed technical description of Brane’s architecture, data and configuration model, workflow internal representation (WIR), virtual machine (VM), and language frontends.
 
-### The Official Software Documentation Portal
-
-**[Brane Manual](https://braneframework.github.io/manual/)**
-This is the complete reference and guide for all aspects of the software. It is organized as a living, comprehensive resource, not a sequential book. Content is divided into targeted sections—covering topics for users, developers, administrators, and contributors—allowing you to quickly navigate to the specific information you need to operate, maintain, or extend the software.
-
-### For Users
-
-**[End-User Domain Scientists](https://braneframework.github.io/manual/scientists/introduction.html)**
-Learn about the role of scientists within the Brane framework. This section introduces **BraneScript**, two domain-specific languages (DSLs) used to write workflows. It focuses on creating high-level workflows that implement specific scientific use cases.
-
-**[Software Developers](https://braneframework.github.io/manual/software-engineers/introduction.html)**
-Discover how to develop, package, and upload custom Brane packages for use by scientists and other developers.
-
-**[System Administrators](https://braneframework.github.io/manual/system-admins/introduction.html)**
-Understand how to prepare and configure systems for Brane. This section covers system requirements, the information administrators must share with the Brane instance, and how to define datasets.
-
-**[Data Policy Experts](https://braneframework.github.io/manual/policy-experts/introduction.html)**
-Find everything needed to effectively define and manage data policies within Brane, including technical setup, configuration, and policy-writing guidelines.
-
-**[Package Management](https://braneframework.github.io/manual/packages/introduction.html)**
-Get an overview of the different types of packages supported by Brane and how they can be integrated into workflows.
-
-**[Configuration](https://braneframework.github.io/manual/config/introduction.html)**
-Access reference materials for various Brane configuration files. While primarily relevant to system administrators, this section also covers user-facing configurations such as container and data files.
+- Directory: `brane-spec/`  
+- Entry point: [`brane-spec/index.md`](brane-spec/index.md)
 
 ---
-### For Contributors
 
-**[Specification](https://braneframework.github.io/specification/)** - A comprehensive guide for developers who want to understand or extend the framework. It documents the internal architecture and communication protocols, enabling integration with custom software across domains.
+## 2. Brane User Guide
 
-**[Policy Reasoner](https://braneframework.github.io/policy-reasoner)** - Reference documentation for the Policy Reasoner component. It is intended as a technical reference for ongoing development rather than a tutorial-style guide.
+Role‑based guide for people using and operating Brane:
 
-**[Code Documentation](https://braneframework.github.io/policy-reasoner)** - Reference documentation for the Brane source code. Like the Policy Reasoner docs, it serves as a reference during development rather than a sequential read.
+- System engineers: deployment and infrastructure  
+- Software engineers: package development (`container.yml`, ECUs)  
+- Scientists: workflows, datasets, BraneScript/Bakery  
+- Data policy experts / stewards: policies, checker, reasoner  
+- Administrators: instances, credentials, multi‑domain use
+
+- Directory: `brane-user-guide/`  
+- Entry point: [`brane-user-guide/index.md`](brane-user-guide/index.md)
 
 ---
-## Need Help?
 
-* **[FAQ](faq.md)**: Find answers to commonly asked questions.
-* **[Troubleshooting](troubleshooting.md)**: Solutions for common errors and deployment issues.
-* **[Contributing](https://github.com/BraneFramework)**: Interested in improving Brane? Find out how to contribute to the project.
+## 3. Brane Tutorials
+
+Hands‑on tutorials and scenario notes used in demos and workshops:
+
+- Hello World package tutorial  
+- Disaster Tweets workflow tutorial  
+- Scenario: ICT.OPEN 2023  
+- Scenario: UMC Utrecht demo & workshop
+
+- Directory: `brane-tutorials/`  
+- Entry point: [`brane-tutorials/index.md`](brane-tutorials/index.md)
+
+---
+
+## 4. extra documents
+
+1. [Brane - core concepts - a not so short introduction to brane](brane-introduction.pdf)
+2. [Overiew Presentation](brane-overview.pdf)
+3. Brane intro
+<iframe width="560" height="315" src="https://www.youtube.com/embed/rfSZAmLppRg?si=t3mp-hnYWJNnc3J5" title="YouTube vide    o player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-pictur    e; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+---
+
+## 5. Conventions
+
+- All documents are written in Markdown (`.md`).  
+- Relative links assume this `docs/` layout:
+  - `docs/index.md`
+  - `docs/brane-spec/index.md`
+  - `docs/brane-user-guide/index.md`
+  - `docs/brane-tutorials/index.md`
+- CLI examples may require alignment with the current Brane CLI (`brane` / `branectl`) before use in production or training.
+
+Use this `index.md` as the main entry point when browsing the documentation in the Git repo or a rendered docs site.

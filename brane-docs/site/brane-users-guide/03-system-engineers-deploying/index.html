@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+        <title>03 system engineers deploying - Brane Docs</title>
+        <link href="../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../css/brands.min.css" rel="stylesheet">
+        <link href="../../css/solid.min.css" rel="stylesheet">
+        <link href="../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../..">Brane Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a href="../.." class="nav-link">Overview</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Brane Specification</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../brane-spec/" class="dropdown-item">Overview</a>
+</li>
+                                    
+<li>
+    <a href="../../brane-spec/01-introduction/" class="dropdown-item">1. Introduction</a>
+</li>
+                                    
+<li>
+    <a href="../../brane-spec/02-architecture/" class="dropdown-item">2. Architectural Overview</a>
+</li>
+                                    
+<li>
+    <a href="../../brane-spec/03-components/" class="dropdown-item">3. Component Specifications</a>
+</li>
+                                    
+<li>
+    <a href="../../brane-spec/04-data-config/" class="dropdown-item">4. Data and Configuration Model</a>
+</li>
+                                    
+<li>
+    <a href="../../brane-spec/05-wir/" class="dropdown-item">5. Workflow Internal Representation (WIR)</a>
+</li>
+                                    
+<li>
+    <a href="../../brane-spec/06-vm/" class="dropdown-item">6. Virtual Machine (VM) Design</a>
+</li>
+                                    
+<li>
+    <a href="../../brane-spec/07-branescript/" class="dropdown-item">7. BraneScript Frontend</a>
+</li>
+                                    
+<li>
+    <a href="../../brane-spec/08-extensibility/" class="dropdown-item">8. Extensibility and Future Work</a>
+</li>
+                                    
+<li>
+    <a href="../../brane-spec/09-references/" class="dropdown-item">9. References and Related Work</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Brane User Guide</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../brane-user-guide/index.md" class="dropdown-item">Overview</a>
+</li>
+                                    
+<li>
+    <a href="../../brane-user-guide/01-introduction.md" class="dropdown-item">1. Introduction</a>
+</li>
+                                    
+<li>
+    <a href="../../brane-user-guide/02-quick-start-scientists.md" class="dropdown-item">2. Quick Start for Scientists</a>
+</li>
+                                    
+<li>
+    <a href="../../brane-user-guide/03-system-engineers-deploying.md" class="dropdown-item">3. System Engineers: Deploying Brane</a>
+</li>
+                                    
+<li>
+    <a href="../../brane-user-guide/04-software-developers-packages.md" class="dropdown-item">4. Software Engineers: Developing Packages</a>
+</li>
+                                    
+<li>
+    <a href="../../brane-user-guide/05-policy-experts.md" class="dropdown-item">5. Data Policy Experts / Data Stewards</a>
+</li>
+                                    
+<li>
+    <a href="../../brane-user-guide/06-scientists-workflows.md" class="dropdown-item">6. Scientists: Workflows & Datasets</a>
+</li>
+                                    
+<li>
+    <a href="../../brane-user-guide/07-admins-instances.md" class="dropdown-item">7. Administrators: Instances & Credentials</a>
+</li>
+                                    
+<li>
+    <a href="../../brane-user-guide/08-reference.md" class="dropdown-item">8. Reference</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Brane Tutorials</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../brane-tutorials/" class="dropdown-item">Overview</a>
+</li>
+                                    
+<li>
+    <a href="../../brane-tutorials/01-overview/" class="dropdown-item">1. Tutorial Overview</a>
+</li>
+                                    
+<li>
+    <a href="../../brane-tutorials/02-hello-world-package.md" class="dropdown-item">2. Hello World Package Tutorial</a>
+</li>
+                                    
+<li>
+    <a href="../../brane-tutorials/03-disaster-tweets-workflow.md" class="dropdown-item">3. Disaster Tweets Workflow Tutorial</a>
+</li>
+                                    
+<li>
+    <a href="../../brane-tutorials/04-scenarios-ictopen.md" class="dropdown-item">4. Scenario: ICT.OPEN 2023</a>
+</li>
+                                    
+<li>
+    <a href="../../brane-tutorials/05-scenarios-umc-utrecht.md" class="dropdown-item">5. Scenario: UMC Utrecht Demo & Workshop</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Legacy (optional)</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../legacy/installation.md" class="dropdown-item">Installation (old)</a>
+</li>
+                                    
+<li>
+    <a href="../../legacy/getting-started.md" class="dropdown-item">Getting Started (old)</a>
+</li>
+                                    
+<li>
+    <a href="../../legacy/developer-guide.md" class="dropdown-item">Developer Guide (old)</a>
+</li>
+                                    
+<li>
+    <a href="../../legacy/admin-guide.md" class="dropdown-item">Admin Guide (old)</a>
+</li>
+                                    
+<li>
+    <a href="../../legacy/branescript-guide.md" class="dropdown-item">BraneScript Guide (old)</a>
+</li>
+                                    
+<li>
+    <a href="../../legacy/tutorials.md" class="dropdown-item">Tutorials (old)</a>
+</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="2"><a href="#3-system-engineers-deploying-brane" class="nav-link">3. System Engineers: Deploying Brane</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h2 id="3-system-engineers-deploying-brane">3. System Engineers: Deploying Brane</h2>
+<p>This section describes how to set up a Brane instance (control node + worker nodes) and integrate it with your infrastructure. [1]</p>
+<h3 id="31-architecture-control-node-worker-nodes-proxies">3.1. Architecture: control node, worker nodes, proxies</h3>
+<p>Brane’s deployment model:</p>
+<ul>
+<li><strong>Control node (central Brane instance)</strong>:</li>
+<li>
+<p>Runs:</p>
+<ul>
+<li>Driver (receives workflows),</li>
+<li>Planner (allocates tasks),</li>
+<li>Central registry (packages, datasets, domains),</li>
+<li>Central proxy (handles external access and certificates). [1]</li>
+</ul>
+</li>
+<li>
+<p><strong>Worker nodes (domains/locations)</strong>:</p>
+</li>
+<li>
+<p>Run:</p>
+<ul>
+<li>Delegate (connects to local compute backend),</li>
+<li>Local registry (datasets &amp; intermediate results),</li>
+<li>Policy checker (PEP + reasoner),</li>
+<li>Local proxy. [1]</li>
+</ul>
+</li>
+<li>
+<p><strong>Proxies and secure networking</strong>:</p>
+</li>
+<li>Proxies expose services securely across domains.</li>
+<li>Certificates (X.509) are used for mutual authentication. [1]</li>
+</ul>
+<h3 id="32-installing-dependencies">3.2. Installing dependencies</h3>
+<p>Before setting up nodes:</p>
+<ol>
+<li>Install <strong>Docker</strong> on all relevant machines.</li>
+<li>Install <strong>BuildKit-based Docker Buildx</strong> if your deployment uses it for building images. [1]</li>
+<li>Install <strong>Branectl</strong> or equivalent management tooling:</li>
+<li>Used to download/build images,</li>
+<li>Generate configuration files,</li>
+<li>Manage certificates. [1]</li>
+</ol>
+<h3 id="33-configuring-the-control-node">3.3. Configuring the control node</h3>
+<p>Key configuration files:</p>
+<ul>
+<li><code>infra.yml</code> – describes domains, locations, and registry layout.</li>
+<li><code>node.yml</code> – describes node roles and services for the control node.</li>
+<li><code>proxy.yml</code> – describes proxy configuration for secure external access. [1]</li>
+</ul>
+<p>Typical workflow:</p>
+<ol>
+<li>Use Branectl (or similar tooling) to <strong>generate initial configs</strong> with sensible defaults.</li>
+<li>Adjust <code>infra.yml</code> and <code>node.yml</code> to reflect your environment:</li>
+<li>Domains and worker sites,</li>
+<li>Hostnames and ports for services.</li>
+<li>Configure <code>proxy.yml</code> to:</li>
+<li>Expose required APIs,</li>
+<li>Integrate with certificate and TLS setup.</li>
+</ol>
+<h3 id="34-spinning-up-worker-domains">3.4. Spinning up worker domains</h3>
+<p>For each worker domain:</p>
+<ol>
+<li>Generate a <code>node.yml</code> describing:</li>
+<li>Delegate,</li>
+<li>Local registry,</li>
+<li>Policy checker,</li>
+<li>
+<p>Local proxy. [1]</p>
+</li>
+<li>
+<p>Configure the local compute backend:</p>
+</li>
+<li>Docker-based backend (simple),</li>
+<li>
+<p>Or a more advanced/custom backend (some older backends may be deprecated). [1]</p>
+</li>
+<li>
+<p>Start services:</p>
+</li>
+<li>Local registry,</li>
+<li>Delegate,</li>
+<li>Checker,</li>
+<li>
+<p>Proxy.</p>
+</li>
+<li>
+<p>Register the domain with the control node’s <code>infra.yml</code> and central registry.</p>
+</li>
+</ol>
+<h3 id="35-certificates-and-secure-networking">3.5. Certificates and secure networking</h3>
+<p>Brane uses X.509 certificates for mutual authentication: [1]</p>
+<ul>
+<li><strong>Server certificates</strong>:</li>
+<li>CA certificate (<code>ca.pem</code>),</li>
+<li>
+<p>Server certificates for control and worker nodes.</p>
+</li>
+<li>
+<p><strong>Client certificates</strong>:</p>
+</li>
+<li>Identify users or services (e.g., scientists, admins).</li>
+<li>Must be handled as identity proofs; if compromised, rights must be revoked.</li>
+</ul>
+<p>Typical steps:</p>
+<ol>
+<li>Generate CA and server certificates for each domain.</li>
+<li>Distribute <code>ca.pem</code> appropriately (e.g., to the central node).</li>
+<li>Generate and distribute client certificates to users:</li>
+<li>Store them under config/certs,</li>
+<li>Use them in the CLI and proxies.</li>
+</ol>
+<p>Careful handling of certificates is essential for secure cross-domain communication.</p>
+<hr />
+<p><em>(Sections 4–8 will follow the same role-based structure and best-practice style. For now, we’ve set the skeleton and rewritten the core user-oriented parts. When you’re ready, we can start with Section 4 – Packages for software engineers, or Section 5 – Policies for policy experts, and then move on to workflows and admin topics.)</em></p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../js/base.js"></script>
+        <script src="../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
