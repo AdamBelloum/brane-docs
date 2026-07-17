@@ -31,30 +31,42 @@ Understanding where files live helps when editing or configuring the site:
 
 To run and preview the documentation website locally, you need Python installed on your system. 
 
-1. **Clone the repository** (if you haven't already):
+### 1. **Clone the repository** (if you haven't already):
 ```bash
 git clone <repository-url>
 cd <repository-folder>
 ```
+
+### 2. Create and activate a virtual environment
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows use: .\venv\Scripts\activate
+```
+
+### 3. Install MkDocs and required dependencies
+
 ## Install MkDocs and required dependencies:
 Run the following command to install MkDocs along with any theme dependencies (such as mkdocs-material):
 
 ```Bash
 pip install mkdocs mkdocs-material
 ```
-(`Note`: If a requirements.txt file is present in the repository, you can run pip install -r requirements.txt instead.)
+or 
+```Bash
+pip install -r requirements.txt
+```
 
 ## Local Development & Testing
 Once the dependencies are installed, follow these steps to build and preview the site:
 
-## 1. Navigate to the Documentation Directory
+## 4. Navigate to the Documentation Directory
 If your configuration file (mkdocs.yml) is inside a specific subfolder (e.g., docs), navigate to that directory:
 
 ```Bash
 cd docs
 ```
 
-## 2. Build the Static Site
+## 5. Build the Static Site
 To compile the Markdown source files into static HTML pages, run:
 
 ```Bash
@@ -63,7 +75,7 @@ mkdocs build
 
 This will generate a site/ directory containing the static website.
 
-## 3. Serve the Site Locally (Live Preview)
+## 6. Serve the Site Locally (Live Preview)
 To start a local development server and preview the website in your browser with real-time reload capability, run:
 
 ```Bash
