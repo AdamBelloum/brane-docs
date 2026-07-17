@@ -1,6 +1,6 @@
 site_name: Brane Docs
 theme:
-  name: mkdocs  # mkdocs, readthedocs, 
+  name: material  # mkdocs, readthedocs,material
 
 docs_dir: docs
 
@@ -24,24 +24,26 @@ nav:
       - "1. Introduction": brane-user-guide/01-introduction.md
       - "2. Quick Start for Scientists": brane-user-guide/02-quick-start-scientists.md
       - "3. System Engineers: Deploying Brane": brane-user-guide/03-system-engineers-deploying.md
-      - "4. Software Engineers: Developing Packages": brane-user-guide/04-software-developers-packages.md
-      - "5. Data Policy Experts / Data Stewards": brane-user-guide/05-policy-experts.md
-      - "6. Scientists: Workflows & Datasets": brane-user-guide/06-scientists-workflows.md
-      - "7. Administrators: Instances & Credentials": brane-user-guide/07-admins-instances.md
-      - "8. Reference": brane-user-guide/08-reference.md
+      - "4. Software Engineers": brane-user-guide/04-software-engineers.md
+      - "5. Data Policy Experts": brane-user-guide/05-data-policy-experts.md
+      - "6. Scientists: Workflows & Datasets": brane-user-guide/06-Scientists.md
+      - "7. Administrators": brane-user-guide/07-Administrators.md
 
   - Brane Tutorials:
       - Overview: brane-tutorials/index.md
       - "1. Tutorial Overview": brane-tutorials/01-overview.md
-      - "2. Hello World Package Tutorial": brane-tutorials/02-hello-world-package.md
-      - "3. Disaster Tweets Workflow Tutorial": brane-tutorials/03-disaster-tweets-workflow.md
-      - "4. Scenario: ICT.OPEN 2023": brane-tutorials/04-scenarios-ictopen.md
-      - "5. Scenario: UMC Utrecht Demo & Workshop": brane-tutorials/05-scenarios-umc-utrecht.md
+      - "2. Introduction": brane-tutorials/02-introduction.md
+      - "3. Hello World Example": brane-tutorials/02-hello-world-example.md
+      - "4. Hello World Part 2": brane-tutorials/03-hello-world-part2.md
+      - "5. Disaster Tweets Example": brane-tutorials/03-disaster-tweets-example.md
+      - "6. Scenario: ICT.OPEN 2023": brane-tutorials/04-scenario-ictopen.md
+      - "7. Scenario: UMC Utrecht Demo & Workshop": brane-tutorials/05-scenario-umc-utrecht.md
 
-  - Legacy (optional):
-      - Installation (old): legacy/installation.md
-      - Getting Started (old): legacy/getting-started.md
-      - Developer Guide (old): legacy/developer-guide.md
-      - Admin Guide (old): legacy/admin-guide.md
-      - BraneScript Guide (old): legacy/branescript-guide.md
-      - Tutorials (old): legacy/tutorials.md
+  - FAQ: faq.md
+#  - Legacy (optional):
+#      - Installation (old): legacy/installation.md
+#      - Getting Started (old): legacy/getting-started.md
+#      - Developer Guide (old): legacy/developer-guide.md
+#      - Admin Guide (old): legacy/admin-guide.md
+#      - BraneScript Guide (old): legacy/branescript-guide.md
+#      - Tutorials (old): legacy/tutorials.md
