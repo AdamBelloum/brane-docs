@@ -32,12 +32,10 @@ nav:
   - Brane Tutorials:
       - Overview: brane-tutorials/index.md
       - "1. Tutorial Overview": brane-tutorials/01-overview.md
-      - "2. Introduction": brane-tutorials/02-introduction.md
-      - "3. Hello World Example": brane-tutorials/02-hello-world-example.md
-      - "4. Hello World Part 2": brane-tutorials/03-hello-world-part2.md
-      - "5. Disaster Tweets Example": brane-tutorials/03-disaster-tweets-example.md
-      - "6. Scenario: ICT.OPEN 2023": brane-tutorials/04-scenario-ictopen.md
-      - "7. Scenario: UMC Utrecht Demo & Workshop": brane-tutorials/05-scenario-umc-utrecht.md
+      - "2. Hello World Example": brane-tutorials/02-hello-world-example.md
+      - "3. Disaster Tweets Example": brane-tutorials/03-disaster-tweets-example.md
+      - "4. Scenario: ICT.OPEN 2023": brane-tutorials/04-scenario-ictopen.md
+      - "5. Scenario: UMC Utrecht Demo & Workshop": brane-tutorials/05-scenario-umc-utrecht.md
 
   - FAQ: faq.md
 #  - Legacy (optional):

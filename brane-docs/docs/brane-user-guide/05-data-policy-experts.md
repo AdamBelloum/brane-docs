@@ -4,13 +4,13 @@ This section is for **data policy experts** and **data stewards** who are respon
 
 - Defining data and network policies,
 - Configuring Brane’s **policy checker** and **reasoner**,
-- Managing tokens and secrets used to enforce policies. [1]
+- Managing tokens and secrets used to enforce policies.
 
 Brane is designed to operate in **policy-sensitive environments**, especially where:
 
 - Data is distributed across domains,
 - Regulations (e.g., GDPR) require strict control over data access and movement,
-- Different organizations own and control their datasets. [1]
+- Different organizations own and control their datasets.
 
 ---
 
@@ -22,18 +22,18 @@ Brane distinguishes two broad classes of policies:
   Rules governing:
   - Who can read/write a dataset,
   - Under what conditions data can move between domains,
-  - How data is processed (e.g., anonymization requirements). [1]
+  - How data is processed (e.g., anonymization requirements).
 
 - **Network / infrastructure policies**  
   Rules about:
   - Which services can communicate and how,
   - Which domains can connect to which others,
-  - Which nodes are allowed to perform certain tasks (e.g., executing particular packages). [1]
+  - Which nodes are allowed to perform certain tasks (e.g., executing particular packages).
 
 These policies are enforced by:
 
 - A **policy checker** (Policy Enforcement Point, PEP) in each domain,
-- A **reasoner** (typically eFLINT) that evaluates policy rules. [1]
+- A **reasoner** (typically eFLINT) that evaluates policy rules.
 
 ---
 
@@ -43,7 +43,7 @@ The **policy checker** is a component that:
 
 - Sits between Brane’s execution logic and the domain’s data/backends,
 - Receives requests (e.g., “may workflow X read dataset Y from domain Z?”),
-- Consults the **reasoner** to determine whether the request complies with policy. [1]
+- Consults the **reasoner** to determine whether the request complies with policy.
 
 #### 5.2.1. Reasoner (eFLINT)
 
@@ -51,13 +51,13 @@ In many Brane deployments, the reasoner is **eFLINT**, a formal policy engine:
 
 - Policies are expressed in a logical language (eFLINT rules),
 - The reasoner maintains a state of facts and rules,
-- Each policy query is evaluated against these rules. [1]
+- Each policy query is evaluated against these rules.
 
 Examples of what eFLINT can express (conceptually):
 
 - “Datasets containing personal data may not leave the origin domain unless pseudonymized.”
 - “Only members of group A may run package B on dataset C.”
-- “Domain D may not accept incoming connections from unspecified domains.” [1]
+- “Domain D may not accept incoming connections from unspecified domains.”
 
 The policy expert writes eFLINT rules and manages the reasoner’s state.
 
@@ -67,7 +67,7 @@ The PEP (checker):
 
 - Receives requests from Brane’s planner and delegates for data access and movement,
 - Translates them into queries for the reasoner,
-- Returns **allow/deny** decisions, possibly with additional obligations (e.g., “must anonymize first”). [1]
+- Returns **allow/deny** decisions, possibly with additional obligations (e.g., “must anonymize first”).
 
 The PEP is integrated into the worker domain’s Brane stack so that:
 
@@ -83,7 +83,7 @@ Policy enforcement often requires **tokens and secrets** to authenticate and aut
 - Tokens may represent:
   - User identities,
   - Role memberships,
-  - External policy decisions. [1]
+  - External policy decisions.
 
 - Secrets may include:
   - Keys used by the reasoner or PEP,
@@ -92,7 +92,7 @@ Policy enforcement often requires **tokens and secrets** to authenticate and aut
 Brane’s policy infrastructure may:
 
 - Use tokens attached to workflows or API calls,
-- Forward tokens to the reasoner to make decisions based on user roles and attributes. [1]
+- Forward tokens to the reasoner to make decisions based on user roles and attributes.
 
 As a policy expert/data steward, you:
 
@@ -121,7 +121,7 @@ Policy experts should:
 
 - Identify sensitive datasets and functions,
 - Decide which operations are permitted across domains,
-- Encode these rules in the reasoner (eFLINT). [1]
+- Encode these rules in the reasoner (eFLINT). 
 
 #### 5.4.2. Policy authoring workflow
 
@@ -130,23 +130,23 @@ Typical workflow for policy authoring:
 1. **Identify policy requirements**  
    - Regulatory (e.g., GDPR),
    - Organizational (internal guidelines),
-   - Project-specific (e.g., EPI project care pathways). [1]
+   - Project-specific (e.g., EPI project care pathways).
 
 2. **Model requirements as logical rules**  
    - Translate to eFLINT or similar language:
      - Entities (datasets, domains, roles),
      - Actions (read, write, move, process),
-     - Conditions and constraints. [1]
+     - Conditions and constraints. 
 
 3. **Load rules into the reasoner**  
    - Configure the reasoner with policy modules,
-   - Initialize facts (e.g., which dataset belongs to which domain). [1]
+   - Initialize facts (e.g., which dataset belongs to which domain).
 
 4. **Integrate with PEP**  
    - Ensure the PEP sends appropriate queries,
    - Confirm that decisions are correctly enforced:
      - Allow/deny access,
-     - Trigger obligations (e.g., anonymization step). [1]
+     - Trigger obligations (e.g., anonymization step).
 
 #### 5.4.3. Testing policies
 
@@ -155,7 +155,7 @@ Before full deployment:
 - Use **test workflows** that exercise policy-relevant operations:
   - Accessing protected datasets,
   - Attempting cross-domain transfers,
-  - Running packages with different user roles. [1]
+  - Running packages with different user roles.
 
 - Verify that:
   - Allowed operations succeed,
@@ -180,7 +180,7 @@ Scientists should know:
 
 - Which datasets are sensitive,
 - Which domains they can use for specific data,
-- Which packages are restricted or require special conditions. [1]
+- Which packages are restricted or require special conditions.
 
 Package developers should know:
 
@@ -194,7 +194,7 @@ Package developers should know:
 When a workflow violates a policy:
 
 - The PEP denies the operation,
-- The workflow may fail or fallback to an alternative path (if defined). [1]
+- The workflow may fail or fallback to an alternative path (if defined).
 
 Policy experts:
 
@@ -211,13 +211,13 @@ Policies are tightly connected to **audit and governance**.
 Brane maintains:
 
 - **Global audit logs** – cross-domain workflow submissions, task assignments, data movements.
-- **Local audit logs** – domain-specific activities (data access, local execution). [1]
+- **Local audit logs** – domain-specific activities (data access, local execution).
 
 Policy experts/data stewards use these logs to:
 
 - Demonstrate compliance (e.g., to regulators),
 - Investigate incidents or suspicious activity,
-- Refine policies based on observed workflow patterns. [1]
+- Refine policies based on observed workflow patterns.
 
 They may also:
 
@@ -234,7 +234,7 @@ For data policy experts and data stewards, Brane provides:
 - A **policy checker (PEP)** integrated with workflow execution,
 - A **reasoner** (e.g., eFLINT) for expressing and evaluating rich policy rules,
 - Mechanisms for passing **tokens and secrets** into policy decisions,
-- Integration with audit logs for governance and compliance. [1]
+- Integration with audit logs for governance and compliance. 
 
 Your responsibilities include:
 

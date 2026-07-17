@@ -4,7 +4,7 @@ This section is for **Brane administrators** and anyone responsible for:
 
 - Managing Brane instances and registries,
 - Handling client credentials and certificates,
-- Supporting interactions with multiple domains and remote instances. [1]
+- Supporting interactions with multiple domains and remote instances.
 
 It assumes Brane is already deployed (see Section 3) and focuses on day-to-day administration and secure multi-domain usage.
 
@@ -15,7 +15,7 @@ It assumes Brane is already deployed (see Section 3) and focuses on day-to-day a
 A **Brane instance** is the combination of:
 
 - A central control node (driver, planner, central registry, central proxy),
-- One or more worker domains (delegates, local registries, checkers, local proxies). [1]
+- One or more worker domains (delegates, local registries, checkers, local proxies).
 
 Administrators manage:
 
@@ -29,7 +29,7 @@ On the **client machine**, the Brane CLI maintains configuration describing:
 
 - Known instances (e.g., URLs / hostnames of central proxies),
 - Credentials for each instance (certificates, tokens),
-- Optional per-instance settings (e.g., default domain). [1]
+- Optional per-instance settings (e.g., default domain).
 
 Conceptually (syntax to be validated):
 
@@ -48,7 +48,7 @@ Registries track:
 
 - **Packages** (ECUs),
 - **Datasets** and intermediate results,
-- **Domains** participating in the deployment. [1]
+- **Domains** participating in the deployment.
 
 Administrators:
 
@@ -57,7 +57,7 @@ Administrators:
   - Is reachable from worker nodes and clients.
 - Ensure **local registries** on worker domains:
   - Track datasets and intermediate results correctly,
-  - Synchronize with central registry when needed. [1]
+  - Synchronize with central registry when needed.
 
 Typical tasks:
 
@@ -72,7 +72,7 @@ Typical tasks:
 Brane uses **X.509 certificates** for mutual authentication and identity:
 
 - **Server certificates** authenticate Brane services.
-- **Client certificates** authenticate users and services connecting to the instance. [1]
+- **Client certificates** authenticate users and services connecting to the instance.
 
 Administrators manage:
 
@@ -82,7 +82,7 @@ Administrators manage:
 
 #### 7.2.1. Certificate layout
 
-The manual describes a typical layout: [1]
+The manual describes a typical layout:
 
 - A `config/certs` directory on the client and/or server, containing:
   - CA certificates (`ca.pem`),
@@ -97,7 +97,7 @@ Branectl (or associated tooling) can generate:
 
 - CA certificates,
 - Server certificates,
-- Client certificates. [1]
+- Client certificates.
 
 Conceptually (commands to be validated):
 
@@ -115,7 +115,7 @@ The **CA certificate** must often be shared with the central node so it can veri
 
 #### 7.2.3. Distributing and protecting client certificates
 
-Client certificates are **identity proofs**: [1]
+Client certificates are **identity proofs**: 
 
 - Each scientist, developer, or admin may have a unique certificate.
 - Certificates must be stored securely (e.g., protected file permissions, secure distribution).
@@ -137,7 +137,7 @@ On the client side, Brane CLI configuration points to:
 
 ### 7.3. Working with multiple domains and instances
 
-Brane supports interaction with **multiple domains** and even multiple instances. [1]
+Brane supports interaction with **multiple domains** and even multiple instances.
 
 Typical scenarios:
 
@@ -157,7 +157,7 @@ Administrators help users:
 On a single client machine, you may have:
 
 - Several instance entries (e.g., `prod`, `test`, `partner-domain`).
-- Different credentials for each instance. [1]
+- Different credentials for each instance.
 
 Conceptually:
 
@@ -178,7 +178,7 @@ Cross-domain access involves:
 
 - Brane instance contacting worker domains,
 - Worker registries and delegates interacting with other domains,
-- Policy checker enforcing rules. [1]
+- Policy checker enforcing rules. 
 
 Administrators must:
 
@@ -199,7 +199,7 @@ On the client side, if a user changes roles or loses access:
 
 - Remove or archive:
   - Client certificates and keys,
-  - Instance configuration entries. [1]
+  - Instance configuration entries.
 
 Conceptually:
 
@@ -214,7 +214,7 @@ On the server side, if a certificate is compromised or a user leaves:
 
 - Administrators must:
   - Remove or disable the user’s certificate from trust stores,
-  - Update policy or access control lists if they use certificate-based rules. [1]
+  - Update policy or access control lists if they use certificate-based rules.
 
 Depending on the deployment, this may involve:
 
@@ -242,4 +242,4 @@ For administrators, Brane management focuses on:
 - **Multi-domain usage** – configuring clients and instances to interact across domains with clear trust boundaries.
 - **Cleanup and revocation** – ensuring compromised or outdated credentials are removed and access is correctly revoked.
 
-These tasks complement the infrastructure work of system engineers (Section 3), the package/development work of software engineers (Section 4), and the policy responsibilities of data policy experts (Section 5). [1]
+These tasks complement the infrastructure work of system engineers (Section 3), the package/development work of software engineers (Section 4), and the policy responsibilities of data policy experts (Section 5). 

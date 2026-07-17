@@ -9,30 +9,30 @@ Brane is a programmable orchestration framework for running **data-centric workf
 
 - Compose workflows from reusable **packages** (containerized code units),
 - Run those workflows across **distributed infrastructure**, and
-- Respect **data governance and network policies** defined by domain owners. [1]
+- Respect **data governance and network policies** defined by domain owners.
 
 A typical Brane deployment consists of:
 
 - A **client** (Brane CLI) that users run on their own machines.
-- A **Brane instance** (control node + worker nodes) that coordinates and executes workflows. [1]
+- A **Brane instance** (control node + worker nodes) that coordinates and executes workflows.
 
 The instance provides:
 
 - A central **driver** that receives workflows and issues jobs,
 - A **planner** that decides which worker domain should run each task,
 - A central **registry** that tracks packages, datasets, and domains,
-- **Proxies** that handle secure access and certificate-based authentication. [1]
+- **Proxies** that handle secure access and certificate-based authentication.
 
 Worker nodes host:
 
 - A **delegate** that connects Brane to the local compute backend,
 - A local **registry** for datasets and intermediate results,
 - A **policy checker** (PEP) with a reasoner (e.g., eFLINT),
-- A **local proxy** for secure communication. [1]
+- A **local proxy** for secure communication.
 
 ### 1.2. Roles and responsibilities
 
-Brane is designed for several user roles, each with different responsibilities. [1]
+Brane is designed for several user roles, each with different responsibilities.
 
 - **System engineers**  
   Install and maintain Brane instances:
@@ -70,7 +70,7 @@ This guide is organized around these roles, so each user can focus on the sectio
 
 ### 1.3. Brane components (user-level view)
 
-From a user perspective, Brane has three major parts: [1]
+From a user perspective, Brane has three major parts: 
 
 1. **Central control node (Brane instance)**  
    - Runs the driver, planner, central registry, and central proxy.

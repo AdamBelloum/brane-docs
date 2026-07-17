@@ -10,7 +10,7 @@
 > Scope: How to deploy, configure, and use Brane in practice, organized by role.  
 > Note: CLI commands in this guide may still reflect older syntax; they are patterns to be validated and updated later.
 
-## Table of Contents
+<!-- ## Table of Contents
 
 1. [Introduction](01-introduction.md)  
 2. [Quick Start for Scientists](02-quick-start-scientists.md)  
@@ -20,5 +20,21 @@
 6. [Scientists: Authoring Workflows and Using Datasets](06-scientists-workflows.md)  
 7. [Administrators: Instances, Credentials, and Multi-Domain Use](07-admins-instances.md)  
 8. [Reference: Commands, Config, Troubleshooting](08-reference.md)
+-->
+
+# Brane User Guide
+
+This guide is designed to help different roles understand and interact with the Brane framework ecosystem effectively.
+
+### Choose Your Role:
+
+* **[1. Introduction](01-introduction.md)**: Basic architectural concepts of the platform.
+* **[2. Quick Start for Scientists](02-quick-start-scientists.md)**: Fast track to submitting your first simple workflow.
+* **[3. System Engineers: Deploying Brane](03-system-engineers-deploying.md)**: Learn how to set up the infrastructure and run Brane services.
+* **[4. Software Engineers](04-software-engineers.md)**: How to package your custom scripts (Python, R, C, etc.) into secure, executable Brane packages.
+* **[5. Data Policy Experts](05-data-policy-experts.md)**: Write and configure data access and transfer rules across federated domains.
+* **[6. Scientists: Workflows & Datasets](06-Scientists.md)**: Advanced workflow authoring using BraneScript and data handling.
+* **[7. Administrators](07-Administrators.md)**: Managing users, local policies, and nodes.
+
 
 ---

@@ -7,7 +7,7 @@ You will learn how to:
 - Describe a package with `container.yml`,
 - Build and test a package locally,
 - Publish a package to a Brane instance,
-- Manage local and remote packages. [1]
+- Manage local and remote packages. 
 
 > **Note:** CLI commands in this section follow the structure presented in the current manual (e.g., `brane package ...`). Exact syntax and flags may have changed; we will validate and update them later.
 
@@ -15,7 +15,7 @@ You will learn how to:
 
 ### 4.1. What is a Brane package (ECU)?
 
-A Brane **package** is a containerized piece of code that Brane workflows can call as a function. [1]
+A Brane **package** is a containerized piece of code that Brane workflows can call as a function.]
 
 Key properties:
 
@@ -25,22 +25,22 @@ Key properties:
   - Dependencies and environment,
   - Which files to include,
   - How to run the package (entrypoint),
-  - Which functions (actions) are exposed to workflows. [1]
+  - Which functions (actions) are exposed to workflows. 
 - At runtime, Brane:
   - Starts the container on a worker node,
   - Passes input to the container (via environment variables and/or files),
-  - Reads outputs (from stdout as YAML and from file paths such as `/result`). [1]
+  - Reads outputs (from stdout as YAML and from file paths such as `/result`).
 
 Packages can be:
 
 - **Local** – present only on your machine (built from your source tree),
-- **Remote** – stored in a Brane instance’s registry. [1]
+- **Remote** – stored in a Brane instance’s registry. 
 
 ---
 
 ### 4.2. Authoring `container.yml`
 
-`container.yml` is the package’s “manifest”. It tells Brane how to build and run your code. [1]
+`container.yml` is the package’s “manifest”. It tells Brane how to build and run your code.]
 
 A typical `container.yml` contains:
 
@@ -157,7 +157,7 @@ Example pattern (conceptual):
 
 ```bash
 # Syntax to be validated later
-brane package run my_package:1.0.0 my_function --input '...'
+brane package test  my_package:1.0.0 my_function --input '...'
 ```
 Internally, Brane:
 
@@ -204,8 +204,8 @@ After pushing:
 You (or users) can list remote packages:
 
 ```bash
-# Syntax to be validated later
-brane package list   # or search, depending on CLI
+# List locally cached packages
+brane package list
 ```
 This shows:
 
@@ -389,8 +389,8 @@ brane package build .
 2. Test locally
 
 ```bash
-# Run a function exposed by the package
-brane package run my_package:0.1.0 my_function \
+# Test a function exposed by the package
+brane package test my_package:0.1.0 my_function \
     --input '{"text": "Hello", "times": 3}'
 ```
 Check:
@@ -447,7 +447,7 @@ You will learn how to:
 
 ### 4.1. What is a Brane package (ECU)?
 
-A Brane **package** is a containerized piece of code that Brane workflows can call as a function. [1]
+A Brane **package** is a containerized piece of code that Brane workflows can call as a function. 
 
 Key properties:
 
@@ -457,22 +457,22 @@ Key properties:
   - Dependencies and environment,
   - Which files to include,
   - How to run the package (entrypoint),
-  - Which functions (actions) are exposed to workflows. [1]
+  - Which functions (actions) are exposed to workflows. 
 - At runtime, Brane:
   - Starts the container on a worker node,
   - Passes input to the container (via environment variables and/or files),
-  - Reads outputs (from stdout as YAML and from file paths such as `/result`). [1]
+  - Reads outputs (from stdout as YAML and from file paths such as `/result`).
 
 Packages can be:
 
 - **Local** – present only on your machine (built from your source tree),
-- **Remote** – stored in a Brane instance’s registry. [1]
+- **Remote** – stored in a Brane instance’s registry. 
 
 ---
 
 ### 4.2. Authoring `container.yml`
 
-`container.yml` is the package’s “manifest”. It tells Brane how to build and run your code. [1]
+`container.yml` is the package’s “manifest”. It tells Brane how to build and run your code.
 
 A typical `container.yml` contains:
 
@@ -576,7 +576,7 @@ This command:
 #### 4.3.2. Testing locally
 To test:
 
-1. Use the CLI to run the package function directly (e.g., a “hello world” or “base64 encode” function).
+1. Use the CLI to test the package function directly (e.g., a “hello world” or “base64 encode” function).
 
 1. Provide input in the expected format (typically via arguments or via a YAML INPUT structure).
 
@@ -589,7 +589,7 @@ Example pattern (conceptual):
 
 ```bash
 # Syntax to be validated later
-brane package run my_package:1.0.0 my_function --input '...'
+brane package test  my_package:1.0.0 my_function --input '...'
 ```
 Internally, Brane:
 
@@ -636,8 +636,12 @@ After pushing:
 You (or users) can list remote packages:
 
 ```bash
-# Syntax to be validated later
-brane package list   # or search, depending on CLI
+# List locally cached packages 
+brane package list 
+```
+```bash
+# Search for available packages on the remote registry
+brane package search
 ```
 This shows:
 
@@ -819,8 +823,8 @@ brane package build .
 2. Test locally
 
 ```bash
-# Run a function exposed by the package
-brane package run my_package:0.1.0 my_function \
+# Test a function exposed by the package
+brane package test my_package:0.1.0 my_function \
     --input '{"text": "Hello", "times": 3}'
 ```
 Check:

@@ -23,12 +23,12 @@ Scheduled blocks:
   - High-level overview of Brane’s architecture and goals.
 
 - **12:45–13:30** – Part 1: *Hello, World!* (guided hands‑on)
-  - Followed the [Hello World Package Tutorial](02-hello-world-package.md).
+  - Followed the [Hello World Package Tutorial](02-hello-world-example.md).
 
 - **13:30–13:45** – Break.
 
 - **13:45–14:15** – Part 2: *A workflow for Disaster Tweets* (hands‑on)
-  - Followed the [Disaster Tweets Workflow Tutorial](03-disaster-tweets-workflow.md).
+  - Followed the [Disaster Tweets Workflow Tutorial](03-disaster-tweets-example.md).
 
 - **14:15–14:30** – Evaluation and Q&A.
 
@@ -55,7 +55,7 @@ The shared tutorials were adapted slightly for ICT.OPEN:
 If you re-run an ICT.OPEN-style tutorial today:
 
 - Use the shared tutorials:
-  - [Hello World Package](02-hello-world-package.md),
-  - [Disaster Tweets Workflow](03-disaster-tweets-workflow.md).
+  - [Hello World Package](02-hello-world-example.md),
+  - [Disaster Tweets Workflow](03-disaster-tweets-example.md).
 - Adjust time blocks as needed.
 - Update CLI commands to match your current Brane version and environment.

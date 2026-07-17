@@ -25,8 +25,8 @@ The demo/workshop was split in two halves:
     - Governance and policy.
 
 - **Second half: hands‑on workshop**
-  - Followed the [Hello World Package Tutorial](02-hello-world-package.md), including remote execution.
-  - Demonstrated an existing pipeline (similar to the [Disaster Tweets Workflow](03-disaster-tweets-workflow.md), but using healthcare-specific data in the PoC).
+  - Followed the [Hello World Package Tutorial](02-hello-world-example.md), including remote execution.
+  - Demonstrated an existing pipeline (similar to the [Disaster Tweets Workflow](03-disaster-tweets-example.md), but using healthcare-specific data in the PoC).
   - Showed the technical setup of the PoC:
     - Brane instance across multiple domains,
     - Policy checker and pseudonymised datasets.
@@ -63,8 +63,8 @@ Key differences from ICT.OPEN and the generic tutorials:
 If you organize a UMC-style workshop today:
 
 - Use the shared tutorials:
-  - [Hello World Package](02-hello-world-package.md),
-  - [Disaster Tweets Workflow](03-disaster-tweets-workflow.md) or a healthcare-specific pipeline.
+  - [Hello World Package](02-hello-world-example.md),
+  - [Disaster Tweets Workflow](03-disaster-tweets-example.md) or a healthcare-specific pipeline.
 - Add a local **PoC scenario**:
   - Prepare datasets and packages that reflect your healthcare use case.
   - Configure a Brane instance with multiple domains and policy enforcement.

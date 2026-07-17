@@ -1,6 +1,6 @@
 ## 2. Quick Start for Scientists
 
-This section gives scientists a pragmatic path to go from zero to a running workflow. Details about installation and deployment are covered later for system engineers. [1]
+This section gives scientists a pragmatic path to go from zero to a running workflow. Details about installation and deployment are covered later for system engineers.
 
 ### 2.1. Installing the Brane CLI
 
@@ -8,13 +8,13 @@ Brane offers a command-line client (Brane CLI) for interacting with a Brane inst
 
 - Submitting workflows,
 - Managing local packages,
-- Interacting with remote registries. [1]
+- Interacting with remote registries.
 
 > **Note**: CLI commands shown here are conceptual; exact syntax may differ in your installation. We will validate and update command examples later.
 
 Typical steps:
 
-1. Install **Docker** and **Buildx** (if required by your Brane distribution). [1]
+1. Install **Docker** and **Buildx** (if required by your Brane distribution).
 2. Install the Brane client (e.g., via a package, script, or binaries provided by your deployment).
 3. Confirm the CLI is available:
    - For example, run a help command to list available subcommands (syntax to be validated).
@@ -26,11 +26,11 @@ Before running workflows, the CLI needs to know which Brane instance to use and 
 Conceptually, you will:
 
 1. **Configure the instance endpoint**  
-   - Specify the URL or hostname of the Brane control node’s proxy. [1]
+   - Specify the URL or hostname of the Brane control node’s proxy.
 
 2. **Provide client credentials**  
    - Install client certificates or tokens that identify you to the instance.
-   - These may be generated and distributed by an administrator or system engineer. [1]
+   - These may be generated and distributed by an administrator or system engineer.
 
 Once configured, you can:
 
@@ -45,14 +45,14 @@ With the CLI configured:
 1. **Write a small BraneScript or Bakery workflow**  
    - Import a simple package (e.g., a hello-world or base64 example).
    - Call one of its functions.
-   - Print or commit results. [1]
+   - Print or commit results.
 
 2. **Submit the workflow**  
    - Use the CLI to send the workflow to the Brane instance.
    - The instance’s driver and planner will:
      - Validate the workflow,
      - Plan tasks across domains,
-     - Execute them via worker nodes. [1]
+     - Execute them via worker nodes.
 
 3. **Inspect results**  
    - View logs or output provided by the CLI.

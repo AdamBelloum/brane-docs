@@ -5,7 +5,7 @@ This section is for **scientists and analysts** who want to:
 - Use existing packages,
 - Work with datasets,
 - Write workflows in BraneScript or Bakery,
-- Run workflows on a Brane instance. [1]
+- Run workflows on a Brane instance.
 
 It assumes:
 
@@ -22,7 +22,7 @@ It assumes:
 
 - It provides functions, variables, control flow (if, loops),
 - It integrates with Brane packages and datasets,
-- It compiles down to Brane’s internal workflow representation (WIR). [1]
+- It compiles down to Brane’s internal workflow representation (WIR).
 
 Typical BraneScript elements:
 

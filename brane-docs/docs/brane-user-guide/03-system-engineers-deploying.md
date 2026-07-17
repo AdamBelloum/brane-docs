@@ -1,6 +1,6 @@
 ## 3. System Engineers: Deploying Brane
 
-This section describes how to set up a Brane instance (control node + worker nodes) and integrate it with your infrastructure. [1]
+This section describes how to set up a Brane instance (control node + worker nodes) and integrate it with your infrastructure.
 
 ### 3.1. Architecture: control node, worker nodes, proxies
 
@@ -11,29 +11,29 @@ Brane’s deployment model:
     - Driver (receives workflows),
     - Planner (allocates tasks),
     - Central registry (packages, datasets, domains),
-    - Central proxy (handles external access and certificates). [1]
+    - Central proxy (handles external access and certificates).
 
 - **Worker nodes (domains/locations)**:
   - Run:
     - Delegate (connects to local compute backend),
     - Local registry (datasets & intermediate results),
     - Policy checker (PEP + reasoner),
-    - Local proxy. [1]
+    - Local proxy. 
 
 - **Proxies and secure networking**:
   - Proxies expose services securely across domains.
-  - Certificates (X.509) are used for mutual authentication. [1]
+  - Certificates (X.509) are used for mutual authentication. 
 
 ### 3.2. Installing dependencies
 
 Before setting up nodes:
 
 1. Install **Docker** on all relevant machines.
-2. Install **BuildKit-based Docker Buildx** if your deployment uses it for building images. [1]
+2. Install **BuildKit-based Docker Buildx** if your deployment uses it for building images. 
 3. Install **Branectl** or equivalent management tooling:
    - Used to download/build images,
    - Generate configuration files,
-   - Manage certificates. [1]
+   - Manage certificates.
 
 ### 3.3. Configuring the control node
 
@@ -41,7 +41,7 @@ Key configuration files:
 
 - `infra.yml` – describes domains, locations, and registry layout.
 - `node.yml` – describes node roles and services for the control node.
-- `proxy.yml` – describes proxy configuration for secure external access. [1]
+- `proxy.yml` – describes proxy configuration for secure external access.
 
 Typical workflow:
 
@@ -61,11 +61,11 @@ For each worker domain:
    - Delegate,
    - Local registry,
    - Policy checker,
-   - Local proxy. [1]
+   - Local proxy. 
 
 2. Configure the local compute backend:
    - Docker-based backend (simple),
-   - Or a more advanced/custom backend (some older backends may be deprecated). [1]
+   - Or a more advanced/custom backend (some older backends may be deprecated).
 
 3. Start services:
    - Local registry,
@@ -77,7 +77,7 @@ For each worker domain:
 
 ### 3.5. Certificates and secure networking
 
-Brane uses X.509 certificates for mutual authentication: [1]
+Brane uses X.509 certificates for mutual authentication: 
 
 - **Server certificates**:
   - CA certificate (`ca.pem`),
