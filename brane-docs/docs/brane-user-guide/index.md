@@ -3,7 +3,6 @@
 > Audience:  
 > - Scientists and analysts (workflow authors)  
 > - Software engineers (package developers)  
-> - System engineers (infrastructure and deployment)  
 > - Data policy experts / data stewards  
 > - Administrators (instances and credentials)  
 >
@@ -13,28 +12,24 @@
 <!-- ## Table of Contents
 
 1. [Introduction](01-introduction.md)  
-2. [Quick Start for Scientists](02-quick-start-scientists.md)  
-3. [System Engineers: Deploying Brane](03-system-engineers-deploying.md)  
-4. [Software Engineers: Developing Packages](04-software-developers-packages.md)  
-5. [Data Policy Experts / Data Stewards: Policies and Checker](05-policy-experts.md)  
-6. [Scientists: Authoring Workflows and Using Datasets](06-scientists-workflows.md)  
-7. [Administrators: Instances, Credentials, and Multi-Domain Use](07-admins-instances.md)  
-8. [Reference: Commands, Config, Troubleshooting](08-reference.md)
+2. [Quick Start for End Users](02-quick-start-endusers.md)  
+3. [Scientists & End Users Guide](03-endusers-scientists.md)  
+4. [Software Engineers Guide](04-software-engineers.md)  
+5. [Data Policy Experts Guide](05-data-policy-experts.md)  
+6. [Administrators Guide](07-administrators.md)  
+7. [BraneScript Orchestration Guide](08-branscript.md)
 -->
-
-# Brane User Guide
 
 This guide is designed to help different roles understand and interact with the Brane framework ecosystem effectively.
 
 ### Choose Your Role:
 
 * **[1. Introduction](01-introduction.md)**: Basic architectural concepts of the platform.
-* **[2. Quick Start for Scientists](02-quick-start-scientists.md)**: Fast track to submitting your first simple workflow.
-* **[3. System Engineers: Deploying Brane](03-system-engineers-deploying.md)**: Learn how to set up the infrastructure and run Brane services.
-* **[4. Software Engineers](04-software-engineers.md)**: How to package your custom scripts (Python, R, C, etc.) into secure, executable Brane packages.
+* **[2. Quick Start for End Users](02-quick-start-endusers.md)**: Fast track to submitting your first simple workflow.
+* **[3. Scientists & End Users Guide](03-endusers-scientists.md)**: Advanced workflow authoring, working with distributed data assets, and execution tracking.
+* **[4. Software Engineers](04-software-engineers.md)**: How to install the CLI, understand the containerized I/O boundary, and package custom scripts into secure Executable Code Units (ECUs).
 * **[5. Data Policy Experts](05-data-policy-experts.md)**: Write and configure data access and transfer rules across federated domains.
-* **[6. Scientists: Workflows & Datasets](06-Scientists.md)**: Advanced workflow authoring using BraneScript and data handling.
-* **[7. Administrators](07-Administrators.md)**: Managing users, local policies, and nodes.
+* **[6. Administrators](06-administrators.md)**: Managing users, local policies, certificates, and multi-domain nodes.
+* **[7. BraneScript Orchestration Guide](07-branscript.md)**: Complete cookbook detailing workflow control loops, functional piping, and multi-site pipeline optimization.
 
-
----
+```

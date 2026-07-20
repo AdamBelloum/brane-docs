@@ -1,429 +1,208 @@
-## 5. Data Policy Experts / Data Stewards: Policies and the Checker
+# 5. Data Policy Experts & Data Stewards Guide
 
-This section is for **data policy experts** and **data stewards** who are responsible for:
+This guide is tailored for **data policy experts** and **data stewards** responsible for defining regulatory constraints, configuring automated policy enforcement, and managing security tokens across a federated Brane ecosystem.
 
-- Defining data and network policies,
-- Configuring Brane’s **policy checker** and **reasoner**,
-- Managing tokens and secrets used to enforce policies.
-
-Brane is designed to operate in **policy-sensitive environments**, especially where:
-
-- Data is distributed across domains,
-- Regulations (e.g., GDPR) require strict control over data access and movement,
-- Different organizations own and control their datasets.
+Brane is built from the ground up to operate in policy-sensitive environments—such as healthcare, finance, or cross-border research—where data cannot be centralized due to legal boundaries (e.g., GDPR) or organizational restrictions.
 
 ---
 
-### 5.1. Policy concepts in Brane
+## 5.1. Policy Architecture in Brane
 
-Brane distinguishes two broad classes of policies:
+Brane decouples policy definition from workflow execution using two distinct layers at each domain node:
 
-- **Data policies**  
-  Rules governing:
-  - Who can read/write a dataset,
-  - Under what conditions data can move between domains,
-  - How data is processed (e.g., anonymization requirements).
+* **Policy Enforcement Point (PEP) / Policy Checker:** A native Brane stack component that intercepts all incoming workflow requests (e.g., data access, cross-domain transfers, package executions). It translates these execution events into logical queries for verification.
+* **Policy Reasoner:** A pluggable formal reasoning engine (typically eFLINT) that evaluates queries sent by the PEP against a stateful set of compliance rules and facts, returning a strict **Allow** or **Deny** decision.
 
-- **Network / infrastructure policies**  
-  Rules about:
-  - Which services can communicate and how,
-  - Which domains can connect to which others,
-  - Which nodes are allowed to perform certain tasks (e.g., executing particular packages).
-
-These policies are enforced by:
-
-- A **policy checker** (Policy Enforcement Point, PEP) in each domain,
-- A **reasoner** (typically eFLINT) that evaluates policy rules.
-
----
-
-### 5.2. Policy checker and reasoner (e.g., eFLINT)
-
-The **policy checker** is a component that:
-
-- Sits between Brane’s execution logic and the domain’s data/backends,
-- Receives requests (e.g., “may workflow X read dataset Y from domain Z?”),
-- Consults the **reasoner** to determine whether the request complies with policy.
-
-#### 5.2.1. Reasoner (eFLINT)
-
-In many Brane deployments, the reasoner is **eFLINT**, a formal policy engine:
-
-- Policies are expressed in a logical language (eFLINT rules),
-- The reasoner maintains a state of facts and rules,
-- Each policy query is evaluated against these rules.
-
-Examples of what eFLINT can express (conceptually):
-
-- “Datasets containing personal data may not leave the origin domain unless pseudonymized.”
-- “Only members of group A may run package B on dataset C.”
-- “Domain D may not accept incoming connections from unspecified domains.”
-
-The policy expert writes eFLINT rules and manages the reasoner’s state.
-
-#### 5.2.2. Policy Enforcement Point (PEP)
-
-The PEP (checker):
-
-- Receives requests from Brane’s planner and delegates for data access and movement,
-- Translates them into queries for the reasoner,
-- Returns **allow/deny** decisions, possibly with additional obligations (e.g., “must anonymize first”).
-
-The PEP is integrated into the worker domain’s Brane stack so that:
-
-- All data access/movement operations must pass through it,
-- It can enforce policy consistently across workflows and packages.
-
----
-
-### 5.3. Tokens and secrets
-
-Policy enforcement often requires **tokens and secrets** to authenticate and authorize actions:
-
-- Tokens may represent:
-  - User identities,
-  - Role memberships,
-  - External policy decisions.
-
-- Secrets may include:
-  - Keys used by the reasoner or PEP,
-  - Credentials for secured datasets or services.
-
-Brane’s policy infrastructure may:
-
-- Use tokens attached to workflows or API calls,
-- Forward tokens to the reasoner to make decisions based on user roles and attributes.
-
-As a policy expert/data steward, you:
-
-- Manage token formats (e.g., JWT or custom),
-- Ensure that tokens contain the necessary attributes for policy decisions,
-- Coordinate with administrators to secure secret storage and distribution.
-
----
-
-### 5.4. Defining and managing policies
-
-#### 5.4.1. Policy scope and granularity
-
-Policies in Brane can be defined at different levels:
-
-- **Dataset-level**  
-  e.g., “Dataset `patients` may only be used in anonymized form by external domains.”
-
-- **Package-level**  
-  e.g., “Package `ml.train` may not be invoked on raw personal data.”
-
-- **Domain-level**  
-  e.g., “Domain `research` may access certain datasets but not others; domain `prod` may not export datasets.” [1]
-
-Policy experts should:
-
-- Identify sensitive datasets and functions,
-- Decide which operations are permitted across domains,
-- Encode these rules in the reasoner (eFLINT). 
-
-#### 5.4.2. Policy authoring workflow
-
-Typical workflow for policy authoring:
-
-1. **Identify policy requirements**  
-   - Regulatory (e.g., GDPR),
-   - Organizational (internal guidelines),
-   - Project-specific (e.g., EPI project care pathways).
-
-2. **Model requirements as logical rules**  
-   - Translate to eFLINT or similar language:
-     - Entities (datasets, domains, roles),
-     - Actions (read, write, move, process),
-     - Conditions and constraints. 
-
-3. **Load rules into the reasoner**  
-   - Configure the reasoner with policy modules,
-   - Initialize facts (e.g., which dataset belongs to which domain).
-
-4. **Integrate with PEP**  
-   - Ensure the PEP sends appropriate queries,
-   - Confirm that decisions are correctly enforced:
-     - Allow/deny access,
-     - Trigger obligations (e.g., anonymization step).
-
-#### 5.4.3. Testing policies
-
-Before full deployment:
-
-- Use **test workflows** that exercise policy-relevant operations:
-  - Accessing protected datasets,
-  - Attempting cross-domain transfers,
-  - Running packages with different user roles.
-
-- Verify that:
-  - Allowed operations succeed,
-  - Disallowed operations fail with clear messages,
-  - Obligations (such as required preprocessing) are applied correctly.
-
-You may also have dedicated CLI or admin tools for:
-
-- Sending test queries to the reasoner/PEP,
-- Inspecting reasoner state (facts and rules),
-- Logging decisions to audit trails.
-
----
-
-### 5.5. Policy-aware workflows
-
-Policy experts collaborate with scientists and package developers to design **policy-aware workflows**.
-
-#### 5.5.1. Communicating policy constraints
-
-Scientists should know:
-
-- Which datasets are sensitive,
-- Which domains they can use for specific data,
-- Which packages are restricted or require special conditions.
-
-Package developers should know:
-
-- When their packages are expected to:
-  - Anonymize or transform data before export,
-  - Only run on certain domains,
-  - Log additional metadata for audit purposes.
-
-#### 5.5.2. Handling policy violations
-
-When a workflow violates a policy:
-
-- The PEP denies the operation,
-- The workflow may fail or fallback to an alternative path (if defined).
-
-Policy experts:
-
-- Review logs and reasoner decisions,
-- Adjust rules if needed,
-- Help scientists re-design workflows to comply with policies.
-
----
-
-### 5.6. Audit and governance
-
-Policies are tightly connected to **audit and governance**.
-
-Brane maintains:
-
-- **Global audit logs** – cross-domain workflow submissions, task assignments, data movements.
-- **Local audit logs** – domain-specific activities (data access, local execution).
-
-Policy experts/data stewards use these logs to:
-
-- Demonstrate compliance (e.g., to regulators),
-- Investigate incidents or suspicious activity,
-- Refine policies based on observed workflow patterns.
-
-They may also:
-
-- Align audit schemas with external governance frameworks,
-- Integrate Brane logs with organizational SIEM or audit systems.
-
----
-
-### 5.7. Summary
-
-
-For data policy experts and data stewards, Brane provides:
-
-- A **policy checker (PEP)** integrated with workflow execution,
-- A **reasoner** (e.g., eFLINT) for expressing and evaluating rich policy rules,
-- Mechanisms for passing **tokens and secrets** into policy decisions,
-- Integration with audit logs for governance and compliance. 
-
-Your responsibilities include:
-
-- Defining and maintaining policies that control data access and movement,
-- Configuring and monitoring the checker and reasoner,
-- Collaborating with scientists, package developers, system engineers, and administrators to ensure that workflows respect both technical and regulatory constraints.
-
-### 5.8. Policy Quick Reference (Conceptual)
-
-This section summarizes typical policy patterns that Brane deployments address using a reasoner such as **eFLINT** and the policy checker (PEP). Use it as a **design aid**, not exact syntax.
-
-> **Note:** The examples below are **pseudo‑rules**, inspired by eFLINT‑style thinking but not guaranteed to match your deployed syntax. Adapt them to your actual policy language and engine.
-
-
-#### 5.8.1. Basic structure of a policy rule
-
-Most rules follow this structure:
-
-- **Facts** – statements about the world:
-  - “Dataset `patients` belongs to domain `hospital`.”
-  - “User `alice` has role `researcher`.”
-  - “Package `ml.train` is sensitive.”
-
-- **Rules** – implications that define allowed/denied actions:
-  - “If a user is a researcher and a dataset is anonymized, then reading is allowed.”
-  - “If a dataset contains personal data and destination domain is external, then transfer is denied.”
-
-Conceptually:
-```text
-fact: owns(hospital, patients).
-fact: role(alice, researcher).
-fact: tag(patients, personal_data).
-
-rule: may_read(User, Dataset) :-
-    role(User, researcher),
-    tag(Dataset, anonymized).
-
-rule: deny_transfer(Dataset, FromDomain, ToDomain) :-
-    tag(Dataset, personal_data),
-    external(ToDomain),
-    not same_domain(FromDomain, ToDomain).
 ```
 
-#### 5.8.2. “Only anonymized data may leave the origin domain”
+[ Scientist Workflow ] ──> [ Policy Enforcement Point (PEP) ]
+│             ▲
+Sends Query   │             │   Returns Decision
+(Who/What)    ▼             │   (Allow / Deny)
+[ eFLINT Policy Reasoner ]
 
-Goal: Prevent raw personal data from leaving its origin domain.
+```
 
-Conceptual pattern:
+---
+
+## 5.2. The Policy Language (eFLINT)
+
+Brane uses **eFLINT**, a formal domain-specific language designed specifically for compliance checking. Instead of traditional procedural programming, eFLINT operates on **Types, Facts, Rights, and Duties**.
+
+>  **Third-Party Project Notice**
+> The eFLINT language parser, command-line interpreter, and server components are developed independently as an open-source project by CWI. For comprehensive language specifications, core syntax documentation, and framework updates, visit the official repository:
+> **GitHub:** [https://github.com/cwi-swat/eflint](https://github.com/cwi-swat/eflint)
+
+### Conceptual eFLINT Syntax Pattern
+When writing policies, you declare your domain structure, define relational rules, and track state transitions:
 
 ```text
-fact: tag(D, personal_data) :- ...         # D is a personal dataset
-fact: origin(D, OriginDomain).
+// 1. Declare domain entities
+Placeholder user IDENTIFIED BY string.
+Placeholder dataset IDENTIFIED BY string.
+Placeholder domain IDENTIFIED BY string.
 
-rule: deny_transfer(D, From, To) :-
-    tag(D, personal_data),
-    origin(D, OriginDomain),
-    To != OriginDomain,
-    not tag(D, anonymized).
+// 2. Define relations and access rules
+Fact may_run_dataset AGGREGATES user * dataset.
+Fact personal_data AGGREGATES dataset.
+Fact anonymized AGGREGATES dataset.
 
-rule: may_transfer(D, From, To) :-
-    tag(D, personal_data),
-    origin(D, OriginDomain),
-    To != OriginDomain,
-    tag(D, anonymized).
+// 3. Define cross-domain constraints
+Fact deny_transfer AGGREGATES dataset * domain * domain.
+deny_transfer(D, From, To) :- personal_data(D), From != To, not anonymized(D).
+
 ```
-- Interpretation:
 
-If a dataset is personal and the destination domain is different from its origin, transfer is denied unless the dataset is tagged as anonymized.
+---
 
-#### 5.8.3. “Only specific roles may run certain packages”
+## 5.3. Step-by-Step Policy Lifecycle
 
-Goal: Restrict sensitive packages (e.g., training models on sensitive data) to certain user roles.
+### Step 1: Local Offline Testing (No Token Required)
 
-Conceptual pattern:
+Because eFLINT is an independent third-party tool, you should always validate your policy logic locally on your machine before pushing it to a live Brane network.
+
+1. **Install the eFLINT CLI:** Prerequisite.
+Install the standalone compiler via Rust's package manager or by downloading the binary from the official repository:
+
+```bash
+cargo install eflint-cli
+
+```
+
+2. **Run your Policy Logic:** Terminal Execution.
+Pass your policy file directly to the native interpreter to start an interactive testing session:
+
+```bash
+eflint minmax_policy.eflint
+
+```
+
+3. **Query the State:** Validation.
+Input test assertions directly into the interactive prompt to confirm the reasoner behaves exactly as expected:
+
+```text
+?run_minmax("Adam", "minmax_dataset").
+
+```
+
+The terminal will output `Approved` or throw a violation error, allowing you to debug your assertions completely offline.
+
+### Step 2: Acquire Infrastructure Trust Tokens
+
+To deploy and update policy files on live nodes, you must authenticate using a **Policy Expert Token**.
+
+* **Option A: You manage the infrastructure node ()**
+Locate the cluster configuration files (`policy_secret.json` or `secret.json`) generated during node initialization. Run the command utility locally to issue your token:
+
+```bash
+branectl generate policy_token <user> <hostname> <number_of_days>d -s /path/to/policy_secret.json
+
+```
+
+This creates a `policy_token.json` configuration file in your directory.
+
+* **Option B: The node is managed externally (e.g., Central IT / UvA Lab, ...)**
+You cannot generate the token yourself. Contact your System Administrator and supply them with:
+
+- your user identifier <`user`>, 
+- your target domain <`hostname`>, 
+- and your required lease duration. 
+
+They will generate and securely transfer the `policy_token.json` file back to you.
+
+---
+
+### Step 3: Building & Pushing Data Configurations
+
+To bridge these tools seamlessly, this guide demonstrates how the Brane CLI (brane) and the Administrative CLI (branectl) work in tandem during the deployment phase. 
+This workflow highlights a critical separation of duties within a secure ecosystem: 
+
+- Data Stewards and Engineers use the user-facing CLI to build and structure data metadata, 
+
+- while Administrators utilize the control toolkit to authorize and sign the cryptographic policy tokens necessary for production enforcement.
+
+1. **Build the Dataset Definition:** Data Steward Task.
+Before applying policies to a dataset, you must package its metadata using the Brane CLI. Navigate to your dataset configuration path and build the asset:
+
+```bash
+brane build /datasets/minmax/data/data.yml
+
+```
+
+Note: This indexes the data structure within your local Brane workspace so it can be targeted by eFLINT rules.
+
+2. **Generate the Policy Authorization Token:** Administrator Task Only.
+Policies cannot be deployed to a live node without a cryptographic token signed by the cluster's private infrastructure keys. An administrator must run `branectl` on the control plane, referencing the node's `policy_secret.json`:
+
+```bash
+branectl generate policy_token <user> <host_name>  <number_of_days>d -s /path/to/policy_secret.json
+
+```
+
+This signs a token granting the user `<user>` authorization to enforce rules on the `host_name` domain for a lease duration of `<number_of_days>` days.
+
+---
+
+## 5.4. Common Policy Design Patterns
+
+Use these conceptual blueprints to structure real-world governance requirements within your policy blocks:
+
+### 5.4.1. Access Restricted by User Role
+
+Restricts execution of specific analytical software packages to authorized personnel.
+
 ```text
 fact: role(User, researcher).
-fact: role(User, admin).
 fact: restricted_package(pkg_ml_train).
 
 rule: may_run(User, Package) :-
     restricted_package(Package),
     role(User, researcher).
 
-rule: may_run(User, Package) :-
-    restricted_package(Package),
-    role(User, admin).
-
-rule: deny_run(User, Package) :-
-    restricted_package(Package),
-    not (role(User, researcher); role(User, admin)).
 ```
-- Interpretation:
-Only users with roles researcher or admin may run pkg_ml_train.
-Other users are denied.
 
-#### 5.8.4. “Domain‑level access control for datasets”
+### 5.4.2. Cross-Domain Transfer Restrictions
 
-Goal: Restrict datasets to specific domains.
+Ensures sensitive datasets never physically leave their origin domain unless pre-processed.
 
-Conceptual pattern:
-```text
-fact: owns(hospital, patients).
-fact: allowed_domain(patients, research).
-
-rule: may_access(Domain, Dataset) :-
-    owns(Domain, Dataset).
-
-rule: may_access(Domain, Dataset) :-
-    allowed_domain(Dataset, Domain).
-
-rule: deny_access(Domain, Dataset) :-
-    not may_access(Domain, Dataset).
-```
-- Interpretation:
-
-The owning domain may access the dataset.
-Additionally, a dataset may list other allowed_domains.
-All other domains are denied.
-
-#### 5.8.5. “Obligations: must preprocess before access”
-
-Goal: Require preprocessing (e.g., anonymization) before a dataset is used by a given package or domain.
-
-Conceptual pattern:
 ```text
 fact: tag(D, personal_data).
-fact: preprocess_step(D, anonymize_step).
+fact: origin(D, hospital_domain).
 
-rule: obligation(User, D, anonymize_step) :-
+rule: deny_transfer(D, From, To) :-
     tag(D, personal_data),
-    may_run(User, some_sensitive_package).
+    origin(D, From),
+    To != From,
+    not tag(D, anonymized).
 
-rule: may_access_after_preprocess(Domain, D) :-
-    obligation(User, D, anonymize_step),
-    done(User, D, anonymize_step).
 ```
 
-- Interpretation:
+### 5.4.3. Token-Based Compliance Claims
 
-For some combinations of user/package/dataset, there is an obligation to run anonymize_step.
-Access is permitted only after the obligation is satisfied (recorded as done(...)).
-The PEP can use obligations to instruct Brane to:
-
-Insert preprocessing steps into workflows, or
-Deny access until required preprocessing actions have been performed.
-
-
-#### 5.8.6. Token‑based decisions
-Goal: Use tokens (e.g., JWTs) to drive decisions.
-
-Tokens might encode:
-
-- User identity,
-- Roles,
-- Project memberships,
-- Consent flags.
-
-Conceptual pattern:
+Leverages claims embedded inside cryptographic workflow identity tokens to grant real-time access permission.
 
 ```text
 fact: token(User, Token).
-fact: has_claim(Token, role, researcher).
 fact: has_claim(Token, consent, epi_project).
 
 rule: may_access(User, Dataset) :-
     token(User, Token),
-    has_claim(Token, role, researcher),
     has_claim(Token, consent, epi_project),
     tag(Dataset, epi_data).
+
 ```
-Interpretation:
-A user may access epi_data datasets only if their token has the right role and consent claims.
+---
 
-### 5.8.7. Practical checklist for policy experts
-When designing policies:
+## 5.5. Auditing and Governance Checklist
 
-Identify entities:
-- Datasets, domains, packages, users, roles.
-Define facts:
-- Ownership, sensitivity tags (personal, anonymized), origin domains.
-Write rules:
-- may_* for allowed operations,
-- deny_* for explicit prohibitions,
-- obligation rules for required preprocessing.
-Test with sample workflows:
-- Access from allowed and disallowed domains,
-- Runs from different user roles,
-- Transfers of sensitive datasets.
-- Integrate with Brane’s PEP:
-- Ensure requests (e.g., data access, transfer, package run) are correctly translated into reasoner queries.
-- Verify that decisions and obligations propagate back into workflow execution.
-- This quick reference is intended to guide policy modeling; always consult your actual reasoner’s documentation (e.g., eFLINT reference) for precise syntax and semantics.
+Data policies remain incomplete without ongoing compliance verification. As a steward, regularly verify:
+
+* **Global Audit Alignment:** Cross-domain tracking records logs of every multi-party workflow submission and data movement event.
+
+* **Local Execution Logs:** Individual worker domains preserve strict event timelines showing exactly who called what dataset, which package ran, and the underlying reasons behind PEP approvals or denials.
+
+* **Obligation Loops:** Ensure any required data transformations (e.g., mandatory anonymization pipelines) are successfully registered as `done(...)` in the reasoner state before downstream operations run.
+
+```
+
+```

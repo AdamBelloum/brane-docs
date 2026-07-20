@@ -1,304 +1,102 @@
-## 4. Software Engineers: Developing Packages
+---
 
-This section is for **software engineers** who want to create and maintain Brane **packages** (Executable Code Units, ECUs).
+# Brane Developer Guide: Packaging & Containerizing Analytical Source Code
 
-You will learn how to:
+**Audience:** Software Engineers, Research Developers, and Tool Authors
 
-- Describe a package with `container.yml`,
-- Build and test a package locally,
-- Publish a package to a Brane instance,
-- Manage local and remote packages. 
-
-> **Note:** CLI commands in this section follow the structure presented in the current manual (e.g., `brane package ...`). Exact syntax and flags may have changed; we will validate and update them later.
+**Purpose:** Learn how to wrap custom application logic (Python, R, binaries, or shell scripts) into portable, reusable Brane packages for execution within distributed workflows.
 
 ---
 
-### 4.1. What is a Brane package (ECU)?
+##  Critical Scope & Prerequisites
 
-A Brane **package** is a containerized piece of code that Brane workflows can call as a function.]
+Before you begin developing packages, please review these architectural dependencies:
 
-Key properties:
+1. **Infrastructure Access:** This documentation assumes that a functional Brane infrastructure instance has already been deployed and configured for your environment. If you need access, credentials, or client certificates for an existing cluster, contact your **System Administrator**.
 
-- The package is built into a container image (e.g., Docker image).
-- `container.yml` describes:
-  - Package metadata (name, version, kind),
-  - Dependencies and environment,
-  - Which files to include,
-  - How to run the package (entrypoint),
-  - Which functions (actions) are exposed to workflows. 
-- At runtime, Brane:
-  - Starts the container on a worker node,
-  - Passes input to the container (via environment variables and/or files),
-  - Reads outputs (from stdout as YAML and from file paths such as `/result`).
+2. **Deploying Your Own Cluster:** If you are setting up your own control nodes or worker environments from scratch, the deployment process is *not* covered here. You must read the **Brane Installation Guide** to stand up the infrastructure before proceeding with this manual.
 
-Packages can be:
+3. **Data Policies & Governance:** This guide focuses strictly on package development. It **does not cover data policy enforcement or governance rules**. If your workflow requires data compliance, residency constraints, or privacy policies, please read the dedicated **Data Policy Guide**.
 
-- **Local** – present only on your machine (built from your source tree),
-- **Remote** – stored in a Brane instance’s registry. 
+4. **Execution Scope:** This documentation includes complete technical instructions to execute and test your code in two environments: **locally** on your development machine (Sandbox mode) and **remotely** on a deployed production infrastructure.
+
+
+5. **Tooling Prerequisite:** You must have the **Brane CLI binary** installed on your local machine to interact with the environment, build packages, and run local simulation tests.
 
 ---
 
-### 4.2. Authoring `container.yml`
+## 0. Installation & Setup
 
-`container.yml` is the package’s “manifest”. It tells Brane how to build and run your code.]
+Before building packages, you must download the pre-compiled `brane` CLI binary directly from the official GitHub releases page and add it to your system path.
+see instruction in the guide [installing brane tools](08-brane-tools.md)
+ 
+---
 
-A typical `container.yml` contains:
+## 1. Overview of the Packaging Concept
 
-- Basic metadata,
-- Build steps and dependencies,
-- File mappings,
-- Runtime entrypoint and actions.
+A **Brane Package** is an Executable Code Unit (ECU)—a portable, containerized computing unit that abstracts custom code into a language-agnostic function. When a package is successfully published, workflow authors can invoke its logic inside a BraneScript or Bakery pipeline without needing to understand its underlying codebase, internal language dependencies, or execution environment.
 
-#### 4.2.1. Basic structure
+The developer package lifecycle follows five distinct phases:
 
-Core fields (conceptual example):
+1. **Initialize:** Generate the standard filesystem template via the CLI.
+
+2. **Implement:** Write your raw functional logic in your preferred programming language.
+
+3. **Manifest:** Create structural metadata (`container.yml`) detailing parameters, input constraints, and entry points.
+
+4. **Compile:** Build the component locally into an isolated image using the runtime system.
+
+5. **Publish:** Push the finished containerized asset to the cluster registry.
+
+---
+
+## 2. Package Architecture & The I/O Contract
+
+Every compliant Brane software package must strictly implement the following filesystem layout:
+
+```css
+my_package/
+├── container.yml      Required: Defines function schemas, parameters, and entry points
+├── data.yml           Optional: Contains custom cross-package data type mappings
+└─ code/              Required: Houses script sources, binaries, and internal dependencies
+    ├── main.py        Executable code file
+    └─ requirements.txt Language-specific dependency manifests
+
+```
+
+### The Architectural Communication Contract
+
+Brane packages are expected to follow a strict, isolated I/O pattern to ensure language-agnostic execution across distributed worker nodes:
+
+* **Input Payloads:** Brane constructs and delivers input arguments to your container at runtime as a structured YAML payload via an `INPUT` environment variable or dedicated configuration file. Your internal application logic must parse this YAML structure to extract its operational parameters.
+
+* **Execution Outputs:** The containerized application must compile its results and stream a validated YAML string directly back to `stdout`.
+
+* **File/Data Preservation:** Any persistent side-effects, large datasets, or final generated file outputs must be targeted to a designated workspace directory (commonly `/result`) for Brane to securely capture and persist.
+
+---
+
+## 3. Step-by-Step Implementation Workflow
+
+### Step 1: Initialize the Template Workspace
+
+Generate a validated filesystem structure using the user toolset:
+
+```bash
+brane new data_transformer
+cd data_transformer
+
+```
+
+### Step 2: Authoring `container.yml`
+
+The manifest explicitly registers your tool's signature with the orchestration layers. It describes core metadata, system-level dependencies (e.g., specific APT dependencies to run the environment), file paths, and runtime action signatures:
 
 ```yaml
-name: my_package
+name: data_transformer
 version: 1.0.0
 kind: ecu
-
-description: "Example package that demonstrates inputs and outputs."
-owners:
-  - "Your Name <you@example.org>"
-name – unique package name.
-version – version string.
-kind – for code packages, typically ecu.
-description / owners – metadata for humans and registries.
-```
-
-####  4.2.2. Environment and dependencies
-Describe the runtime environment for your package:
-
-```yaml
-image: "debian:stable"
-
-dependencies:
-  ubuntu:
-    - python3
-    - python3-yaml
-
-env:
-  - name: PYTHONUNBUFFERED
-    value: "1"
-```
-- image – base container image (for building/running).
--  dependencies – system-level packages (e.g., python3, python3-yaml) to install.
-- env – environment variables inside the container.
-
-Brane uses these fields to build the ECU image so that all required dependencies are present at runtime.
-
-#### 4.2.3. Files and install steps
-You specify which files to include and any install steps needed:
-
-```yaml
-files:
-  - source: "./src"
-    target: "/opt/my_package/src"
-
-install:
-  - "apt-get update"
-  - "apt-get install -y python3 python3-yaml"
-```
-- files – copy code and resources into the container.
-- install – commands run inside the container during build.
-- Some packages also use postinstall for final configuration.
-
-#### 4.2.4. Entrypoint and actions
-The entrypoint defines how Brane runs your package:
-
-```yaml
-entrypoint:
-  kind: "task"
-  exec: "python3 /opt/my_package/src/main.py"
-```
-Actions (functions) are then described (conceptually) to map between Brane workflows and command-line invocation. The manual shows examples where:
-
-- Inputs are passed as YAML via an INPUT environment variable or file,
-- Outputs are written as YAML to stdout,
-- Optional result files are written to /result for Brane to capture.
-
-The precise schema for actions will follow from your current Brane version (e.g., how you declare function names, arguments, and result types); we will align this later when updating CLI and manifest details.
-
-### 4.3. Building and testing packages locally
-Before publishing, you typically:
-
-1. Create container.yml and code files.
-2. Build the package image.
-3. Test the package locally using the Brane CLI.
-
-#### 4.3.1. Building the package
-Conceptually, you use a CLI command like:
-
-```bash
-# Syntax to be validated later
-brane package build .
-```
-This command:
-
-- Reads container.yml,
-- Builds the container image (using Docker + Buildx),
-- Registers the package in your local Brane client environment.
-
-
-#### 4.3.2. Testing locally
-To test:
-
-1. Use the CLI to run the package function directly (e.g., a “hello world” or “base64 encode” function).
-
-1. Provide input in the expected format (typically via arguments or via a YAML INPUT structure).
-
-1. Inspect:
--  Standard output (YAML response),
-- Any files written to /result inside the container.
-
-
-Example pattern (conceptual):
-
-```bash
-# Syntax to be validated later
-brane package test  my_package:1.0.0 my_function --input '...'
-```
-Internally, Brane:
-
-- Constructs an INPUT payload according to the function signature,
-- Starts the container,
-- Reads the YAML output and any files under /result.
-
-Testing this locally before publishing ensures that:
-
-- Dependencies are correct,
-- Inputs and outputs are handled as expected,
-- Container startup and execution behave properly.
-
-### 4.4. Publishing packages to a Brane instance
-Once the package is working locally, you can publish it to a Brane instance so others can use it.
-
-
-Typical steps:
-
-1. Log in / authenticate to a Brane instance:
-- Configure instance endpoint and client certificates (see Admin section).
-1. - Push the package to the instance:
-Use a CLI command to upload the image and metadata.
-1. Verify that the package appears in the instance’s package list.
-
-#### 4.4.1. Pushing a package
-Conceptual CLI workflow (syntax to be validated):
-
-```bash
-# Authenticate to the instance first (details depend on your setup)
-brane package push my_package:1.0.0
-```
-This operation:
-
-- Uploads the built ECU image and metadata,
-- Registers the package in the instance’s central registry.
-
-After pushing:
-
-- Scientists and other users can discover and use the package in their workflows,
--  You can update the package later by pushing a new version (e.g., 1.1.0).
-
-#### 4.4.2. Verifying published packages
-You (or users) can list remote packages:
-
-```bash
-# List locally cached packages
-brane package list
-```
-This shows:
-
-- Package names and versions,
-- Whether they are local or remote,
--  Basic metadata (description, owners).
-
-### 4.5. Managing local and remote packages
-The Brane CLI distinguishes between local and remote packages.
- 
-- Local packages:
-- Built on your machine from your source code,
-- Useful for development and local testing.
-- Remote packages:
-- Hosted on a Brane instance’s registry,
-- Available to anyone with access and permissions.
-
-#### 4.5.1. Importing packages from Git or remote sources
-The manual describes importing packages from Git repositories or remote instances:
- 
-- You can import a package from a GitHub repo into your local environment.
-- You can pull a remote package from a Brane instance to get a local copy.
-- Conceptual commands (syntax to be validated):
-
-```bash
-# Import from GitHub
-brane package import https://github.com/your-org/your-package-repo.git
-
-# Pull a remote package from an instance
-brane package pull some_package:1.2.3
-```
-This allows you to:
-
-- Start from existing packages,
-- Inspect or modify their code locally,
-- Rebuild and publish customized versions.
-
-#### 4.5.2. Removing packages
-You can clean up packages that are no longer needed.
-
-Conceptual commands (syntax to be validated):
-
-```bash
-# Remove a local package
-brane package remove my_package:1.0.0
-
-# Unpublish a package from a remote instance
-brane package unpublish my_package:1.0.0
-```
-These operations:
-
-Free up local resources (images, metadata),
-Remove remote packages that should no longer be used (subject to appropriate admin rights).
-
-#### 4.5.3. Best practices for package developers
-- Use semantic versioning (e.g., 1.0.0, 1.1.0) to make upgrades explicit.
-- Keep container.yml in version control along with your code.
-- Test locally before publishing:
-- Verify inputs/outputs,
-- Check performance and error handling.
-- Document:
-- Expected inputs and outputs,
-- Dataset requirements,
-- Any side-effects (e.g., external services used).
-
-
-### 4.6. Summary
-For software engineers, Brane provides:
-
-- A package model (ECUs) where you package your logic as containers.
-- A manifest (container.yml) describing metadata, dependencies, files, entrypoint, and actions.
-- CLI workflows to:
-- Build and test packages locally,
-- Publish packages to a Brane instance,
-- Import, pull, and remove packages from various sources.
- 
-These packages become the building blocks that scientists use in their workflows (see Section 6), and their correct definition and behaviour are essential for reliable, policy-aware execution in Brane.
-
-
-### 4.7. Developer Quick Reference
-
-This section summarizes the minimum you need to develop and test a Brane package.
-
----
-
-#### 4.7.1. Minimal `container.yml` template (Python example)
-
-```yaml
-name: my_package
-version: 0.1.0
-kind: ecu
-
-description: "Minimal example Brane package."
+description: "Executes target scaling and data normalization protocols."
 owners:
   - "Your Name <you@example.org>"
 
@@ -310,8 +108,8 @@ dependencies:
     - python3-yaml
 
 files:
-  - source: "./src"
-    target: "/opt/my_package/src"
+  - source: "./code"
+    target: "/opt/data_transformer/code"
 
 env:
   - name: PYTHONUNBUFFERED
@@ -322,540 +120,168 @@ install:
 
 entrypoint:
   kind: "task"
-  exec: "python3 /opt/my_package/src/main.py"
+  exec: "python3 /opt/data_transformer/code/main.py"
+
 ```
 
-Directory structure:
+### Step 3: Implementing the Code Pattern
 
-```text
-my-package/
-  container.yml
-  src/
-    main.py
-```
-#### 4.7.2. I/O contract for package code (conceptual)
-Brane packages are expected to follow a simple I/O pattern:
-
-Input:
--  Provided as a YAML structure (e.g., via an INPUT environment variable or file).
-  -  Your code parses this YAML to get function arguments.
--  Output:
-  -  Write a YAML response to stdout.
-  -  Optionally write a result file or directory to a known path (commonly /result) for Brane to capture.
-
-Example main.py (conceptual):
+Create your script file directly inside your dedicated source directory. This example utilizes the strict Brane YAML I/O environment contract:
 
 ```python
+# code/main.py
 import os
 import sys
 import yaml
 
+def process_data(dataset_path, factor):
+    # Core processing logic goes here
+    return f"Processed {dataset_path} using factor {factor}"
+
 def main():
-    # Read input YAML from environment variable (pattern may vary by Brane version)
+    # 1. Safely extract input YAML from environment variable
     input_yaml = os.environ.get("INPUT", "{}")
     data = yaml.safe_load(input_yaml)
 
-    # Extract arguments
-    text = data.get("text", "")
-    times = int(data.get("times", 1))
-
-    # Do work
-    result = text * times
-
-    # Prepare output as YAML
-    output = {"result": result}
-
-    # Write YAML to stdout
+    # 2. Extract arguments mapped from the workflow interface
+    path_arg = data.get("raw_dataset", "")
+    factor_arg = float(data.get("scaling_factor", 1.0))
+    
+    # 3. Execute core logic
+    result_string = process_data(path_arg, factor_arg)
+    
+    # 4. Stream mandated YAML structured response back to stdout
+    output = {"result": result_string}
     yaml.safe_dump(output, sys.stdout)
 
-    # Optionally write a file result (Brane can capture /result or similar)
+    # 5. Persist heavy assets into the mandated workspace volume
     os.makedirs("/result", exist_ok=True)
     with open("/result/output.txt", "w") as f:
-        f.write(result)
+        f.write(result_string)
 
 if __name__ == "__main__":
     main()
+
 ```
 
-Note: The exact input/output conventions (e.g., which env vars or paths to use) may depend on the current Brane version and its runtime contract. Adjust according to your deployment’s documentation.
+### Step 4: Compile the Execution Container
 
-#### 4.7.3. Typical lifecycle (commands to be validated)
-1. Build locally
+Run the build command to generate an isolated system image. The runtime will automatically analyze your codebase configurations, compile dependencies, validate metadata integrity, and store a tarball artifact within your local cache:
 
 ```bash
-# In the package directory with container.yml
 brane package build .
+
 ```
-2. Test locally
+
+Verify your built image parameters using the inspection tool:
 
 ```bash
-# Test a function exposed by the package
-brane package test my_package:0.1.0 my_function \
-    --input '{"text": "Hello", "times": 3}'
+brane inspect data_transformer:1.0.0
+
 ```
-Check:
-
--  stdout (YAML output),
--  any files under /result inside the container.
-
-3. Publish to an instance
-
-```bash
-# Assuming instance and credentials are configured
-brane package push my_package:0.1.0
-```
-
-4. List packages (local/remote)
-
-```bash
-brane package list
-```
-All command examples above are structural and may need updating to match the current brane CLI. Use them as patterns, not exact syntax, until we revise them with up‑to‑date notes.
-
-#### 4.7.4. Troubleshooting checklist
-Build fails:
--  Check base image and dependencies/install commands.
--  Ensure paths in files exist and are correct.
--  Package runs but crashes:
--  Log any exceptions and print them to stderr.
--  Verify that input YAML contains the keys you expect.
--  Check that your code can write to /result (permissions, paths).
--  Published package not visible:
--  Confirm you are connected to the correct instance.
--  Check registry health on the Brane instance.
--  Ensure version (version in container.yml) is unique and correctly specified.
--  These patterns cover the common path from “new package skeleton” to “published, usable component” in Brane workflows.
-
-
-
-
-
-## 4. Software Engineers: Developing Packages
-
-This section is for **software engineers** who want to create and maintain Brane **packages** (Executable Code Units, ECUs).
-
-You will learn how to:
-
-- Describe a package with `container.yml`,
-- Build and test a package locally,
-- Publish a package to a Brane instance,
-- Manage local and remote packages. [1]
-
-> **Note:** CLI commands in this section follow the structure presented in the current manual (e.g., `brane package ...`). Exact syntax and flags may have changed; we will validate and update them later.
 
 ---
 
-### 4.1. What is a Brane package (ECU)?
+## 4. Local vs. Remote Execution Modes
 
-A Brane **package** is a containerized piece of code that Brane workflows can call as a function. 
+Understanding where and how your package executes is critical for troubleshooting and proper architectural planning.
 
-Key properties:
+### Local Execution (Development & Sandbox)
 
-- The package is built into a container image (e.g., Docker image).
-- `container.yml` describes:
-  - Package metadata (name, version, kind),
-  - Dependencies and environment,
-  - Which files to include,
-  - How to run the package (entrypoint),
-  - Which functions (actions) are exposed to workflows. 
-- At runtime, Brane:
-  - Starts the container on a worker node,
-  - Passes input to the container (via environment variables and/or files),
-  - Reads outputs (from stdout as YAML and from file paths such as `/result`).
+When you test a package using `brane package test` on your workstation, execution happens completely **locally**.
 
-Packages can be:
+* **How it works:** The CLI interacts directly with your local container daemon, stands up a temporary sandbox, maps mock inputs, and streams standard output straight to your terminal screen.
 
-- **Local** – present only on your machine (built from your source tree),
-- **Remote** – stored in a Brane instance’s registry. 
+* **Use case:** Fast debugging, checking internal dependencies, and running unit tests without affecting the shared cluster registry.
+
+```bash
+# Verify complex functions locally by passing explicit argument parameters
+brane package test data_transformer:1.0.0 transform_metrics --input '{"raw_dataset": "/tmp/data.csv", "scaling_factor": 1.5}'
+
+```
+
+### Remote Execution (Production & Workflows)
+
+Once a package is compiled and pushed to the cluster (`brane package push`), it enters **remote execution mode**.
+
+* **How it works:** The package image is securely transmitted to the central registry. When a user triggers a workflow referencing your component, the central Control Node delegates the runtime block directly down to specific remote Worker Nodes where the target datasets physically reside.
+
+* **Use case:** Live production analytical pipelines, multi-site computations, and processing secured datasets under strict institutional data policies.
+
+```bash
+brane package push data_transformer:1.0.0
+
+```
 
 ---
 
-### 4.2. Authoring `container.yml`
+## 5. Advanced Package Lifecycle Management
 
-`container.yml` is the package’s “manifest”. It tells Brane how to build and run your code.
+The Brane CLI provides dedicated workflows for ingesting, tracing, and safely deprecating local and remote package components.
 
-A typical `container.yml` contains:
+### Importing and Pulling Existing Packages
 
-- Basic metadata,
-- Build steps and dependencies,
-- File mappings,
-- Runtime entrypoint and actions.
-
-#### 4.2.1. Basic structure
-
-Core fields (conceptual example):
-
-```yaml
-name: my_package
-version: 1.0.0
-kind: ecu
-
-description: "Example package that demonstrates inputs and outputs."
-owners:
-  - "Your Name <you@example.org>"
-name – unique package name.
-version – version string.
-kind – for code packages, typically ecu.
-description / owners – metadata for humans and registries.
-```
-
-####  4.2.2. Environment and dependencies
-Describe the runtime environment for your package:
-
-```yaml
-image: "debian:stable"
-
-dependencies:
-  ubuntu:
-    - python3
-    - python3-yaml
-
-env:
-  - name: PYTHONUNBUFFERED
-    value: "1"
-```
-- image – base container image (for building/running).
--  dependencies – system-level packages (e.g., python3, python3-yaml) to install.
-- env – environment variables inside the container.
-
-Brane uses these fields to build the ECU image so that all required dependencies are present at runtime.
-
-#### 4.2.3. Files and install steps
-You specify which files to include and any install steps needed:
-
-```yaml
-files:
-  - source: "./src"
-    target: "/opt/my_package/src"
-
-install:
-  - "apt-get update"
-  - "apt-get install -y python3 python3-yaml"
-```
-- files – copy code and resources into the container.
-- install – commands run inside the container during build.
-- Some packages also use postinstall for final configuration.
-
-#### 4.2.4. Entrypoint and actions
-The entrypoint defines how Brane runs your package:
-
-```yaml
-entrypoint:
-  kind: "task"
-  exec: "python3 /opt/my_package/src/main.py"
-```
-Actions (functions) are then described (conceptually) to map between Brane workflows and command-line invocation. The manual shows examples where:
-
-- Inputs are passed as YAML via an INPUT environment variable or file,
-- Outputs are written as YAML to stdout,
-- Optional result files are written to /result for Brane to capture.
-
-The precise schema for actions will follow from your current Brane version (e.g., how you declare function names, arguments, and result types); we will align this later when updating CLI and manifest details.
-
-### 4.3. Building and testing packages locally
-Before publishing, you typically:
-
-1. Create container.yml and code files.
-2. Build the package image.
-3. Test the package locally using the Brane CLI.
-
-#### 4.3.1. Building the package
-Conceptually, you use a CLI command like:
+Instead of authoring packages from scratch, you can pull production blueprints directly from shared remote endpoints or standard source control repositories:
 
 ```bash
-# Syntax to be validated later
-brane package build .
-```
-This command:
-
-- Reads container.yml,
-- Builds the container image (using Docker + Buildx),
-- Registers the package in your local Brane client environment.
-
-
-#### 4.3.2. Testing locally
-To test:
-
-1. Use the CLI to test the package function directly (e.g., a “hello world” or “base64 encode” function).
-
-1. Provide input in the expected format (typically via arguments or via a YAML INPUT structure).
-
-1. Inspect:
--  Standard output (YAML response),
-- Any files written to /result inside the container.
-
-
-Example pattern (conceptual):
-
-```bash
-# Syntax to be validated later
-brane package test  my_package:1.0.0 my_function --input '...'
-```
-Internally, Brane:
-
-- Constructs an INPUT payload according to the function signature,
-- Starts the container,
-- Reads the YAML output and any files under /result.
-
-Testing this locally before publishing ensures that:
-
-- Dependencies are correct,
-- Inputs and outputs are handled as expected,
-- Container startup and execution behave properly.
-
-### 4.4. Publishing packages to a Brane instance
-Once the package is working locally, you can publish it to a Brane instance so others can use it.
-
-
-Typical steps:
-
-1. Log in / authenticate to a Brane instance:
-- Configure instance endpoint and client certificates (see Admin section).
-1. - Push the package to the instance:
-Use a CLI command to upload the image and metadata.
-1. Verify that the package appears in the instance’s package list.
-
-#### 4.4.1. Pushing a package
-Conceptual CLI workflow (syntax to be validated):
-
-```bash
-# Authenticate to the instance first (details depend on your setup)
-brane package push my_package:1.0.0
-```
-This operation:
-
-- Uploads the built ECU image and metadata,
-- Registers the package in the instance’s central registry.
-
-After pushing:
-
-- Scientists and other users can discover and use the package in their workflows,
--  You can update the package later by pushing a new version (e.g., 1.1.0).
-
-#### 4.4.2. Verifying published packages
-You (or users) can list remote packages:
-
-```bash
-# List locally cached packages 
-brane package list 
-```
-```bash
-# Search for available packages on the remote registry
-brane package search
-```
-This shows:
-
-- Package names and versions,
-- Whether they are local or remote,
--  Basic metadata (description, owners).
-
-### 4.5. Managing local and remote packages
-The Brane CLI distinguishes between local and remote packages.
- 
-- Local packages:
-- Built on your machine from your source code,
-- Useful for development and local testing.
-- Remote packages:
-- Hosted on a Brane instance’s registry,
-- Available to anyone with access and permissions.
-
-#### 4.5.1. Importing packages from Git or remote sources
-The manual describes importing packages from Git repositories or remote instances:
- 
-- You can import a package from a GitHub repo into your local environment.
-- You can pull a remote package from a Brane instance to get a local copy.
-- Conceptual commands (syntax to be validated):
-
-```bash
-# Import from GitHub
+# Import an entire package project directly from a Git source repository
 brane package import https://github.com/your-org/your-package-repo.git
 
-# Pull a remote package from an instance
-brane package pull some_package:1.2.3
+# Pull a verified, pre-built package down from your remote Brane instance registry
+brane package pull data_transformer:1.0.0
+
 ```
-This allows you to:
 
-- Start from existing packages,
-- Inspect or modify their code locally,
-- Rebuild and publish customized versions.
+### Package Cleanup
 
-#### 4.5.2. Removing packages
-You can clean up packages that are no longer needed.
-
-Conceptual commands (syntax to be validated):
+To free up local compute resources or decommission deprecated assets from centralized tracking indexes:
 
 ```bash
-# Remove a local package
-brane package remove my_package:1.0.0
+# Delete a package from your local development engine cache
+brane package remove data_transformer:1.0.0
 
-# Unpublish a package from a remote instance
-brane package unpublish my_package:1.0.0
-```
-These operations:
+# Unpublish an asset from the remote cluster registry index (requires administrative elevation)
+brane package unpublish data_transformer:1.0.0
 
-Free up local resources (images, metadata),
-Remove remote packages that should no longer be used (subject to appropriate admin rights).
-
-#### 4.5.3. Best practices for package developers
-- Use semantic versioning (e.g., 1.0.0, 1.1.0) to make upgrades explicit.
-- Keep container.yml in version control along with your code.
-- Test locally before publishing:
-- Verify inputs/outputs,
-- Check performance and error handling.
-- Document:
-- Expected inputs and outputs,
-- Dataset requirements,
-- Any side-effects (e.g., external services used).
-
-
-### 4.6. Summary
-For software engineers, Brane provides:
-
-- A package model (ECUs) where you package your logic as containers.
-- A manifest (container.yml) describing metadata, dependencies, files, entrypoint, and actions.
-- CLI workflows to:
-- Build and test packages locally,
-- Publish packages to a Brane instance,
-- Import, pull, and remove packages from various sources.
- 
-These packages become the building blocks that scientists use in their workflows (see Section 6), and their correct definition and behaviour are essential for reliable, policy-aware execution in Brane.
-
-
-### 4.7. Developer Quick Reference
-
-This section summarizes the minimum you need to develop and test a Brane package.
-
-#### 4.7.1. Minimal `container.yml` template (Python example)
-
-```yaml
-name: my_package
-version: 0.1.0
-kind: ecu
-
-description: "Minimal example Brane package."
-owners:
-  - "Your Name <you@example.org>"
-
-image: "python:3.11-slim"
-
-dependencies:
-  ubuntu:
-    - python3
-    - python3-yaml
-
-files:
-  - source: "./src"
-    target: "/opt/my_package/src"
-
-env:
-  - name: PYTHONUNBUFFERED
-    value: "1"
-
-install:
-  - "pip install pyyaml"
-
-entrypoint:
-  kind: "task"
-  exec: "python3 /opt/my_package/src/main.py"
 ```
 
-Directory structure:
+---
 
-```text
-my-package/
-  container.yml
-  src/
-    main.py
-```
-#### 4.7.2. I/O contract for package code (conceptual)
-Brane packages are expected to follow a simple I/O pattern:
+## 6. Developer Reference Summary
 
-Input:
--  Provided as a YAML structure (e.g., via an INPUT environment variable or file).
-  -  Your code parses this YAML to get function arguments.
--  Output:
-  -  Write a YAML response to stdout.
-  -  Optionally write a result file or directory to a known path (commonly /result) for Brane to capture.
+| Lifecycle Phase | Target Command | Foundational Purpose |
+| --- | --- | --- |
+| **Initialize** | `brane new <name>` | Generates the structural skeleton directory.  |
+| **Import** | `brane package import <url>` | Clones an asset pipeline from a remote git repository.  |
+| **Pull** | `brane package pull <package>` | Fetches an operational package down from a remote instance registry.  |
+| **Inspect** | `brane inspect <package>:<version>` | Validates structural inputs and metadata schemas.  |
+| **Compile** | `brane package build .` | Builds the source codebase into an isolated, local container.  |
+| **Test (Local)** | `brane package test <package> <func>` | Safely executes unit tests offline using local runtime mocks.  |
+| **Publish (Remote)** | `brane package push <package>` | Commits and registers the finished image into the global cluster.  |
+| **Inventory** | `brane package list` | Traces all currently cached local and active remote packages.  |
 
-Example main.py (conceptual):
+---
 
-```python
-import os
-import sys
-import yaml
+## 7. Troubleshooting & Verification Checklist
 
-def main():
-    # Read input YAML from environment variable (pattern may vary by Brane version)
-    input_yaml = os.environ.get("INPUT", "{}")
-    data = yaml.safe_load(input_yaml)
+#### Compilation Failures
 
-    # Extract arguments
-    text = data.get("text", "")
-    times = int(data.get("times", 1))
+* Verify your manifest `image:` parameter points to a reachable, base container registry.
 
-    # Do work
-    result = text * times
+* Validate that your system dependencies listed under the `install:` or `dependencies:` headers are compatible with the base distribution layer.
 
-    # Prepare output as YAML
-    output = {"result": result}
+* Ensure all files and directories mapped under the `files:` object physically exist inside your workspace.
 
-    # Write YAML to stdout
-    yaml.safe_dump(output, sys.stdout)
+#### Runtime and Crashes
 
-    # Optionally write a file result (Brane can capture /result or similar)
-    os.makedirs("/result", exist_ok=True)
-    with open("/result/output.txt", "w") as f:
-        f.write(result)
+* Capture exceptions within your scripts and route internal application crashes explicitly to `stderr`.
 
-if __name__ == "__main__":
-    main()
-```
+* Ensure your dictionary extractions cleanly fallback on default parameters if expected keys are absent from the parsed `INPUT` environment payload.
 
-Note: The exact input/output conventions (e.g., which env vars or paths to use) may depend on the current Brane version and its runtime contract. Adjust according to your deployment’s documentation.
+* Verify that your execution code explicitly initialises directory paths before writing data payloads to `/result` to avoid file descriptor permission errors.
 
-#### 4.7.3. Typical lifecycle (commands to be validated)
-1. Build locally
+#### Synchronization and Discovery Issues
 
-```bash
-# In the package directory with container.yml
-brane package build .
-```
-2. Test locally
+* Ensure the target semantic `version:` string in your modified `container.yml` has been explicitly updated before issuing a new `push` command.
 
-```bash
-# Test a function exposed by the package
-brane package test my_package:0.1.0 my_function \
-    --input '{"text": "Hello", "times": 3}'
-```
-Check:
-
--  stdout (YAML output),
--  any files under /result inside the container.
-
-3. Publish to an instance
-
-```bash
-# Assuming instance and credentials are configured
-brane package push my_package:0.1.0
-```
-
-4. List packages (local/remote)
-
-```bash
-brane package list
-```
-All command examples above are structural and may need updating to match the current brane CLI. Use them as patterns, not exact syntax, until we revise them with up‑to‑date notes.
-
-#### 4.7.4. Troubleshooting checklist
-Build fails:
--  Check base image and dependencies/install commands.
--  Ensure paths in files exist and are correct.
--  Package runs but crashes:
--  Log any exceptions and print them to stderr.
--  Verify that input YAML contains the keys you expect.
--  Check that your code can write to /result (permissions, paths).
--  Published package not visible:
--  Confirm you are connected to the correct instance.
--  Check registry health on the Brane instance.
--  Ensure version (version in container.yml) is unique and correctly specified.
--  These patterns cover the common path from “new package skeleton” to “published, usable component” in Brane workflows.
+* Double-check your active client certificates and network endpoints if a newly published component fails to appear inside the shared registry.
