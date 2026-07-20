@@ -20,14 +20,14 @@ nav:
       - "9. References and Related Work": brane-spec/09-references.md
 
   - Brane User Guide:
-      - Overview: brane-user-guide/index.md
-      - "1. Introduction": brane-user-guide/01-introduction.md
-      - "2. Quick Start for Scientists": brane-user-guide/02-quick-start-scientists.md
-      - "3. System Engineers: Deploying Brane": brane-user-guide/03-system-engineers-deploying.md
-      - "4. Software Engineers": brane-user-guide/04-software-engineers.md
-      - "5. Data Policy Experts": brane-user-guide/05-data-policy-experts.md
-      - "6. Scientists: Workflows & Datasets": brane-user-guide/06-Scientists.md
-      - "7. Administrators": brane-user-guide/07-Administrators.md
+    - Overview: brane-user-guide/index.md
+    - 1. Introduction: brane-user-guide/01-introduction.md
+    - 2. Quick Start for End Users: brane-user-guide/02-quick-start-endusers.md
+    - 3. Scientists & End Users Guide: brane-user-guide/03-endusers-scientists.md
+    - 4. Software Engineers: brane-user-guide/04-software-engineers.md
+    - 5. Data Policy Experts: brane-user-guide/05-data-policy-experts.md
+    - 6. Administrators: brane-user-guide/06-administrators.md
+    - 7. BraneScript Orchestration: brane-user-guide/07-branscript.md
 
   - Brane Tutorials:
       - Overview: brane-tutorials/index.md

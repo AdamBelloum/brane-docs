@@ -1,5 +1,6 @@
 # ignore tmp directory
 /tmp
+*.bak
 
 # ignore Mac related file
 .DS_Store
