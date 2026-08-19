@@ -1,145 +1,163 @@
-# Brane Specification
+# 2. Deployed Brane Architecture Reference
 
-> Audience: Brane core developers and contributors  
-> Scope: This document describes the internal architecture, data and configuration models, runtime, and language interfaces of Brane. It is not a user guide.
+> **Audience:** Administrators, infrastructure engineers, and contributors maintaining the Docker/Ansible deployment.
+> **Baseline:** `brane-deployment` `main@369392b991e0c3290739077d0ad071b5ce3f76bb`; runtime verification on 2026-08-19.
+> **Scope:** The active Docker/Ansible deployment, not a general Brane language or protocol specification.
 
----
+## 2.1 Deployment model
 
-## 2. Architectural Overview
+The supported deployment is managed from `docker-deployment/` through Ansible and its inventory. The verified baseline consists of one central node and two worker domains.
 
-### 2.1. Federated deployment model
+- **Central node:** API, driver, planner, proxy, Scylla, Kafka, and ZooKeeper containers.
+- **Worker domain:** proxy, registry, checker, and job containers, plus local configuration, certificates, policy material, data, results, and packages.
+- **Control plane:** An administrator workstation uses Ansible and SSH with the deployment inventory.
 
-A Brane deployment consists of:
+The current deployment templates assume two named worker positions. Do not describe arbitrary worker-count scaling as supported without updating and validating those templates.
 
-- A **central orchestrator** that coordinates workflow execution.
-- One or more **domains** that provide compute and data.
-- A **network of registries** and configuration files that describe where components live and how they communicate.
+## 2.2 Topology
 
-Domains retain autonomy:
+```mermaid
+flowchart LR
+    control["Administrator control workstation<br>Inventory, Ansible, SSH"]
+    subgraph central["Central node"]
+        api["brane-api<br>Host port 50051"]
+        drv["brane-drv<br>Host port 50053"]
+        plr["brane-plr<br>Internal Docker network"]
+        cprx["brane-prx<br>Internal Docker network"]
+        scylla["Scylla"]
+        kafka["Kafka"]
+        zoo["ZooKeeper"]
+    end
+    subgraph worker_a["Worker domain: client-node-2"]
+        aprx["brane-prx<br>Internal Docker network"]
+        areg["brane-reg<br>Host port 50051"]
+        achk["brane-chk-client-node-2<br>Host ports 50052 and 50054"]
+        ajob["brane-job-client-node-2<br>Shares checker network namespace"]
+    end
+    subgraph worker_b["Worker domain: client-node-3"]
+        bprx["brane-prx<br>Internal Docker network"]
+        breg["brane-reg<br>Host port 50051"]
+        bchk["brane-chk-client-node-3<br>Host port 50052"]
+        bjob["brane-job-client-node-3<br>Shares checker network namespace"]
+    end
+    control --> api
+    control --> drv
+    ajob --> achk
+    bjob --> bchk
+```
 
-- They decide which packages and datasets they expose.
-- They enforce their own data policies for access and movement.
-- They maintain local audit logs of workflow activity.
+The diagram identifies deployed placement and verified host-port publication. Firewall rules, certificates, proxy configuration, and active policies still determine whether a connection or workflow is permitted.
 
-The orchestrator:
+## 2.3 Central-node services
 
-- Receives workflows (in WIR form) from frontends.
-- Plans which domains will execute which tasks.
-- Tracks data dependencies and data movement.
-- Records global audit information.
+All central Brane containers run on `brane-central_default`.
 
-Brane assumes an underlying infrastructure with:
+| Container | Verified host port | Mounted inputs | Responsibility |
+|---|---:|---|---|
+| `brane-api` | `50051/tcp` | `/node.yml`, certificates, `infra.yml`, packages | Central API service. |
+| `brane-drv` | `50053/tcp` | `/node.yml`, certificates, `infra.yml` | Driver service for workflow execution. |
+| `brane-plr` | None | `/node.yml`, `infra.yml` | Planner on the internal network. |
+| `brane-prx` | None | `/node.yml`, certificates, `proxy.yml` | Central proxy on the internal network. |
+| `brane-central-aux-scylla-1` | None published | Scylla data volume | Supporting database. |
+| `brane-central-aux-kafka-1` | None published | None | Supporting message broker. |
+| `brane-central-aux-zookeeper-1` | None published | None | Kafka coordination. |
 
-- Stable network routes between orchestrator and domains.
-- Configured nodes for central services, workers, and proxies.
-- Per-domain configuration that binds logical components to concrete hosts.
+Runtime verification confirms `brane-api` on `50051` and `brane-drv` on `50053`. A legacy configuration value using central port `30051` conflicts with this state and must not be documented as the active API endpoint.
 
-### 2.2. Roles and responsibilities
+## 2.4 Worker-domain services
 
-Brane distinguishes several roles to separate concerns:
+Each verified worker runs its Brane containers on `brane-worker_default`.
 
-#### Orchestrator
+| Container | Verified host port | Mounted inputs | Responsibility |
+|---|---:|---|---|
+| `brane-prx` | None | `/node.yml`, certificates, `proxy.yml` | Worker-domain proxy. |
+| `brane-reg` | `50051/tcp` | `/node.yml`, backend configuration, certificates, secrets, policy database, data, results | Worker registry and local resource-access service. |
+| `brane-chk-<location-id>` | `50052/tcp` | `/node.yml`, certificates, secrets, policy database | Policy checker. |
+| `brane-job-<location-id>` | None directly | `/node.yml`, backend configuration, certificates, policy database, data, results, packages, Docker socket | Worker job execution. |
 
-The orchestrator hosts central components responsible for:
+At the audit snapshot, `client-node-2` additionally published `50054/tcp` through the checker/job shared network namespace. `client-node-3` did not publish that port. Do not present `50054` as a cluster-wide endpoint until its configuration difference and intended function are verified.
 
-- Accepting workflows from frontends or APIs.
-- Planning execution across domains.
-- Coordinating data access and movement.
-- Maintaining a global view of workflow progress and audits.
+## 2.5 Checker and job network arrangement
 
-#### Domains (sites)
+`brane-job-<location-id>` uses Docker network mode equivalent to `container:brane-chk-<location-id>`. It shares the checker network namespace rather than receiving an independent Docker address or independently published host ports.
 
-Each domain is responsible for:
+1. The job container has no directly published host port.
+2. The checker publishes ports for their shared network namespace.
+3. Generated worker configuration reaches the checker from the job through `localhost`.
+4. The job mounts `/var/run/docker.sock`; this is privileged operational access required by the current execution arrangement.
 
-- Executing tasks locally (through workers).
-- Managing local datasets and intermediate results.
-- Enforcing domain-specific data-use policies.
-- Maintaining a **local audit log** of activity on that domain.
+## 2.6 Policy and protected runtime material
 
-Domains integrate with Brane through well-defined interfaces:
+The checker mounts the policy database and worker secrets directory. The registry also mounts the policy database and secrets. The job mounts the policy database but not the secrets directory in the verified runtime layout.
 
-- They expose workers and proxies to the orchestrator.
-- They register packages and datasets.
-- They implement policy checks for data movement and access.
+The deployment starts with deny-all policy behaviour. A workflow can reach worker infrastructure and still be denied until an applicable policy has been uploaded and activated.
 
-#### Registry and policy services
+Documentation may name configuration directories and public endpoints, but must not include token values, private keys, certificate bundles, or secret-file contents.
 
-Registries and policy-aware services:
+## 2.7 Generated configuration and persistent paths
 
-- Track available packages and datasets.
-- Resolve references in workflows to actual artifacts.
-- Mediate data transfers between domains, respecting:
-  - Ownership metadata.
-  - Domain-specific rules.
-  - Global policies when applicable.
+### Central node
 
-### 2.3. Logical component model
+Verified installation root: `/home/adam/brane-central/`.
 
-Brane’s architecture is modular. Components are grouped into:
+| Path | Purpose |
+|---|---|
+| `node.yml` | Generated central node configuration mounted into Brane services. |
+| `config/certs/` | Central certificate material. |
+| `config/infra.yml` | Federated infrastructure configuration. |
+| `config/proxy.yml` | Central proxy configuration. |
+| `packages/` | Packages mounted into `brane-api`. |
 
-- **Orchestrator-side components**
-- **Domain-side components**
+### Worker node
 
-#### 2.3.1. Orchestrator-side components
+Verified installation root: `/home/adam/brane-worker/`.
 
-- **Driver**  
-  The driver is the entry point for workflow execution. It receives workflows, delegates planning to the planner, and coordinates with domains to run tasks.
+| Path | Purpose |
+|---|---|
+| `node.yml` | Generated worker node configuration. |
+| `config/backend.yml` | Worker backend configuration. |
+| `config/certs/` | Worker certificate material. |
+| `config/proxy.yml` | Worker proxy configuration. |
+| `config/secrets/` | Worker secret files; never publish contents. |
+| `policies.db` | Local policy-store database. |
+| `data/` | Worker-local datasets. |
+| `results/` | Workflow results. |
+| `packages/` | Packages available to worker jobs. |
 
-- **Planner**  
-  The planner analyzes workflows, resolves data dependencies, and assigns tasks to domains. It decides when data must move between domains and how to respect policies.
+These paths identify the verified deployment user and layout. Other deployments must derive equivalent paths from inventory variables rather than copying them literally.
 
-- **Global audit log**  
-  The global audit log records cross-domain activity:
-  - Workflow submissions.
-  - Task assignments.
-  - Data movements between domains.
+## 2.8 Administrator health check
 
-  It complements local audit logs, which are maintained by domains.
+The health check is read-only. It verifies expected installation paths and containers through Ansible inventory lookup plus SSH.
 
-- **Orchestrator proxy**  
-  The proxy abstracts communication between the orchestrator and domain-side components. It handles network details and routing so that higher-level components can focus on logic.
+```sh
+cd /path/to/brane-deployment/docker-deployment
+PATH="../venv/bin:$PATH" bash ../scripts/brane_healthcheck.sh --report
+```
 
-#### 2.3.2. Domain-side components
+At the baseline audit, this command completed with 37 checks passed and 0 checks failed. The default inventory path is relative to the current working directory; invoking the script from the repository root without an explicit inventory path fails.
 
-- **Worker**  
-  A worker executes tasks on a domain’s compute resources. It:
-  - Receives task descriptions from the orchestrator.
-  - Runs code packaged in ECUs.
-  - Produces intermediate results and datasets.
+## 2.9 Superseded identifiers and procedures
 
-- **Local audit log**  
-  The local audit log records domain-level activity. It is controlled by the domain and can follow domain-specific retention and access rules.
+Do not use these as current operational identifiers:
 
-- **Checker**  
-  The checker enforces domain policies for data access and movement. It decides:
-  - Whether a workflow may read or write a given dataset.
-  - Whether data can be transferred to another domain.
-  - Under which conditions a data transfer is allowed.
+- `brane-driver`; use `brane-drv`.
+- `brane-planner`; use `brane-plr`.
+- `brane-registry`; use `brane-reg` on workers.
+- `brane-proxy`; use `brane-prx`.
+- Manual topology setup based on standalone `branectl download`, `branectl generate`, and `branectl start` commands.
 
-- **Domain proxy**  
-  Similar to the orchestrator proxy, the domain proxy manages domain-side communication and exposures of services (workers, registries, etc.) to the outside world.
+Direct `branectl` procedures are assessed separately in the command audit.
 
-### 2.4. Data and workflow model (high level)
+## 2.10 Verification record
 
-Brane treats workflows as **data-dependency graphs**:
-
-- Nodes represent tasks (package functions) or control-flow constructs.
-- Edges represent dependencies between tasks and data.
-
-From the orchestrator’s perspective:
-
-- Each workflow has a set of required datasets and a set of produced results.
-- Tasks may execute on different domains depending on:
-  - Where required data resides.
-  - Which domain hosts the needed package.
-  - Policy constraints on data movement.
-
-Data movement is:
-
-- Explicit in the internal representation (WIR).
-- Governed by domain policies and configured mechanisms:
-  - Local access (data already present).
-  - Transfers requested via preprocess kinds (e.g., registry-based transfers).
-
-The rest of this document explains how these concepts are represented concretely in configuration files, internal data structures, and runtime behaviour.
-
+| Check | Result | Date |
+|---|---|---|
+| Central and worker installation layouts | Passed | 2026-08-19 |
+| Expected central and worker containers | Passed | 2026-08-19 |
+| Central API host port `50051` | Verified at runtime | 2026-08-19 |
+| Central driver host port `50053` | Verified at runtime | 2026-08-19 |
+| Worker registry host port `50051` | Verified at runtime | 2026-08-19 |
+| Worker checker host port `50052` | Verified at runtime | 2026-08-19 |
+| Job/checker shared network namespace | Verified at runtime | 2026-08-19 |
+| Worker `client-node-2` extra port `50054` | Observed; semantics pending verification | 2026-08-19 |
