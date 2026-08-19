@@ -125,7 +125,7 @@ This workflow highlights a critical separation of duties within a secure ecosyst
 Before applying policies to a dataset, you must package its metadata using the Brane CLI. Navigate to your dataset configuration path and build the asset:
 
 ```bash
-brane build /datasets/minmax/data/data.yml
+brane data build /datasets/minmax/data/data.yml
 
 ```
 
@@ -135,7 +135,7 @@ Note: This indexes the data structure within your local Brane workspace so it ca
 Policies cannot be deployed to a live node without a cryptographic token signed by the cluster's private infrastructure keys. An administrator must run `branectl` on the control plane, referencing the node's `policy_secret.json`:
 
 ```bash
-branectl generate policy_token <user> <host_name>  <number_of_days>d -s /path/to/policy_secret.json
+branectl generate policy_token <initiator> <system> <duration> -s /path/to/policy_secret.json
 
 ```
 

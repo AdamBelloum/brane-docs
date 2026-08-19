@@ -54,39 +54,21 @@ In Brane:
 - We write a small BraneScript workflow that calls the task and prints the result.
 
 ## 3.3. Installing the Brane CLI
-Download the brane executable from the repository or prebuilt binaries. Binaries typically follow the pattern:
+
+This tutorial requires a current Brane CLI. In the baseline deployment, the CLI is installed for the deployed `adam` user at:
 
 ```text
-brane-<os>-<arch>
-<os>: windows, darwin (macOS), linux
-<arch>: x86_64 or aarch64 (M1/M2 Macs)
-Rename the executable to brane for convenience:
+/home/adam/.local/bin/brane
 ```
 
-```bash
-# Windows
-move .\brane-windows-x86_64 .\brane
-
-# macOS (Intel)
-mv ./brane-darwin-x86_64 ./brane
-
-# macOS (M1/M2)
-mv ./brane-darwin-aarch64 ./brane
-
-# Linux
-mv ./brane-linux-x86_64 ./brane
-(Optional but recommended on Unix) Put brane in your PATH:
-```
+When logged in as that user, make it available in the current shell and verify the installation:
 
 ```bash
-sudo mv ./brane /usr/local/bin/brane
-Verify installation:
-
-```bash
+export PATH="/home/adam/.local/bin:$PATH"
 brane --version
-You should not see “command not found” errors.
-If you prefer not to modify PATH, you can invoke ./brane instead of brane and adjust later.
 ```
+
+If you use a different workstation or installation method, ensure that `brane --version` succeeds before continuing. This tutorial does not assume a particular standalone download filename or installation location.
 
 ## 3.4. Writing the code (hello.py)
 We implement the task logic in Python. Create a file hello.py:
@@ -175,8 +157,8 @@ Buildx is available (ships with recent Docker; older setups may require manual i
 Then build the package:
 
 ```bash
-# Syntax to be validated later
-brane build ./container.yml
+# On Apple Silicon, build for the x86_64 deployment nodes.
+brane package build --arch x86_64 ./container.yml
 ```
 
 You should see a success message similar to:
@@ -187,8 +169,7 @@ Successfully built version 1.0.0 of container (ECU) package hello_world.
 List local packages:
 
 ```bash
-# Syntax to be validated later
-brane list
+brane package list
 ```
 
 You should see hello_world among the packages.
@@ -202,8 +183,7 @@ See outputs.
 Run:
 
 ```bash
-# Syntax to be validated later
-brane test hello_world
+brane package test hello_world
 ```
 You’ll see a prompt to choose the function (only hello_world in this package). Since there are no inputs, Brane will:
 
@@ -236,10 +216,13 @@ Explanation:
 Run:
 
 ```bash
-# Syntax to be validated later
-brane run ./workflow.bs
+# Replace <USE_CASE> with the use-case registry for your environment.
+brane workflow run <USE_CASE> ./workflow.bs
 ```
-You should see:
+
+Replace `<USE_CASE>` with the use-case registry configured for your environment. For a remote submission, first select a configured instance and add the required certificates, then append `--remote`.
+
+If the workflow completes successfully, its output includes:
 
 ```text
 Hello, world!
@@ -248,8 +231,8 @@ Hello, world!
 Brane provides a REPL (Read‑Eval‑Print Loop) for BraneScript:
 
 ```bash
-# Syntax to be validated later
-brane repl
+# Replace <USE_CASE> with the use-case registry for your environment.
+brane workflow repl <USE_CASE>
 ```
 
 Example interactive session:

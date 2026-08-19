@@ -94,8 +94,9 @@ functions:
 Compile your script and manifest into a containerized Brane package, making it available to the runtime environment:
 
 ```bash
-brane build
-brane push
+# On Apple Silicon, build for the x86_64 deployment nodes.
+brane package build --arch x86_64 ./container.yml
+brane package push hello_world:1.0.0
 
 ```
 
