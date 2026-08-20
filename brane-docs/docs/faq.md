@@ -30,3 +30,6 @@ Quesion:
 
 ---
 
+
+---
+*Last verified against [brane-deployment](https://github.com/AdamBelloum/brane-deployment) @ `369392b9` on 2026-08-20.*

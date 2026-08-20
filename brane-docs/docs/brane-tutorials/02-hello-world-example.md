@@ -120,3 +120,6 @@ brane workflow run --remote <WORKFLOW_USER> packages/hello_world/hello_world.bs
 A denial after remote submission can be expected when deny-all is active or the active policy does not allow the workflow. It is not necessarily an infrastructure failure.
 
 For the complete user path, see the [Brane User Workflow Guide](../brane-user-guide/03-endusers-scientists.md).
+
+---
+*Last verified against [brane-deployment](https://github.com/AdamBelloum/brane-deployment) @ `369392b9` on 2026-08-20.*

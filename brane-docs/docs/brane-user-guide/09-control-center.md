@@ -199,3 +199,6 @@ Equivalent manual steps:
 | frontend/modules/Deploy_Infrastructure.py | Infrastructure deployment flow |
 | frontend/modules/Cluster_Configurator.py | Cluster configuration flow |
 | frontend/modules/Deploy_cli.py | Workstation setup page |
+
+---
+*Last verified against [brane-deployment](https://github.com/AdamBelloum/brane-deployment) @ `369392b9` on 2026-08-20.*

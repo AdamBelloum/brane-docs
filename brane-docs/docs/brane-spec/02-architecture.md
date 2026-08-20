@@ -161,3 +161,6 @@ Direct `branectl` procedures are assessed separately in the command audit.
 | Worker checker host port `50052` | Verified at runtime | 2026-08-19 |
 | Job/checker shared network namespace | Verified at runtime | 2026-08-19 |
 | Worker `client-node-2` extra port `50054` | Observed; semantics pending verification | 2026-08-19 |
+
+---
+*Last verified against [brane-deployment](https://github.com/AdamBelloum/brane-deployment) @ `369392b9` on 2026-08-20.*

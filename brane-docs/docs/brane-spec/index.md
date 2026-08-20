@@ -14,3 +14,5 @@
 7. [BraneScript Frontend](07-branescript.md)  
 8. [Extensibility and Future Work](08-extensibility.md)  
 9. [References and Related Work](09-references.md)
+---
+*Last verified against [brane-deployment](https://github.com/AdamBelloum/brane-deployment) @ `369392b9` on 2026-08-20.*

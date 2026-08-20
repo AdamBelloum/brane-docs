@@ -177,3 +177,5 @@ BraneScript is a user-facing workflow language that:
 - Relies on the VM for execution.
 
 For core developers, BraneScript is mainly a **compiler concern**; the key is the mapping from language constructs to WIR and VM semantics.
+---
+*Last verified against [brane-deployment](https://github.com/AdamBelloum/brane-deployment) @ `369392b9` on 2026-08-20.*

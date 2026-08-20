@@ -22,3 +22,5 @@ Currently included:
   - Technical presentation of the Brane PoC setup.
 
 Use the links above or the sidebar to navigate to the specific tutorial.
+---
+*Last verified against [brane-deployment](https://github.com/AdamBelloum/brane-deployment) @ `369392b9` on 2026-08-20.*

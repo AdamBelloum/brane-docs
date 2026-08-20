@@ -1,0 +1,31 @@
+name: Open sync issue on brane-deployment release
+
+on:
+  repository_dispatch:
+    types: [brane-deployment-release]
+
+jobs:
+  open-issue:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Sync docs with brane-deployment @ ${{ github.event.client_payload.version }}`,
+              body: [
+                '## Documentation sync required',
+                '',
+                `brane-deployment released **${{ github.event.client_payload.version }}**`,
+                `Commit: ${{ github.event.client_payload.sha }}`,
+                `Release: ${{ github.event.client_payload.url }}`,
+                '',
+                '## Steps',
+                '- [ ] Create branch `docs/sync-${{ github.event.client_payload.version }}`',
+                '- [ ] Run QA checklist from CONTRIBUTING.md',
+                '- [ ] Update baseline reference in affected guides',
+                '- [ ] Open PR and merge',
+              ].join('\n')
+            })

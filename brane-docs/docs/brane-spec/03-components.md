@@ -22,3 +22,5 @@ Planned subsections:
   - 3.3.1. Global registry  
   - 3.3.2. Domain registry  
   - 3.3.3. Node and service mapping
+---
+*Last verified against [brane-deployment](https://github.com/AdamBelloum/brane-deployment) @ `369392b9` on 2026-08-20.*

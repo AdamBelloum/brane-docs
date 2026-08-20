@@ -276,3 +276,6 @@ The default deployment policy is deny-all. A remote workflow may reach the clust
 | Workflow execution fails after policy approval | User, then Administrator | Check workflow inputs and task status; use the infrastructure health report if the failure indicates service unavailability. |
 
 For deployed-service topology and ports, see the [Deployed Brane Architecture Reference](../brane-spec/02-architecture.md).
+
+---
+*Last verified against [brane-deployment](https://github.com/AdamBelloum/brane-deployment) @ `369392b9` on 2026-08-20.*

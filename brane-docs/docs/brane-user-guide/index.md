@@ -33,3 +33,6 @@ This guide is designed to help different roles understand and interact with the 
 * **[7. BraneScript Orchestration Guide](07-branscript.md)**: Complete cookbook detailing workflow control loops, functional piping, and multi-site pipeline optimization.
 
 ```
+
+---
+*Last verified against [brane-deployment](https://github.com/AdamBelloum/brane-deployment) @ `369392b9` on 2026-08-20.*

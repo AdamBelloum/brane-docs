@@ -1,7 +1,6 @@
 # ignore tmp directory
 /tmp
 *.bak
-ven/
 
 # sprints related documents
 SPRINT.md
@@ -12,3 +11,4 @@ brane-docs/audits/
 
 # ignore test files and directoriies
 site/
+venv/

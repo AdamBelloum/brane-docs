@@ -200,3 +200,6 @@ For each activation, record:
 - expected verification workflow and outcome.
 
 After activation, tell the User which policy condition has changed and which controlled workflow may be retried. If the workflow remains denied, compare the actual identifiers and requested data movement with the active policy before changing infrastructure.
+
+---
+*Last verified against [brane-deployment](https://github.com/AdamBelloum/brane-deployment) @ `369392b9` on 2026-08-20.*

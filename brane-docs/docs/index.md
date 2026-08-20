@@ -6,7 +6,11 @@ Welcome to the Brane documentation. This repository contains three main document
 - **Brane User Guide** – practical usage guide organized by user role (system engineer, software developer, scientist, data policy expert, administrator).  
 - **Brane Tutorials** – hands‑on exercises and workshop material (Hello World, pipelines, event scenarios).
 
-> Note: CLI commands in these docs may still reflect older Brane versions; treat them as patterns and update them as needed for your deployment.
+> **Note:** These docs describe usage of
+> [brane-deployment](https://github.com/AdamBelloum/brane-deployment)
+> — a separate repository. The deployment baseline this documentation
+> was last verified against is noted at the bottom of each guide.
+> -CLI commands in these docs may still reflect older Brane versions; treat them as patterns and update them as needed for your deployment.
 
 ---
 
@@ -68,3 +72,6 @@ Hands‑on tutorials and scenario notes used in demos and workshops:
 - CLI examples may require alignment with the current Brane CLI (`brane` / `branectl`) before use in production or training.
 
 Use this `index.md` as the main entry point when browsing the documentation in the Git repo or a rendered docs site.
+
+---
+*Last verified against [brane-deployment](https://github.com/AdamBelloum/brane-deployment) @ `369392b9` on 2026-08-20.*

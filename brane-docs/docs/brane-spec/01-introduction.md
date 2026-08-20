@@ -114,3 +114,6 @@ This document is organized for developers who work on Brane’s core and its ext
   Extension points and planned evolution.
 
 ---
+
+---
+*Last verified against [brane-deployment](https://github.com/AdamBelloum/brane-deployment) @ `369392b9` on 2026-08-20.*

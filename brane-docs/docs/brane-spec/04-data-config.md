@@ -237,3 +237,6 @@ The worker checker and registry mount both `policies.db` and `config/secrets/`. 
 | Worker `brane-chk-<location-id>` | `50052/tcp` |
 
 Worker `client-node-2` additionally published `50054/tcp` at the audit snapshot. Its purpose is not yet verified, so it is not a standard cluster-wide endpoint.
+
+---
+*Last verified against [brane-deployment](https://github.com/AdamBelloum/brane-deployment) @ `369392b9` on 2026-08-20.*

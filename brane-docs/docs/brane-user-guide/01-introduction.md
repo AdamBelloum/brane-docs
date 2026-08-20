@@ -116,3 +116,6 @@ The remainder of this guide explains how each role interacts with these componen
 Some command examples may still use older CLI syntax. We will keep them conceptually in place and **update them later**, based on deployment notes and current CLI versions.
 
 ---
+
+---
+*Last verified against [brane-deployment](https://github.com/AdamBelloum/brane-deployment) @ `369392b9` on 2026-08-20.*

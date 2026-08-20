@@ -36,3 +36,5 @@ The following materials are associated with this tutorial:
 - Introduction slides
 
 The next chapters contain the rewritten hands‑on instructions for Parts 1 and 2.
+---
+*Last verified against [brane-deployment](https://github.com/AdamBelloum/brane-deployment) @ `369392b9` on 2026-08-20.*

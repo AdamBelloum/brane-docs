@@ -274,3 +274,6 @@ User: package, instance, certificate registration, workflow, task output
 ```
 
 A remote workflow can reach a healthy cluster and still be denied by policy. Treat this as a policy-management outcome unless task output indicates a connection or service failure.
+
+---
+*Last verified against [brane-deployment](https://github.com/AdamBelloum/brane-deployment) @ `369392b9` on 2026-08-20.*

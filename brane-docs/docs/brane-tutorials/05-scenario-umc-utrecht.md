@@ -72,3 +72,6 @@ If you organize a UMC-style workshop today:
   - Remote execution,
   - Governance (data policies, audit),
   - Integration with notebook-based tooling (e.g., updated Brane IDE or other frontends).
+
+---
+*Last verified against [brane-deployment](https://github.com/AdamBelloum/brane-deployment) @ `369392b9` on 2026-08-20.*

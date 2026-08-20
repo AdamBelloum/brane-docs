@@ -285,3 +285,6 @@ brane package unpublish data_transformer:1.0.0
 * Ensure the target semantic `version:` string in your modified `container.yml` has been explicitly updated before issuing a new `push` command.
 
 * Double-check your active client certificates and network endpoints if a newly published component fails to appear inside the shared registry.
+
+---
+*Last verified against [brane-deployment](https://github.com/AdamBelloum/brane-deployment) @ `369392b9` on 2026-08-20.*

@@ -290,3 +290,5 @@ In Part 2 you:
 - Ran the workflow locally (and conceptually remotely).
 
 This tutorial demonstrates how Brane handles real‑world, data‑heavy pipelines and how scientists can work with datasets, intermediate results, and multi‑domain execution.
+---
+*Last verified against [brane-deployment](https://github.com/AdamBelloum/brane-deployment) @ `369392b9` on 2026-08-20.*

@@ -1221,3 +1221,6 @@ Use this guide as:
 - A **reference** while writing and reviewing workflows.
 - A **bridge** between tutorial examples (e.g., Hello World, Disaster Tweets) and more advanced applications.
 - A base for exploring advanced chapters (e.g., OOP with classes, merge strategies in parallel, policy-aware data movement) in the full BraneScript documentation and specification.
+
+---
+*Last verified against [brane-deployment](https://github.com/AdamBelloum/brane-deployment) @ `369392b9` on 2026-08-20.*

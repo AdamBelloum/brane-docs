@@ -50,3 +50,6 @@ See the complete [Hello, World! tutorial](../brane-tutorials/02-hello-world-exam
 A configured instance and registered certificate bundle establish connectivity and identity. They do not, by themselves, grant access to data or execution. The target domain policy must also permit the workflow.
 
 For policy-denied submissions, contact the Policy Manager. For connection or infrastructure failures, contact the Administrator.
+
+---
+*Last verified against [brane-deployment](https://github.com/AdamBelloum/brane-deployment) @ `369392b9` on 2026-08-20.*

@@ -24,3 +24,6 @@ Welcome to the practical guides for using the Brane framework. These step-by-ste
 * **[3. Disaster Tweets Example](03-disaster-tweets-example.md)**: A complete, real-world data science pipeline using machine learning models.
 * **[4. Scenario: ICT.OPEN 2023](04-scenario-ictopen.md)**: Walkthrough of the ICT.OPEN platform demonstration.
 * **[5. Scenario: UMC Utrecht Demo](05-scenario-umc-utrecht.md)**: Secure processing workflow deployed for clinical environments.
+
+---
+*Last verified against [brane-deployment](https://github.com/AdamBelloum/brane-deployment) @ `369392b9` on 2026-08-20.*

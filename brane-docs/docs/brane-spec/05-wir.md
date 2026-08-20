@@ -155,3 +155,5 @@ WIR provides a stable, graph-based internal language with:
 - Clear separation between frontend syntax and runtime execution.
 
 Frontends must compile into valid WIR; the VM and planner must execute WIR according to these semantics.
+---
+*Last verified against [brane-deployment](https://github.com/AdamBelloum/brane-deployment) @ `369392b9` on 2026-08-20.*

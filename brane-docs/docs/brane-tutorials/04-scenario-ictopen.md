@@ -59,3 +59,6 @@ If you re-run an ICT.OPEN-style tutorial today:
   - [Disaster Tweets Workflow](03-disaster-tweets-example.md).
 - Adjust time blocks as needed.
 - Update CLI commands to match your current Brane version and environment.
+
+---
+*Last verified against [brane-deployment](https://github.com/AdamBelloum/brane-deployment) @ `369392b9` on 2026-08-20.*

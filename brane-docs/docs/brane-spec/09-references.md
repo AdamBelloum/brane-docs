@@ -28,3 +28,6 @@ While the current specification does not include a full survey, Brane’s contex
   Approaches using automata, model checking, or active learning to reason about system behaviour and compliance, aligned with Brane’s emphasis on well‑defined interfaces and behaviour for orchestrator and domains.
 
 Future versions of the specification may expand this section to more thoroughly position Brane among federated workflow engines, policy‑aware data platforms, and formal verification frameworks.
+
+---
+*Last verified against [brane-deployment](https://github.com/AdamBelloum/brane-deployment) @ `369392b9` on 2026-08-20.*
