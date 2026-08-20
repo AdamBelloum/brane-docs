@@ -1,321 +1,276 @@
-# Brane End-User & Workflow Authoring Guide
+# Brane User Workflow Guide
 
-**Audience:** Data Scientists, Analysts, and Workflow Developers  
-**Purpose:** Introduction to the Brane ecosystem, executing introductory tutorials, and authoring complex distributed workflows using BraneScript and Bakery.
+**Audience:** Workflow users who discover resources, prepare workflows, and submit local or remote Brane runs.
 
----
+This guide describes the user workflow supported by `brane-deployment` baseline `369392b991e0c3290739077d0ad071b5ce3f76bb`.
 
-## 1. Ground Rules & Operational Assumptions
+Users work with packages, datasets, configured instances, certificate bundles, workflows, and workflow results. Administrators deploy infrastructure and issue certificate bundles. Policy Managers upload and activate domain policies.
 
-Before you begin interacting with the framework, ensure you understand the boundaries of your environment and user role. This guide operates under three core assumptions:
+## User responsibilities
 
-1.  **Deployed Infrastructure:** We assume a functional Brane infrastructure cluster has already been successfully deployed by your infrastructure team. If you do not know the connection endpoints, domain names, or network parameters, **you must contact your system administrator** before attempting remote execution.
-2.  **The Scope of Local Examples:** The `helloworld` project outlined in Section 4 is a simplified, single-node toy example designed solely to validate that your local CLI installation works. It does not reflect a full distributed production workflow.
-3.  **Package Dependency & Collaboration:** To author meaningful, real-world workflows in BraneScript or Bakery, you must import pre-existing functional packages. If you cannot find the specialized tools, algorithms, or libraries required for your data analysis, **you should consult your software development team or system administrator** to verify if those packages have been built and pushed to the registry.
+A user is responsible for:
 
----
+1. discovering available packages and datasets;
+2. configuring and selecting a Brane instance;
+3. registering an Administrator-supplied certificate bundle;
+4. building and testing packages where appropriate;
+5. creating and submitting local or remote workflows;
+6. monitoring workflow tasks and interpreting their outcome.
 
-## 2. What Is Brane?
+A user does not deploy infrastructure, create policy-manager tokens, upload policies, or activate policy versions.
 
-Brane is a **programmable orchestration framework** designed to simplify the execution of data-intensive applications across distributed computing environments—ranging from a local machine to multi-site infrastructures.
+## 1. Start from the deployment workspace
 
-The framework abstracts away lower-level technical complexities such as container runtime management, cross-site data transfers, and security policies. This allows you to focus exclusively on your analytical logic:
-*   **Compose workflows** using an intuitive, high-level scripting language (BraneScript) or declarative configurations (Bakery[g].
-*   **Leverage reusable building blocks** (Brane packages) that wrap code written in Python, R, or standard shell scripts.
-*   **Execute safely across domains** while maintaining full compliance with localized data governance policies[g].
-
-### Core Roles in the Ecosystem
-
-| Role | Core Objective | Primary Interfaces |
-|---|---|---|
-| **Scientist / End User** | Composes, executes, and monitors data workflows using existing functions. | `brane` CLI |
-| **Software Developer** | Wraps raw source code into portable, reusable Brane packages. | `brane` CLI |
-| **System Administrator** | Deploys, configures, and monitors the physical cluster nodes. | `branectl` CLI |
-
----
-
-## 3. Setting Up Your Workspace
-
-This guide assumes your infrastructure administrator has already deployed the Brane cluster, provisioned your user account, and provided you with your unique **client authentication certificates**.
-
-### The `brane` User CLI
-As an end-user, your primary tool is the `brane` CLI. It is entirely separate from the administrative `branectl` tool used by platform engineers. You will use `brane` to build packages locally, query data registries, and submit workflows.
-
-Verify that your workstation has the tool installed correctly:
-```bash
-brane --version
-
-```
-
-*(If the command is not recognized, install brace CLI as described in the guide [intalling-brane-tools](08-brane-tools.md)*
-
----
-
-## 4. Quick-Start Tutorial: Your First Workflow
-
-This short walkthrough demonstrates the complete lifecycle of creating a local script package and executing your first workflow file.
-
-### Step 1: Initialize a Project Workspace
-
-Create a clean directory to store your package configurations:
-
-```bash
-brane new helloworld
-cd helloworld
-
-```
-
-### Step 2: Write the Execution Script
-
-Create a simple script named `helloworld.py` containing the logic you want to containerize:
-
-```python
-# helloworld.py
-def hello_world():
-    return "Hello, world!"
-
-```
-
-### Step 3: Describe the Package Interface
-
-Every package requires a `container.yml` file. This metadata file acts as a manifest that maps your underlying code functions to the Brane runtime ecosystem:
-
-```yaml
-name: hello_world
-version: 1.0.0
-functions:
-  hello_world:
-    command: python3 helloworld.py
-
-```
-
-### Step 4: Build and Register
-
-Compile your script and manifest into a containerized Brane package, making it available to the runtime environment:
-
-```bash
-# On Apple Silicon, build for the x86_64 deployment nodes.
-brane package build --arch x86_64 ./container.yml
-brane package push hello_world:1.0.0
-
-```
-
-### Step 5: Write and Execute the BraneScript Workflow
-
-Create a new file named `HelloWorld.bs` in your workspace:
-
-```branescript
-// HelloWorld.bs
-import hello_world;
-
-println(hello_world());
-
-```
-
-Run the workflow locally using the CLI:
-
-```bash
-brane workflow run HelloWorld.bs
-
-```
-
-**Expected Output:**
+The `brane-deployment` repository provides user resources at its root:
 
 ```text
-Hello, world!
-
+packages/
+datasets/
+certs/
+workflow_codes/
 ```
 
----
+The current baseline includes:
 
-## 5. Workflow Formulation Mechanics
+| Resource | Location | Purpose |
+|---|---|---|
+| Hello World package | `packages/hello_world/` | Minimal package and local-workflow example. |
+| minmax package | `packages/minmax/` | Package example with associated dataset material. |
+| minmax dataset configuration | `datasets/minmax/data/data.yml` | Dataset configuration source. |
+| Certificate bundles | `certs/<domain>/` | Administrator-supplied domain access material. |
 
-Brane provides two distinct paradigms for authoring workflows: **BraneScript** (an imperative scripting language) and **Bakery** (a declarative configuration structure). Both compile down to an identical internal Workflow Intermediate Representation (WIR).
+Check the local environment and available resources with the User helper:
 
-### 5.1 Imperative Formulation: BraneScript
+```sh
+cd /path/to/brane-deployment
 
-BraneScript provides a structured environment featuring variables, strongly-typed functions, loops, and traditional control flow:
-
-```branescript
-import "text" version "1.0.0";
-
-fn main() {
-    let message: string = "Hello, Brane!";
-    let result: string = text.uppercase(message);
-    println(result);
-}
-
+bash scripts/brane_helper_user.sh
 ```
 
-### 5.2 Declarative Formulation: Bakery
+Choose **Check environment, connection & report**. The helper checks for the `brane` CLI, Docker, configured instances, and the repository-root `packages/`, `certs/`, and `datasets/` directories.
 
-Bakery allows authors to outline workflows using structured YAML syntax. This is ideal for straightforward pipeline definitions where data moves predictably from step to step:
+## 2. Discover packages and datasets
 
-```yaml
-name: hello-workflow
-steps:
-  - id: uppercase
-    package: text:1.0.0
-    function: uppercase
-    input:
-      text: "Hello, Brane!"
-    output:
-      as: upper_text
+List built packages available to the local Brane CLI:
 
-  - id: print
-    package: util:1.0.0
-    function: println
-    input:
-      text: "{{ upper_text }}"
-
-```
-
----
-
-## 6. Execution Modes: Local vs. Remote
-
-Brane supports two distinct execution environments depending on whether you are verifying syntax or running production analysis over live distributed datasets.
-
-### 6.1 Local Execution Mode
-
-* **Purpose:** For local validation, rapid prototyping, and workflow syntax testing.
-
-
-* **Behavior:** The workflow runs entirely inside your local workstation environment using dummy configurations or local package images. It does not touch the production cluster network or trigger secure data movements.
-
-
-* **Command:**
-```bash
-brane workflow run <WORKFLOW_FILE>
-
-```
-
-
-
-### 6.2 Remote Execution Mode
-
-* **Purpose:** Production data analysis.
-
-
-* **Behavior:** The CLI compiles your BraneScript/Bakery into WIR and submits it to the remote central infrastructure node. The cluster orchestrator verifies domain compliance rules, plans computation tasks across physical worker nodes, handles cross-site data transfers, and triggers secure computation.
-
-
-* **Command Template:**
-```bash
-# Run a workflow on a specifically configured remote instance
-brane workflow run <WORKFLOW_FILE> --remote <CENTRAL_PROXY_URL> --cert ./config/certs/client.pem --key ./config/certs/client-key.pem
-
-```
-
-
-* **Real-World Example:**
-```bash
-brane workflow run analysis_script.bs --remote 10.0.0.10 --cert ./config/certs/client.pem --key ./config/certs/client-key.pem
-
-```
-
-
-
-> 💡 **Tip:** If you have already paired your active environment using `brane instance use <INSTANCE_NAME>`, you do not need to pass the `--remote`, `--cert`, and `--key` flags explicitly every time you submit a job.
-> 
-> 
-
----
-
-## 7. Managing Remote Assets: Packages & Datasets
-
-Workflows rely on two foundational components: functional code units (packages) and persistent data sources (datasets).
-
-### 7.1 Package Discovery
-
-To see what packages have been approved and published to the active Brane instance registry by the engineering team, execute:
-
-```bash
+```sh
 brane package list
-
 ```
 
-To inspect the structural inputs, expected parameter types, and return values of a specific package function, use the information command:
+List registered data resources visible through the current Brane configuration:
 
-```bash
-brane package info <PACKAGE_NAME>:<VERSION>
-
-```
-
-### 7.2 Incorporating Datasets
-
-Brane differentiates between persistent datasets (managed via explicit metadata) and transient intermediate results generated dynamically mid-workflow.
-
-To scan the available active datasets you have permission to access:
-
-```bash
+```sh
 brane data list
-
 ```
 
-#### Utilizing Datasets in BraneScript
+Local source material can also be inspected directly:
 
-Reference your target dataset by its unique name identifier, and explicitly commit your analytical results back to the registry at the conclusion of your script:
+```sh
+cd /path/to/brane-deployment
 
-```branescript
-import "analysis" version "1.0.0";
-
-fn main() {
-    let ds = dataset("clinical_patients");   
-    let summary = analysis.summarize(ds);
-
-    commit(summary, name = "patients_summary_output");
-}
-
+find packages -maxdepth 2 -name container.yml -print
+find datasets -maxdepth 3 -name data.yml -print
 ```
 
----
+A source package under `packages/` is not automatically evidence that it has been built or is available to a remote workflow. Build and test it locally before relying on it.
 
-## 8. Performance & Monitoring
+## 3. Configure and select an instance
 
-When executing workflows in remote mode, you can monitor execution traces and pull execution history directly from the cluster orchestrator.
+An Administrator supplies the central-node hostname or address and the intended instance name.
 
-### Monitoring Background Jobs
+Add an instance and make it active:
 
-For long-running distributed compute jobs, you can track performance metrics, trace execution status, and extract real-time operational logs using the unique identifier returned at submission:
-
-```bash
-brane workflow status <WORKFLOW_ID>
-brane workflow logs <WORKFLOW_ID>
-
+```sh
+brane instance add <CENTRAL_HOST> \
+  --name <INSTANCE_NAME> \
+  --use \
+  --unchecked \
+  --force
 ```
 
----
+Inspect configured instances:
 
-## 9. Troubleshooting Technical Faults
-
-| Symptom | Probable Cause | Corrective Action |
-| --- | --- | --- |
-| `Package not found` | The package has not been pushed to the remote instance registry or contains a typo.
-
- | Run `brane package list` to confirm the precise spelling and version tags available on the cluster.
-
- |
-| `Access denied / Data source missing` | The data governance policies of the hosting domain block your user certificate from reading the data.
-
- | Run `brane data list` to verify visibility. Contact the domain data steward or security expert to adjust authorization policies.
-
- |
-| `Workflow execution failure` | Runtime exception thrown inside a containerized package function.
-
- | Stream execution details using `brane workflow logs <WORKFLOW_ID>`. Validate that all variable formats match the strict inputs defined in the package interface.
-
- |
-
----
-
-## 📖 Deep-Dive Reference Manuals
-
-For granular details on advanced development workflows and comprehensive scripting features, consult the complete specification guides:
-
-* **For comprehensive scripting syntax, control flows, and standard library APIs:** See the [Official BraneScript Reference Guide](https://www.google.com/search?q=branescript-guide.md).
-* **For package compilation standards, multi-stage compilation specifications, and container recipes:** See the [Official Brane Package Deployment Guide](https://www.google.com/search?q=developer-guide.md).
-
+```sh
+brane instance list
 ```
 
+Select a configured instance before a remote submission:
+
+```sh
+brane instance select <INSTANCE_NAME>
 ```
+
+The Streamlit equivalent is **User Workspace → Instances**. Use **Refresh configured instances** to inspect current configuration, then use **Add instance** when no suitable instance exists.
+
+> **Note:** `--unchecked` bypasses validation while adding the instance. Confirm the supplied address with the Administrator before using it.
+
+## 4. Register a certificate bundle
+
+Remote execution requires the appropriate certificate bundle for the target domain. Request it from the Administrator; do not generate domain certificates yourself.
+
+A complete local bundle contains:
+
+```text
+certs/<DOMAIN>/
+├── ca.pem
+├── client.pem
+└── client-key.pem
+```
+
+Register it for the selected instance:
+
+```sh
+brane certs add \
+  certs/<DOMAIN>/ca.pem \
+  certs/<DOMAIN>/client.pem \
+  certs/<DOMAIN>/client-key.pem \
+  --instance <INSTANCE_NAME> \
+  --domain <DOMAIN_HOST>
+```
+
+In the Streamlit interface, use **User Workspace → Certificates → Register certificate**. The interface checks that the selected bundle contains the required three files before starting the registration task.
+
+Certificate private keys are secret material. Do not commit them, upload them to issue trackers, or paste their contents into task output.
+
+## 5. Build and test a package
+
+A package source directory contains a `container.yml` manifest. For example:
+
+```text
+packages/hello_world/container.yml
+```
+
+Build a package on Linux or another x86_64 build host:
+
+```sh
+brane package build --arch x86_64 packages/hello_world/container.yml
+```
+
+When building on Apple Silicon, the deployment nodes still require an x86_64 package target. Use the supplied wrapper:
+
+```sh
+cd /path/to/brane-deployment
+
+bash scripts/package_build_macOS.sh packages/hello_world/container.yml
+```
+
+The wrapper checks for Docker and `brane`, configures an isolated Buildx builder if necessary, and invokes the x86_64 package build.
+
+Test a built package locally:
+
+```sh
+brane package test hello_world
+```
+
+Use **User Workspace → Packages** for task-backed package builds and package-list inspection.
+
+## 6. Create and run a workflow locally
+
+A workflow submission needs:
+
+- a workflow file ending in `.bs`;
+- a user-supplied workflow label;
+- packages referenced by that workflow.
+
+Run a local workflow:
+
+```sh
+brane workflow run <WORKFLOW_USER> <WORKFLOW_FILE>
+```
+
+For the included Hello World example:
+
+```sh
+cd /path/to/brane-deployment
+
+brane workflow run <WORKFLOW_USER> packages/hello_world/hello_world.bs
+```
+
+A user chooses their own workflow label. It identifies the submission; it is not an Administrator-provisioned login.
+
+For a complete first local example, see [Hello, World!](../brane-tutorials/02-hello-world-example.md).
+
+## 7. Submit a workflow remotely
+
+Before remote submission, ensure that:
+
+1. the intended instance is configured and selected;
+2. the applicable certificate bundle is registered;
+3. the target infrastructure is healthy;
+4. the package and data references are correct;
+5. an appropriate domain policy is active.
+
+Submit through the selected instance:
+
+```sh
+brane instance select <INSTANCE_NAME>
+
+brane workflow run --remote <WORKFLOW_USER> <WORKFLOW_FILE>
+```
+
+The shell helper provides an interactive version of the same sequence:
+
+```sh
+cd /path/to/brane-deployment
+
+bash scripts/brane_helper_user.sh
+```
+
+Choose **Run workflow on remote domain**. It checks central connectivity, prompts for a workflow and user label, selects an instance, and then submits remotely.
+
+The Streamlit equivalent is **Workflow Studio**:
+
+1. enter a filename and BraneScript source;
+2. enter a workflow label;
+3. select **Remote configured instance**;
+4. select the target instance;
+5. select **Run workflow**.
+
+Workflow Studio selects the requested instance immediately before remote submission.
+
+## 8. Monitor tasks, results, and history
+
+Frontend operations such as package builds, certificate registration, and workflow execution create persistent task records.
+
+A task can be:
+
+| Status | Meaning |
+|---|---|
+| `queued` | The task record exists and has not yet started. |
+| `running` | The command is executing. |
+| `succeeded` | The command exited with code `0`. |
+| `failed` | The command exited with a non-zero code; inspect its log. |
+| `interrupted` | The process is no longer present and its final exit state could not be recovered. |
+
+After starting a task:
+
+1. inspect the task monitor shown in the current workspace;
+2. use **Refresh task status** while it is running;
+3. open **Task History** for persistent logs and details;
+4. filter Task History by role or status when needed.
+
+The sidebar displays active tasks and recent task summaries. Task History stores task state and logs locally for the frontend; it is not a substitute for Administrator infrastructure health checks.
+
+## 9. Interpret common user-facing failures
+
+| Symptom | Likely cause | First action |
+|---|---|---|
+| `brane` command is unavailable | The CLI is not installed or not on `PATH`. | Use the workstation setup guidance or contact the Administrator. |
+| Package build fails on Apple Silicon | The build target or Docker Buildx setup is unsuitable for x86_64 deployment nodes. | Use `scripts/package_build_macOS.sh` and inspect its task output. |
+| No instance is available for remote execution | No instance has been configured. | Add the Administrator-supplied central address and instance name. |
+| Certificate registration fails | The bundle is incomplete, the domain is wrong, or the certificate lacks required client extensions. | Check for `ca.pem`, `client.pem`, and `client-key.pem`; ask the Administrator to verify or regenerate the bundle. |
+| Remote submission cannot connect | The selected instance, network path, or deployment infrastructure is unavailable. | Confirm the instance address; ask the Administrator to run the infrastructure health check. |
+| Workflow is denied by policy | Deny-all remains active or the active policy does not permit the requested operation. | Contact the Policy Manager with the workflow, package, dataset, and domain identifiers. |
+| Workflow task fails after submission | Workflow syntax, package inputs, dataset availability, package runtime, or infrastructure may be at fault. | Inspect Task History first; involve the Policy Manager for policy denial and the Administrator for infrastructure symptoms. |
+
+## 10. Role hand-off
+
+Use this escalation path:
+
+```text
+User: package, instance, certificate registration, workflow, task output
+→ Policy Manager: policy permission, active version, policy denial
+→ Administrator: certificates, instance endpoint, deployment health, infrastructure availability
+```
+
+A remote workflow can reach a healthy cluster and still be denied by policy. Treat this as a policy-management outcome unless task output indicates a connection or service failure.
