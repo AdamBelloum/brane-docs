@@ -3,6 +3,10 @@
 *.bak
 ven/
 
+# sprints related documents
+SPRINT.md
+brane-docs/audits/
+
 # ignore Mac related file
 .DS_Store
 

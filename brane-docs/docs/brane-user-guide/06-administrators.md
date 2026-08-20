@@ -1,287 +1,278 @@
-# Brane Infrastructure Deployment & Administration Guide
+# Brane Administrator Operations Guide
 
-**Audience:** System Administrators, Infrastructure Engineers  
-**Purpose:** Architecture overview, multi-node deployment, certificate management, and day-to-day administration of the Brane ecosystem.
+**Audience:** Brane infrastructure administrators.
 
----
+This guide describes the supported operational workflow for the Docker/Ansible deployment in `brane-deployment` at baseline revision `369392b991e0c3290739077d0ad071b5ce3f76bb`.
 
-## 1. Architectural Overview & Concepts
+Administrators deploy and maintain infrastructure, verify its health, and provision domain access material. Package testing and workflow submission belong to the User workflow. Policy upload and activation belong to the Policy Manager workflow.
 
-Before deploying the infrastructure, it is critical to understand how Brane instances, domains, and registries interact.
+## Administrator responsibilities
 
-### 1.1 The Brane Instance
-A complete Brane instance consists of a central orchestrator connected to decentralized computational areas:
+Administrators are responsible for:
 
-*   **Central Control Node:** Runs core orchestration services including the driver, planner, central registry, and central proxy.
+1. maintaining the Ansible inventory and deployment prerequisites;
+2. deploying, redeploying, and recovering the central and worker infrastructure;
+3. running infrastructure health checks using administrator SSH access;
+4. generating and securely distributing client-certificate bundles;
+5. generating and securely distributing policy-manager tokens;
+6. using destructive cleanup only when a complete redeployment is intended.
 
-*   **Worker Domains:** Distinct infrastructure sites hosting delegates, local registries, policy checkers, and local proxies where actual computation takes place.
+The Streamlit **Administration** workspace exposes the same four primary operational areas:
 
-### 1.2 Registry Architecture
+- Deploy infrastructure;
+- Run health check;
+- Domain certificates;
+- Policy-manager tokens.
 
-*   **Central Registry:** Hosted on the Control Node. Tracks all executable packages (ECUs), datasets, and known participating domains. It must be accessible by both worker nodes and client CLIs.
+Long-running frontend actions run as monitored tasks. Do not place certificate private keys or token values in browser-visible logs.
 
-*   **Local Registries:** Hosted within individual worker domains. They track local datasets and intermediate results, synchronizing with the central registry when necessary.
+## 1. Prerequisites and inventory
 
----
+Run administration commands from the `brane-deployment` control-machine checkout.
 
-## 2. Prerequisites & Infrastructure Setup
+The deployment requires:
 
-We assume you have provisioned your physical or virtual hosts and configured network routing between them. Ensure every machine meets the following baseline requirements.
+- a Python environment containing Ansible;
+- SSH access from the control machine to the central node and all worker nodes;
+- an Ansible inventory defining the `central` and `workers` groups;
+- Docker available on deployment nodes;
+- a deployment user and host addresses configured in the inventory;
+- the required deployment variables, including central and worker installation directories.
 
-### Runtime Dependencies
+The active inventory is normally:
 
-| Component | Description | Installation Notes |
-|------------|--------------|--------------------|
-| **Docker** | Runs Brane services as containers | [Docker Install Docs](https://docs.docker.com/get-docker/) |
-| **Docker BuildKit** | Builds container images efficiently | Included in modern Docker releases; enable with `docker buildx create --use` |
-| **OpenSSL** | Required for cryptographic operations | macOS: `brew install openssl`<br>Ubuntu/Debian: `sudo apt install openssl` |
-| **GLIBC $\ge$ 2.27** | Needed for precompiled binaries | Check with `ldd --version` |
-
-> **Tip:** To avoid running infrastructure commands as root, add your deployment user to the Docker group:
-> ```bash
-> sudo usermod -aG docker "$USER"
-> ```
-> Log out and back in for changes to take effect.
-
-
----
-
-## 0. Installation & Setup
- 
-Before building packages, you must download the pre-compiled `branectl` binary directly from the official GitHub releases page and add it to your system path.
-see instruction in the guide [installing brane tools](08-brane-tools.md)
-
----
-
-> **Prefer Automation?**
-> If you havei:
->
->  - SSH access to your target hosts, 
->
->  - known IP addresses/hostnames, 
->
->  - and a correctly configured gRPC network, 
->
->  - you can skip the manual commands below.
-> 
-> The is an  Ansible playbook that automates the entire infrastructure deployment (including dependency installation, certificate generation, and service orchestration).
->
->  - More details in [Brane Deployment Repository (brane-deployment)](https://github.com/AdamBelloum/brane-deployment).
-
----
-
-## 3. Public Key Infrastructure (PKI) & Certificates
-
-Brane enforces mutual authentication (mTLS) via **X.509 certificates** to guarantee identity and secure cross-domain data access.
-
-### 3.1 Directory Layout
-
-Every node and client utilizes a standardized `config/certs` directory layout:
-
-* `ca.pem`: The Certificate Authority certificate used to establish trust.
-
-
-* `server.pem` / `server-key.pem`: Authenticates Brane services.
-
-* `client.pem` / `client-key.pem`: Authenticates developers, scientists, or automated systems connecting to the instance.
-
-### 3.2 Generating Certificates
-
-Execute the following on your target nodes to generate the required cryptographic assets:
-
-```bash
-branectl generate certs -f -p ./config/certs server <LOCATION_ID> -H <NODE_HOSTNAME_OR_IP>
-
+```text
+docker-deployment/inventories/production/hosts.ini
 ```
 
-> **Critical Security Step:** Securely copy each worker node’s `ca.pem` file back to the **control node** under `config/certs/<LOCATION_ID>/ca.pem` so the central orchestrator trusts the incoming worker connections.
-> 
-> 
+This inventory is deployment-specific and may contain sensitive host information. Keep it outside published documentation and do not commit credentials or private keys.
 
----
+Before making infrastructure changes, review the planned execution:
 
-## 4. Understanding Document Placeholders
+```sh
+cd /path/to/brane-deployment/docker-deployment
 
-To get your cluster running as quickly as possible, map the abstract placeholders in the deployment section to your actual infrastructure values:
+PATH="../venv/bin:$PATH" \
+ansible-playbook -i inventories/production/hosts.ini site.yml \
+  --syntax-check
 
-* **`<LOCATION_ID>` / `<WORKER_ID>**`: A friendly alphanumeric label you invent to name a worker node (e.g., `amsterdam`, `worker-prod-1`). Once you choose a label for a node, use it consistently everywhere.
-* **`<CENTRAL_HOSTNAME_OR_IP>`**: The static network address (internal IP, public IP, or internal FQDN) that worker nodes and clients use to connect to your central management host.
-
-### Quick-Start Network Blueprint (Concrete Example)
-
-Throughout Section 5, we assume a network layout of three provisioned hosts:
-
-* **Central VM IP:** `10.0.0.10`
-* **Worker A VM IP:** `10.0.0.20` (We choose the location ID string: `amsterdam`)
-* **Worker B VM IP:** `10.0.0.30` (We choose the location ID string: `berlin`)
-
----
-
-## 5. Deployment Topologies
-
-### Topology A: Single-Node Deployment (Local Test/Prototyping)
-
-Ideal for local validation or staging environments before distributed rollout.
-
-```bash
-# 1. Download Core Images
-branectl download services central -f
-branectl download services auxillary -f
-
-# 2. Generate Local Configs
-branectl generate proxy -f -p ./config/proxy.yml
-branectl generate node -f central localhost
-
-# 3. Spin up Instance
-branectl start central
-
+PATH="../venv/bin:$PATH" \
+ansible-playbook -i inventories/production/hosts.ini site.yml \
+  --check --diff
 ```
 
-Note: The `aux-scylla` database container can take up to 60 seconds to fully initialize. Use `watch docker ps` to verify readiness.
+`--check --diff` is a planning aid. It does not prove that all deployment actions can run successfully.
 
----
+## 2. Deploy or redeploy infrastructure
 
-### Topology B: Multi-Node Distributed Cluster (Production)
+The supported deployment entry point is the Ansible playbook:
 
-#### Step 1: Control Node Setup
+```sh
+cd /path/to/brane-deployment/docker-deployment
 
-On the central orchestrator machine (`10.0.0.10`), define your cluster layout by mapping worker location IDs to their network addresses:
-
-```bash
-# Template Syntax:
-# branectl generate infra -f -p ./config/infra.yml <WORKER_ID_1>:<WORKER_IP_OR_HOST_1> <WORKER_ID_2>:<WORKER_IP_OR_HOST_2>
-
-# Real-World Blueprint Execution:
-branectl generate infra -f -p ./config/infra.yml amsterdam:10.0.0.20 berlin:10.0.0.30
-
-branectl generate proxy -f -p ./config/proxy.yml
-branectl generate node -f central 10.0.0.10
-
-# Start central services
-branectl start central
-
+PATH="../venv/bin:$PATH" \
+ansible-playbook -i inventories/production/hosts.ini site.yml
 ```
 
-#### Step 2: Worker Domain Setup
+A full deployment runs all configured phases. Use it for a fresh deployment or when the intended change spans several phases.
 
-On each provisioned worker host, configure local backends, proxies, and security policies:
+### Deployment phases
 
-```bash
-# Download worker binaries
-branectl download services worker -f
+| Tag | Purpose |
+|---|---|
+| `prerequisites` | Install or configure required node prerequisites. |
+| `branectl` | Install `branectl` on inventory nodes. |
+| `branecli` | Install `brane` on inventory nodes. |
+| `workers` | Configure and prepare worker nodes. |
+| `central` | Configure and prepare the central node. |
+| `certs` | Exchange node certificate authority material between central and workers. |
+| `start` | Start Brane services. |
+| `smoke` | Run the deployment smoke test from the central node. |
 
-# Generate policies, storage backends, and token secrets
-branectl generate backend -f -p ./config/backend.yml local
-branectl generate proxy -f -p ./config/proxy.yml
-branectl generate policy_secret -f -p ./config/policy_deliberation_secret.json
-branectl generate policy_secret -f -p ./config/policy_expert_secret.json
-branectl generate policy_db -f -p ./policies.db
+For a controlled partial deployment, select only the required tag:
 
-# Template Syntax:
-# branectl generate node -f worker <CENTRAL_HOSTNAME_OR_IP> <LOCAL_WORKER_ID>
+```sh
+cd /path/to/brane-deployment/docker-deployment
 
-# Real-World Blueprint Execution (Run this on Worker host 10.0.0.20):
-branectl generate node -f worker 10.0.0.10 amsterdam
-
-# Real-World Blueprint Execution (Run this on Worker host 10.0.0.30):
-# branectl generate node -f worker 10.0.0.10 berlin
-
-branectl start worker
-
+PATH="../venv/bin:$PATH" \
+ansible-playbook -i inventories/production/hosts.ini site.yml \
+  --tags workers
 ```
 
-#### Step 3: Optional Isolated Proxy Node
+For a fresh deployment, the normal dependency order is:
 
-If cross-site communication is blocked by aggressive firewalls, spin up dedicated proxy gateways:
-
-```bash
-branectl download services proxy -f
-branectl generate proxy -f -p ./config/proxy.yml
-branectl generate node -f proxy <PROXY_HOSTNAME_OR_IP>
-branectl start proxy
-
+```text
+prerequisites → branectl → branecli → workers → central → certs → start → smoke
 ```
 
----
+Do not use superseded manual lifecycle procedures from older Brane distributions as deployment instructions for this environment.
 
-## 6. Deployment Verification & Troubleshooting
+## 3. Verify infrastructure health
 
-### 6.1 Container Status Check
+Infrastructure health checks require administrator SSH access to the central node and workers. They read the Ansible inventory, inspect the deployment, and return:
 
-Run `docker ps` on your hosts. You should observe active containers with a status of **Up**:
+- exit code `0` when all checks pass;
+- exit code `1` when one or more checks fail.
 
-* `brane-api` & `brane-driver` (Control node only)
+Run the complete report after deployment, redeployment, certificate exchange, or a suspected infrastructure failure:
 
-* `brane-planner` & `brane-registry` (Control node only)
+```sh
+cd /path/to/brane-deployment/docker-deployment
 
-* `aux-scylla` (Central database cluster)
-
-* `brane-proxy` (Present on all nodes handling transit)
-
-### 6.2 Reviewing System Logs
-
-To troubleshoot startup faults or connection rejections, stream the application logs directly from Docker:
-
-```bash
-docker logs -f brane-api
-docker logs -f brane-proxy
-```
----
-
-## 7. Day-to-Day User Provisioning & Administration
-
-Once the cluster infrastructure is verified, the administrator handles user access management, multi-domain routing, and credential rollouts.
-
-### 7.1 Onboarding Users (Client-Side Setup)
-
-End-users (data scientists, developers) use the standard `brane` user CLI. To grant access to an instance, distribute their unique **Client Certificates** via secure internal channels.
-
-The user runs the following commands on their machine to pair with your deployed infrastructure:
-
-```bash
-# View current cluster configurations
-brane instance list
-
-# Template Syntax:
-# brane instance add <INSTANCE_NAME> <CENTRAL_PROXY_URL> --cert ./config/certs/client.pem --key ./config/certs/client-key.pem
-
-# Real-World Blueprint Execution:
-brane instance add cluster-prod 10.0.0.10 --cert ./config/certs/client.pem --key ./config/certs/client-key.pem
-
-# Select instance as default target
-brane instance use cluster-prod
+PATH="../venv/bin:$PATH" \
+bash ../scripts/brane_healthcheck.sh --report
 ```
 
-### 7.2 Managing Access & Certificate Revocation
+To use a non-default inventory:
 
-If a client certificate is compromised, or an employee changes roles, security must be updated server-side:
+```sh
+cd /path/to/brane-deployment/docker-deployment
 
-1. **Server-Side Revocation:** Remove or disable the certificate from the trust stores/volumes mapped to your running `brane-proxy` or policy checker configurations.
-
-2. **Restart Security Services:** To instantly force clear connection caches:
-```bash
-docker restart brane-proxy
-
+PATH="../venv/bin:$PATH" \
+bash ../scripts/brane_healthcheck.sh \
+  --inventory /path/to/hosts.ini \
+  --report
 ```
 
-3. **Client-Side Cleanup:** Instruct the user to drop the configuration records:
+To narrow the check to one inventory node:
 
-```bash
-brane instance remove cluster-prod
+```sh
+cd /path/to/brane-deployment/docker-deployment
 
-```
----
-
-## Summary Lifecycle Checksheet
-
-| Phase | Core Administrative Action | Target Validation |
-| --- | --- | --- |
-| **1. Prep** | Meet system requirements & install `branectl`.  | `branectl --help` works cleanly.  |
-| **2. Securing** | Generate CA, server, and client certificates.  | Files populate `config/certs/`.  |
-| **3. Deploy** | Execute `branectl start` for target nodes.  | All core containers show **Status: Up**.  |
-| **4. Onboard** | Deliver client certs; link user CLIs.  | User runs `brane instance list` successfully.  |
-| **5. Rotate** | Update policies and revoke dead credentials.  | Compromised endpoints return authentication errors.  |
-
+PATH="../venv/bin:$PATH" \
+bash ../scripts/brane_healthcheck.sh \
+  --node <INVENTORY_NODE> \
+  --report
 ```
 
+The health check verifies deployment resources such as required containers, listening ports, and Docker mounts. Treat a failed health check as an infrastructure issue before troubleshooting a user workflow.
+
+## 4. Generate and distribute client certificates
+
+Generate a client-certificate bundle for a selected central or worker node/domain:
+
+```sh
+cd /path/to/brane-deployment
+
+PATH="venv/bin:$PATH" \
+bash scripts/brane_gen_cert.sh \
+  --inventory docker-deployment/inventories/production/hosts.ini \
+  --node <INVENTORY_NODE> \
+  --output-name <DOMAIN_LABEL>
 ```
+
+The helper:
+
+1. reads the selected node from the Ansible inventory;
+2. verifies that the remote node has its certificate authority material;
+3. creates and signs a client certificate on that node;
+4. replaces that node's current `client.pem` and `client-key.pem`;
+5. copies `ca.pem`, `client.pem`, and `client-key.pem` to:
+
+```text
+certs/<DOMAIN_LABEL>/
+```
+
+> **Warning:** generation replaces the selected node/domain's existing client certificate and private key. Confirm the intended node and maintain any required certificate-rotation record before proceeding.
+
+The generated bundle contains private key material. Transfer it only through an approved secure channel. Do not attach it to public issue trackers, commit it to Git, print it in logs, or paste it into shell-history examples.
+
+A user registers the supplied bundle for a selected Brane instance with:
+
+```sh
+brane certs add <CA_CERT> <CLIENT_CERT> <CLIENT_KEY> \
+  --instance <INSTANCE_NAME> \
+  --domain <DOMAIN_HOST>
+```
+
+The administrator provides the correct domain hostname and bundle; the user performs instance-level registration as part of their own workflow.
+
+## 5. Generate and distribute policy-manager tokens
+
+A policy-manager token authorises policy operations for a specific domain. Generate it only for an identified policy manager, domain, and validity period.
+
+### Preferred method: Administration workspace
+
+In the Streamlit **Administration** workspace:
+
+1. Open **Policy-manager tokens**.
+2. Enter the policy manager name.
+3. Select the target domain.
+4. Enter the required validity period.
+5. Generate the token.
+6. Download the generated token file and transfer it securely.
+
+The implementation stores generated token files with owner-only permissions and does not display token values in task logs. The policy manager should receive the file through an approved secure channel.
+
+### Shell-helper method
+
+The administrator helper provides an interactive token-generation action:
+
+```sh
+cd /path/to/brane-deployment
+
+bash scripts/brane_helper_admin.sh
+```
+
+Choose **Generate policy expert token for policy manager** and provide:
+
+- the policy manager name;
+- the worker hostname or domain identifier;
+- a validity period, such as `30d`;
+- a secure output path.
+
+The helper invokes `branectl generate policy_token` with the administrator-controlled policy secret. Do not copy the secret path, secret content, or generated JWT into documentation or terminal-history examples.
+
+## 6. Full destructive cleanup
+
+`scripts/brane_cleanup.sh` is a recovery operation for a complete reset. It requires interactive confirmation by typing `YES`.
+
+It removes, on every inventory node:
+
+- Brane containers;
+- Brane images and Docker volumes;
+- Brane deployment directories;
+- generated deployment configuration, certificates, and policy data inside those directories;
+- selected Brane release archives from temporary storage.
+
+It preserves:
+
+- SSH keys and `authorized_keys`;
+- non-Brane Docker resources;
+- Docker itself and installed system packages;
+- files outside the Brane deployment directories.
+
+Run cleanup only when you intend to remove the deployment and perform a full redeployment afterward:
+
+```sh
+cd /path/to/brane-deployment
+
+PATH="venv/bin:$PATH" \
+bash scripts/brane_cleanup.sh \
+  --inventory docker-deployment/inventories/production/hosts.ini
+```
+
+After cleanup, redeploy using the full Ansible workflow in [Deploy or redeploy infrastructure](#2-deploy-or-redeploy-infrastructure). Do not use cleanup as a routine troubleshooting step.
+
+## 7. Operational hand-off
+
+After a healthy deployment:
+
+1. The **Administrator** confirms infrastructure health and securely provisions certificates or policy-manager tokens.
+2. The **Policy Manager** uploads and activates the applicable domain policy.
+3. The **User** builds or discovers resources, registers their certificate bundle, and submits workflows.
+
+The default deployment policy is deny-all. A remote workflow may reach the cluster successfully but still be denied until the appropriate policy is active.
+
+## 8. Troubleshooting boundaries
+
+| Symptom | First responsible role | First action |
+|---|---|---|
+| Health check fails | Administrator | Inspect the full health report, inventory connectivity, containers, ports, and mounts. |
+| Certificate generation fails | Administrator | Check SSH access, inventory node selection, and certificate authority material on the target node. |
+| User cannot register or use a certificate | Administrator and User | Verify the supplied bundle, selected instance, and target domain. |
+| Policy upload or activation fails | Policy Manager | Check the policy workflow, token validity, policy input, and checker connectivity. |
+| Workflow is denied by policy | Policy Manager | Confirm the active policy permits the requested workflow and data movement. |
+| Workflow execution fails after policy approval | User, then Administrator | Check workflow inputs and task status; use the infrastructure health report if the failure indicates service unavailability. |
+
+For deployed-service topology and ports, see the [Deployed Brane Architecture Reference](../brane-spec/02-architecture.md).

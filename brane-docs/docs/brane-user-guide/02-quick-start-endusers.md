@@ -1,76 +1,52 @@
-## 2. Quick Start for Scientists
+# Quick Start for Brane Users
 
-This section gives scientists a pragmatic path to go from zero to a running workflow. Details about installation and deployment are covered later for system engineers.
+Use this page as an entry point to the current role-specific workflow.
 
-### 2.1. Installing the Brane CLI
+## Before you begin
 
-Brane offers a command-line client (Brane CLI) for interacting with a Brane instance:
+Ask an Administrator for:
 
-- Submitting workflows,
-- Managing local packages,
-- Interacting with remote registries.
+- the central-node address;
+- the Brane instance name;
+- the certificate bundle for the domain you need to use.
 
-> **Note**: CLI commands shown here are conceptual; exact syntax may differ in your installation. We will validate and update command examples later.
+Confirm that `brane` and Docker are available on your workstation:
 
-Typical steps:
+```sh
+brane --version
+docker --version
+```
 
-1. Install **Docker** and **Buildx** (if required by your Brane distribution).
-2. Install the Brane client (e.g., via a package, script, or binaries provided by your deployment).
-3. Confirm the CLI is available:
+## The user workflow
 
-- For example, run a help command to list available subcommands (syntax to be validated).
+1. Discover local package and dataset sources.
+2. Configure and select a Brane instance.
+3. Register the Administrator-supplied certificate bundle.
+4. Build and test a package when required.
+5. Run a workflow locally.
+6. Submit remotely only after selecting the intended instance.
+7. Monitor the task and use Task History for persistent logs.
 
-### 2.2. Connecting to a Brane instance
+Start with the [Brane User Workflow Guide](03-endusers-scientists.md).
 
-Before running workflows, the CLI needs to know which Brane instance to use and how to authenticate.
+## First local workflow
 
-Conceptually, you will:
+The included `hello_world` package provides the smallest current local example:
 
-**Configure the instance endpoint**  
+```sh
+cd /path/to/brane-deployment
 
-- Specify the URL or hostname of the Brane control node’s proxy.
+brane package build --arch x86_64 packages/hello_world/container.yml
+brane package test hello_world
+brane workflow run <WORKFLOW_USER> packages/hello_world/hello_world.bs
+```
 
-**Provide client credentials**  
+On Apple Silicon, use `scripts/package_build_macOS.sh` instead of invoking the build command directly.
 
-- Install client certificates or tokens that identify you to the instance.
-- These may be generated and distributed by an administrator or system engineer.
+See the complete [Hello, World! tutorial](../brane-tutorials/02-hello-world-example.md).
 
-Once configured, you can:
+## Remote-workflow prerequisite
 
-- List remote packages,
-- Submit workflows,
-- Access datasets hosted by the instance (subject to policies).
+A configured instance and registered certificate bundle establish connectivity and identity. They do not, by themselves, grant access to data or execution. The target domain policy must also permit the workflow.
 
-### 2.3. Running a simple workflow
-
-With the CLI configured:
-
-**Write a small BraneScript or Bakery workflow**  
-
-- Import a simple package (e.g., a hello-world or base64 example).
-- Call one of its functions.
-- Print or commit results.
-
-**Submit the workflow**  
-
-- Use the CLI to send the workflow to the Brane instance.
-- The instance’s driver and planner will:
-- Validate the workflow,
-- Plan tasks across domains,
-- Execute them via worker nodes.
-
-**Inspect results**  
-
-- View logs or output provided by the CLI.
-- Access any datasets or intermediate results produced.
-
-### 2.4. Where to go next
-
-After a successful quick start:
-
-- To **build your own packages**, see **[Section 4](04-software-engineers.md)**.
-- To **work with datasets** more seriously, see **[Section 5](05-data-policy-experts.md)**.
-- To understand **policies**, see **[Section 5](05-data-policy-experts.md)**.
-- For deeper infrastructure details, see **[Section 6](06-administrators.md)**.
-
----
+For policy-denied submissions, contact the Policy Manager. For connection or infrastructure failures, contact the Administrator.

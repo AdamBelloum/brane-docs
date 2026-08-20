@@ -1,208 +1,202 @@
-# 5. Data Policy Experts & Data Stewards Guide
+# Brane Policy Manager Guide
 
-This guide is tailored for **data policy experts** and **data stewards** responsible for defining regulatory constraints, configuring automated policy enforcement, and managing security tokens across a federated Brane ecosystem.
+**Audience:** Policy Managers responsible for maintaining eFLINT policy versions for a Brane worker domain.
 
-Brane is built from the ground up to operate in policy-sensitive environments—such as healthcare, finance, or cross-border research—where data cannot be centralized due to legal boundaries (e.g., GDPR) or organizational restrictions.
+This guide describes the policy-management workflow supported by `brane-deployment` baseline `369392b991e0c3290739077d0ad071b5ce3f76bb`.
 
----
+A Policy Manager prepares, uploads, inspects, and explicitly activates domain policies. Administrators generate policy-manager tokens and maintain infrastructure. Users submit workflows and do not administer policy versions.
 
-## 5.1. Policy Architecture in Brane
+## Policy Manager responsibilities
 
-Brane decouples policy definition from workflow execution using two distinct layers at each domain node:
+A Policy Manager is responsible for:
 
-* **Policy Enforcement Point (PEP) / Policy Checker:** A native Brane stack component that intercepts all incoming workflow requests (e.g., data access, cross-domain transfers, package executions). It translates these execution events into logical queries for verification.
-* **Policy Reasoner:** A pluggable formal reasoning engine (typically eFLINT) that evaluates queries sent by the PEP against a stateful set of compliance rules and facts, returning a strict **Allow** or **Deny** decision.
+1. preparing a domain-appropriate `.eflint` policy file;
+2. obtaining a valid policy-manager token from an Administrator;
+3. selecting the intended worker domain;
+4. uploading a policy as a new version;
+5. inspecting available versions and active state;
+6. explicitly activating the intended version;
+7. diagnosing policy upload, activation, and denial outcomes.
 
-```
+A Policy Manager is **not** responsible for deploying infrastructure, generating policy-manager tokens, distributing certificates, building datasets, or submitting user workflows.
 
-[ Scientist Workflow ] ──> [ Policy Enforcement Point (PEP) ]
-│             ▲
-Sends Query   │             │   Returns Decision
-(Who/What)    ▼             │   (Allow / Deny)
-[ eFLINT Policy Reasoner ]
+## 1. Understand the policy lifecycle
 
-```
-
----
-
-## 5.2. The Policy Language (eFLINT)
-
-Brane uses **eFLINT**, a formal domain-specific language designed specifically for compliance checking. Instead of traditional procedural programming, eFLINT operates on **Types, Facts, Rights, and Duties**.
-
->  **Third-Party Project Notice**
-> The eFLINT language parser, command-line interpreter, and server components are developed independently as an open-source project by CWI. For comprehensive language specifications, core syntax documentation, and framework updates, visit the official repository:
-> **GitHub:** [https://github.com/cwi-swat/eflint](https://github.com/cwi-swat/eflint)
-
-### Conceptual eFLINT Syntax Pattern
-When writing policies, you declare your domain structure, define relational rules, and track state transitions:
+Use this lifecycle for every policy change:
 
 ```text
-// 1. Declare domain entities
-Placeholder user IDENTIFIED BY string.
-Placeholder dataset IDENTIFIED BY string.
-Placeholder domain IDENTIFIED BY string.
-
-// 2. Define relations and access rules
-Fact may_run_dataset AGGREGATES user * dataset.
-Fact personal_data AGGREGATES dataset.
-Fact anonymized AGGREGATES dataset.
-
-// 3. Define cross-domain constraints
-Fact deny_transfer AGGREGATES dataset * domain * domain.
-deny_transfer(D, From, To) :- personal_data(D), From != To, not anonymized(D).
-
+prepare
+  → inspect current state
+  → upload a new version
+  → inspect available versions
+  → confirm and activate one version
+  → inspect active state
+  → verify behaviour with a controlled workflow
 ```
 
----
+Uploading a policy creates a version on the selected worker domain. It **does not activate** that version.
 
-## 5.3. Step-by-Step Policy Lifecycle
+Activation changes the policy used for subsequent policy decisions. Treat activation as a deliberate production change: inspect the version identifier, confirm the target domain, and record the reason for the change.
 
-### Step 1: Local Offline Testing (No Token Required)
+## 2. Required inputs
 
-Because eFLINT is an independent third-party tool, you should always validate your policy logic locally on your machine before pushing it to a live Brane network.
+Before starting, obtain:
 
-1. **Install the eFLINT CLI:** Prerequisite.
-Install the standalone compiler via Rust's package manager or by downloading the binary from the official repository:
+| Input | Source | Purpose |
+|---|---|---|
+| A `.eflint` policy file | Policy Manager | The policy source to upload. |
+| Policy-manager token file | Administrator | Authorises policy operations for one domain and a limited period. |
+| Target worker domain | Inventory or Administrator | Identifies where the policy checker runs. |
+| SSH access to the worker | Administrator-managed access | Used by the shell helper for policy operations. |
+| Expected workflow/data identities | User and domain stakeholders | Ensures policy rules refer to the workflow, package, data, and domain identifiers actually in use. |
 
-```bash
-cargo install eflint-cli
+Store policy source files under the deployment repository's `policies/` directory where practical. The current repository includes `policies/my-policy.eflint` as a local policy source file.
 
-```
-
-2. **Run your Policy Logic:** Terminal Execution.
-Pass your policy file directly to the native interpreter to start an interactive testing session:
-
-```bash
-eflint minmax_policy.eflint
-
-```
-
-3. **Query the State:** Validation.
-Input test assertions directly into the interactive prompt to confirm the reasoner behaves exactly as expected:
+A policy-manager token is secret material. Store the supplied token file in:
 
 ```text
-?run_minmax("Adam", "minmax_dataset").
-
+policy_tokens/
 ```
 
-The terminal will output `Approved` or throw a violation error, allowing you to debug your assertions completely offline.
+Never commit token files, paste token contents into documentation, or share a token through an unapproved channel.
 
-### Step 2: Acquire Infrastructure Trust Tokens
+## 3. Prepare a policy change
 
-To deploy and update policy files on live nodes, you must authenticate using a **Policy Expert Token**.
+Before uploading a policy:
 
-* **Option A: You manage the infrastructure node ()**
-Locate the cluster configuration files (`policy_secret.json` or `secret.json`) generated during node initialization. Run the command utility locally to issue your token:
+1. Identify the worker domain where the policy will apply.
+2. Confirm the workflow, package, dataset, user, and domain identifiers that the policy must govern.
+3. Review the intended allow and deny cases with the responsible domain stakeholders.
+4. Keep the policy file as `.eflint`.
+5. Decide how the new version should differ from the currently active version.
+6. Define a controlled verification case for after activation.
 
-```bash
-branectl generate policy_token <user> <hostname> <number_of_days>d -s /path/to/policy_secret.json
+The deployment begins with **deny-all** behaviour. Therefore, a remote workflow may be submitted successfully and reach the worker infrastructure, yet still be denied during policy evaluation. This is expected until an applicable policy version has been uploaded and activated.
 
+Do not treat a policy denial as proof of an infrastructure failure. First inspect the active policy state and whether the policy permits the requested operation.
+
+## 4. Preferred workflow: Policy Management workspace
+
+The Streamlit **Policy Management** workspace is the preferred interface because it keeps token values out of task metadata and ordinary task logs.
+
+### 4.1 Select context
+
+1. Open **Policy Management**.
+2. Select a valid policy-manager token file.
+3. Select the target worker domain.
+4. Run **Check SSH** when connectivity has not recently been confirmed.
+5. Confirm that the displayed token status is valid and has sufficient remaining lifetime.
+
+The workspace displays token filenames and expiry status, not token values.
+
+### 4.2 Inspect policy state
+
+Before changing policy:
+
+1. Open the **Status** area.
+2. Select **Inspect policy state**.
+3. Wait for the policy-list task to complete.
+4. Record the current active version and relevant available versions.
+
+Use **Task History** if a task output is no longer visible in the current browser session.
+
+### 4.3 Upload a new policy version
+
+1. Open **Upload policy**.
+2. Select the local `.eflint` file.
+3. Confirm the selected worker domain and token context.
+4. Select **Add policy version**.
+5. Wait for the upload task to complete.
+6. Record the version identifier returned by the task.
+
+Uploading adds a version but leaves the previous active policy unchanged.
+
+### 4.4 Inspect versions after upload
+
+1. Open **Activate policy**.
+2. Select **List available versions**.
+3. Compare the newly returned version identifier with the upload result.
+4. Confirm that the intended version is available for the intended worker domain.
+
+Do not activate a version merely because it is the newest version. Confirm its purpose and expected effect.
+
+### 4.5 Activate deliberately
+
+1. Enter the exact policy version identifier.
+2. Confirm the intended worker domain.
+3. Select the activation-confirmation checkbox.
+4. Select **Activate policy version**.
+5. Wait for the activation task to finish.
+6. Inspect policy state again and confirm that the expected version is active.
+
+The dashboard performs activation as a separate task and verifies active state afterward.
+
+## 5. Shell-helper workflow
+
+Use the interactive helper only from a trusted administrator-managed workstation where SSH access to worker nodes is configured:
+
+```sh
+cd /path/to/brane-deployment
+
+bash scripts/brane_helper_policy.sh
 ```
 
-This creates a `policy_token.json` configuration file in your directory.
+The helper supports:
 
-* **Option B: The node is managed externally (e.g., Central IT / UvA Lab, ...)**
-You cannot generate the token yourself. Contact your System Administrator and supply them with:
+- environment and token-expiry checks;
+- selecting a token file from `policy_tokens/`;
+- selecting a worker from the Ansible inventory;
+- uploading and adding a local `.eflint` file;
+- listing available policy versions;
+- activating a selected version.
 
-- your user identifier <`user`>, 
-- your target domain <`hostname`>, 
-- and your required lease duration. 
+The helper invokes policy commands on the worker's local checker endpoint. Do not copy its generated commands into documentation or shell-history examples because policy credentials must not be exposed.
 
-They will generate and securely transfer the `policy_token.json` file back to you.
-
----
-
-### Step 3: Building & Pushing Data Configurations
-
-To bridge these tools seamlessly, this guide demonstrates how the Brane CLI (brane) and the Administrative CLI (branectl) work in tandem during the deployment phase. 
-This workflow highlights a critical separation of duties within a secure ecosystem: 
-
-- Data Stewards and Engineers use the user-facing CLI to build and structure data metadata, 
-
-- while Administrators utilize the control toolkit to authorize and sign the cryptographic policy tokens necessary for production enforcement.
-
-1. **Build the Dataset Definition:** Data Steward Task.
-Before applying policies to a dataset, you must package its metadata using the Brane CLI. Navigate to your dataset configuration path and build the asset:
-
-```bash
-brane build /datasets/minmax/data/data.yml
-
-```
-
-Note: This indexes the data structure within your local Brane workspace so it can be targeted by eFLINT rules.
-
-2. **Generate the Policy Authorization Token:** Administrator Task Only.
-Policies cannot be deployed to a live node without a cryptographic token signed by the cluster's private infrastructure keys. An administrator must run `branectl` on the control plane, referencing the node's `policy_secret.json`:
-
-```bash
-branectl generate policy_token <user> <host_name>  <number_of_days>d -s /path/to/policy_secret.json
-
-```
-
-This signs a token granting the user `<user>` authorization to enforce rules on the `host_name` domain for a lease duration of `<number_of_days>` days.
-
----
-
-## 5.4. Common Policy Design Patterns
-
-Use these conceptual blueprints to structure real-world governance requirements within your policy blocks:
-
-### 5.4.1. Access Restricted by User Role
-
-Restricts execution of specific analytical software packages to authorized personnel.
+The underlying command families are:
 
 ```text
-fact: role(User, researcher).
-fact: restricted_package(pkg_ml_train).
-
-rule: may_run(User, Package) :-
-    restricted_package(Package),
-    role(User, researcher).
-
+branectl policies add <INPUT> [--language eflint]
+branectl policies list
+branectl policies activate [VERSION]
 ```
 
-### 5.4.2. Cross-Domain Transfer Restrictions
+These operations require valid policy-manager credentials and connectivity to the target worker checker.
 
-Ensures sensitive datasets never physically leave their origin domain unless pre-processed.
+## 6. Token handling and expiry
 
-```text
-fact: tag(D, personal_data).
-fact: origin(D, hospital_domain).
+Administrators issue domain-specific, time-limited policy-manager token files. If no usable token is available:
 
-rule: deny_transfer(D, From, To) :-
-    tag(D, personal_data),
-    origin(D, From),
-    To != From,
-    not tag(D, anonymized).
+1. do not attempt to create one from a policy-manager workstation;
+2. request a replacement from the Administrator;
+3. specify the policy-manager identity, target domain, and required validity period;
+4. store the received file in `policy_tokens/` with owner-only permissions where supported;
+5. remove expired or superseded token files according to local credential-retention practice.
 
-```
+A token may be structurally readable but lack the required authority or be expired. In both cases, request a new token from the Administrator rather than weakening policy controls.
 
-### 5.4.3. Token-Based Compliance Claims
+## 7. Policy troubleshooting reference
 
-Leverages claims embedded inside cryptographic workflow identity tokens to grant real-time access permission.
+| Symptom | Likely cause | First action |
+|---|---|---|
+| No token files appear | Token was not received or was stored outside `policy_tokens/`. | Obtain the correct token file from the Administrator and store it securely. |
+| Token is expired or invalid | Token lifetime elapsed, file is corrupted, or it is for another domain. | Request a replacement token; do not edit token contents. |
+| SSH check fails | Worker host, SSH user, network path, or access configuration is incorrect. | Confirm the selected inventory worker and ask the Administrator to verify SSH access. |
+| Upload fails before a version is returned | Invalid policy path, remote connectivity failure, token problem, or checker rejection. | Confirm token validity, worker selection, `.eflint` file, and task output. |
+| Uploaded version does not appear in list | The upload targeted another worker, failed, or the list operation lacks connectivity. | Reinspect the selected worker context and task result before retrying. |
+| Activation fails | Incorrect version identifier, expired/unauthorised token, checker unavailability, or rejected policy state. | List versions again, verify token status, and inspect the activation task output. |
+| Workflow reaches the cluster but is denied | Deny-all is still active, the wrong version is active, or the active policy does not permit the requested operation. | Inspect active policy state and compare policy rules with actual workflow and data identifiers. |
+| Workflow fails without a policy-denied result | Infrastructure, package, data, or workflow problem rather than policy logic. | Ask the User to inspect workflow-task status; ask the Administrator to run infrastructure health checks if services appear unavailable. |
 
-```text
-fact: token(User, Token).
-fact: has_claim(Token, consent, epi_project).
+## 8. Change record and hand-off
 
-rule: may_access(User, Dataset) :-
-    token(User, Token),
-    has_claim(Token, consent, epi_project),
-    tag(Dataset, epi_data).
+For each activation, record:
 
-```
----
+- target worker domain;
+- policy source filename and source-control revision;
+- uploaded policy version identifier;
+- previous active version;
+- activation time and responsible Policy Manager;
+- reason for the change;
+- expected verification workflow and outcome.
 
-## 5.5. Auditing and Governance Checklist
-
-Data policies remain incomplete without ongoing compliance verification. As a steward, regularly verify:
-
-* **Global Audit Alignment:** Cross-domain tracking records logs of every multi-party workflow submission and data movement event.
-
-* **Local Execution Logs:** Individual worker domains preserve strict event timelines showing exactly who called what dataset, which package ran, and the underlying reasons behind PEP approvals or denials.
-
-* **Obligation Loops:** Ensure any required data transformations (e.g., mandatory anonymization pipelines) are successfully registered as `done(...)` in the reasoner state before downstream operations run.
-
-```
-
-```
+After activation, tell the User which policy condition has changed and which controlled workflow may be retried. If the workflow remains denied, compare the actual identifiers and requested data movement with the active policy before changing infrastructure.

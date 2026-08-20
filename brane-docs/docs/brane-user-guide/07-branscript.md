@@ -889,9 +889,10 @@ brane package import braneframework/brane-std hello_world/container.yml
 Run a workflow:
 
 ```bash
-brane workflow run hello_world.bs
+# Replace <USE_CASE> with the use-case registry for your environment.
+brane workflow run <USE_CASE> hello_world.bs
 # or
-brane workflow run <PATH_TO_WORKFLOW>
+brane workflow run <USE_CASE> <PATH_TO_WORKFLOW>
 ```
 
 Output includes:
@@ -907,10 +908,11 @@ Output includes:
 To validate syntax and logic without full cluster execution, you can use:
 
 ```bash
-brane test path/to/workflow.bs
+# Runs the BraneScript layer with dummy task results.
+brane workflow run <USE_CASE> path/to/workflow.bs --dry-run
 ```
 
-This checks the workflow in a sandbox mode.
+This runs the BraneScript layer with dummy task results; it does not execute real task containers.
 
 ### 7.2 Remote Execution
 
@@ -1060,8 +1062,8 @@ Implement a workflow that:
 Use `brane import` to build two packages from a GitHub repository:
 
 ```bash
-brane import epi-project/brane-disaster-tweets-example -c packages/compute/container.yml
-brane import epi-project/brane-disaster-tweets-example -c packages/visualization/container.yml
+brane package import epi-project/brane-disaster-tweets-example packages/compute/container.yml
+brane package import epi-project/brane-disaster-tweets-example packages/visualization/container.yml
 
 brane package list
 ```
@@ -1147,9 +1149,8 @@ Notes:
 Run locally:
 
 ```bash
-brane run workflow.bs
-# or
-brane workflow run workflow.bs
+# Replace <USE_CASE> with the use-case registry for your environment.
+brane workflow run <USE_CASE> workflow.bs
 ```
 
 Use `println` to monitor progress:
@@ -1193,9 +1194,8 @@ To run the workflow on a remote instance with multiple domains:
 3. Run:
 
    ```bash
-   brane run workflow.bs --remote
-   # or
-   brane workflow run workflow.bs --remote
+   # Replace <USE_CASE> with the use-case registry for your environment.
+   brane workflow run <USE_CASE> workflow.bs --remote
    ```
 
 The tasks (compute + visualization) run on `"uva"`; the final plot dataset `nlp_plot` is downloaded to your local machine.
@@ -1221,5 +1221,3 @@ Use this guide as:
 - A **reference** while writing and reviewing workflows.
 - A **bridge** between tutorial examples (e.g., Hello World, Disaster Tweets) and more advanced applications.
 - A base for exploring advanced chapters (e.g., OOP with classes, merge strategies in parallel, policy-aware data movement) in the full BraneScript documentation and specification.
-
-```

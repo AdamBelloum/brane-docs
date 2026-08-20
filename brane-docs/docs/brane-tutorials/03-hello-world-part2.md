@@ -58,21 +58,20 @@ Brane can import package definitions from Git repositories.
 Assuming the example repository `epi-project/brane-disaster-tweets-example`, run:
 
 ```bash
-# Syntax to be validated later
-brane import epi-project/brane-disaster-tweets-example -c packages/compute/container.yml
-brane import epi-project/brane-disaster-tweets-example -c packages/visualization/container.yml
+# On Apple Silicon, add --arch x86_64 for the x86_64 deployment nodes.
+brane package import epi-project/brane-disaster-tweets-example packages/compute/container.yml
+brane package import epi-project/brane-disaster-tweets-example packages/visualization/container.yml
 ```
 Conceptual behaviour:
 
-brane import builds packages from a remote Git repo.
--c specifies which container.yml in the repo to use:
-packages/compute/container.yml,
-packages/visualization/container.yml.
+`brane package import` builds a package from a remote Git repository.
+The optional second argument selects the package file relative to that repository:
+- `packages/compute/container.yml`;
+- `packages/visualization/container.yml`.
 After completion, verify:
 
 ```bash
-# Syntax to be validated later
-brane list
+brane package list
 ```
 You should see compute and visualization packages available locally.
 
@@ -84,7 +83,6 @@ data/dataset.csv – actual data.
 Unpack the training dataset archive, then run:
 
 ```bash
-# Syntax to be validated later
 brane data build ./data.yml
 ```
 Repeat for the test dataset.
@@ -92,7 +90,6 @@ Repeat for the test dataset.
 Check:
 
 ```bash
-# Syntax to be validated later
 brane data list
 ```
 You should see dataset identifiers such as nlp_train and nlp_test.
@@ -214,8 +211,8 @@ The visualization package usually also exposes individual plot functions; you ca
 Run:
 
 ```bash
-# Syntax to be validated later
-brane run ./workflow.bs
+# Replace <USE_CASE> with the use-case registry for your environment.
+brane workflow run <USE_CASE> ./workflow.bs
 ```
 During execution, you can add println() calls to trace progress, e.g.:
 
@@ -259,18 +256,20 @@ on "uva" {
 Register the remote instance with the Brane CLI:
 
 ```bash
-# Syntax to be validated later
-brane instance add brane01.lab.uvalight.net --name tutorial --use
+# Replace <INSTANCE_HOST> with the API hostname of your Brane instance.
+brane instance add <INSTANCE_HOST> --name tutorial --use
 ```
 Add client certificates for domains (e.g., uva, surf):
 
 ```bash
-brane certs add ./ca.pem ./client-id.pem --domain uva
-brane certs add ./ca.pem ./client-id.pem --domain surf
+# Use the certificate files supplied for each domain.
+brane certs add <CA_CERT> <CLIENT_CERT> <CLIENT_KEY> --domain uva
+brane certs add <CA_CERT> <CLIENT_CERT> <CLIENT_KEY> --domain surf
 ```
 Run workflow remotely:
 ```bash
-brane run ./workflow.bs --remote
+# Replace <USE_CASE> with the use-case registry for your environment.
+brane workflow run <USE_CASE> ./workflow.bs --remote
 ```
 Behavior:
 
